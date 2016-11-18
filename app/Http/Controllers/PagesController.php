@@ -81,9 +81,13 @@ class PagesController extends Controller
             );
 
             $films = App\DBAnimes::orderBy('updated_at', 'desc')
-                ->paginate(25, ['*'], 'page', 1);
+                ->paginate(env('PAGE_SPLIT_BIG'), ['*'], 'page', 0);
+
+            Session::put('type', 'A');
+            $films->setPath('get-list-newUpdated');
+
             $hotFilms = App\DBAnimes::orderBy('updated_at', 'desc')
-                ->take(10)->get();
+                ->take(env('PAGE_SPLIT_SMALL'))->get();
 
             $seaching = false;
 
@@ -174,7 +178,10 @@ class PagesController extends Controller
             );
 
             $films = App\DBAnimes::orderBy('updated_at', 'desc')
-                ->paginate(25, ['*'], 'page', 1);
+                ->paginate(env('PAGE_SPLIT_BIG'), ['*'], 'page', 1);
+
+            Session::put('type', 'A');
+            $films->setPath('get-list-newUpdated');
 
             $seaching = true;
             $breadcrumb->key = 'Thể Loại';
@@ -185,7 +192,8 @@ class PagesController extends Controller
             // search codes
             $seachFilms = App\DBAnimes::where('category', 'LIKE', '%'.$id.'%')
                 ->orderBy('updated_at', 'desc')
-                ->paginate(14, ['*'], 'page', 1);
+                ->paginate(env('PAGE_SPLIT_SMALL'), ['*'], 'page', 1);
+            $seachFilms->setPath('search/category/'.$id);
 
             return View::make('index')->with([
                 'userSigned' => $userSigned,
@@ -273,7 +281,10 @@ class PagesController extends Controller
             );
 
             $films = App\DBAnimes::orderBy('updated_at', 'desc')
-                ->paginate(25, ['*'], 'page', 1);
+                ->paginate(env('PAGE_SPLIT_BIG'), ['*'], 'page', 1);
+
+            Session::put('type', 'A');
+            $films->setPath('get-list-newUpdated');
 
             $seaching = true;
             $breadcrumb->key = 'Quốc Gia';
@@ -284,7 +295,8 @@ class PagesController extends Controller
             // search codes
             $seachFilms = App\DBAnimes::where('country', '=', $id)
                 ->orderBy('updated_at', 'desc')
-                ->paginate(14, ['*'], 'page', 1);
+                ->paginate(env('PAGE_SPLIT_SMALL'), ['*'], 'page', 1);
+            $seachFilms->setPath('search/country/'.$id);
 
             return View::make('index')->with([
                 'userSigned' => $userSigned,
@@ -372,17 +384,24 @@ class PagesController extends Controller
             );
 
             $films = App\DBAnimes::orderBy('updated_at', 'desc')
-                ->paginate(25, ['*'], 'page', 1);
+                ->paginate(env('PAGE_SPLIT_BIG'), ['*'], 'page', 1);
+
+            Session::put('type', 'A');
+            $films->setPath('get-list-newUpdated');
 
             $seaching = true;
             $breadcrumb->key = 'Năm';
 
             $breadcrumb->value = $year;
 
+            // paging
+            $page = Input::get('page');
+
             // search codes
             $seachFilms = App\DBAnimes::whereYear('release_date', $year)
                 ->orderBy('updated_at', 'desc')
-                ->paginate(14, ['*'], 'page', 1);
+                ->paginate(env('PAGE_SPLIT_SMALL'), ['*'], 'page', 1);
+            $seachFilms->setPath('search/year/'.$year);
 
             return View::make('index')->with([
                 'userSigned' => $userSigned,

@@ -219,7 +219,7 @@ $MyFunc = new App\Library\MyFunction;
         <div class="most_view">
             <div class="titleBar">
                 <span>Anime Xem Nhiều</span>
-                <div style="float: right">
+                <div class="findButtons">
                     <a class="buttonD @if($mostViewSelected == 'D') selected @endif ">D</a>
                     <span>-</span>
                     <a class="buttonW @if($mostViewSelected == 'W') selected @endif ">W</a>

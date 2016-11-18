@@ -152,7 +152,7 @@ $MyFunc = new App\Library\MyFunction;
             <span>
                 Anime vừa cập nhật
             </span>
-            <div style="float: right">
+            <div class="findButtons">
                 <a class="buttonD @if($homepageSelected == 'D') selected @endif ">Ngày</a>
                 <span style="color: #2FAF4F">-</span>
                 <a class="buttonW @if($homepageSelected == 'W') selected @endif ">Tuần</a>
@@ -172,19 +172,40 @@ $MyFunc = new App\Library\MyFunction;
             $(document).ready(function() {
                 $(document).on('click', '.pagination a', function (e) {
                     e.preventDefault();
-                    var page = $(this).attr('href').split('page=')[1];
-                    getPosts(page);
+                    var _url = $(this).attr('href');
+
+                    //check if paging by category
+                    var n = _url.indexOf('category/');
+                    var _id = 0;
+                    if(n>0)
+                        _id = _url.split('category/')[1].split('?')[0];
+
+                    //check if paging by country
+                    n = _url.indexOf('country/');
+                    if(n>0)
+                        _id = _url.split('country/')[1].split('?')[0];
+
+                    //check if paging by year
+                    n = _url.indexOf('year/');
+                    if(n>0)
+                        _id = _url.split('year/')[1].split('?')[0];
+
+                    // else paging by default(last updated)
+                    var page = _url.split('page=')[1];
+                    // element display data
+                    var parent = $(this).parent().parent().parent().parent();
+                    getPosts(page, _id, _url, parent);
                 });
             });
-            function getPosts(page) {
+            function getPosts(page, _id, _url, selector) {
                 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
-                    url : location.protocol + '//' + location.host + '/get-list-newUpdated',
+                    url : _url,
                     type: "post",
-                    data: {'page': page, _token: CSRF_TOKEN},
+                    data: {'id': _id, 'page': page, _token: CSRF_TOKEN},
                     async: false,
                     success: function(data){
-                        $('#homepage>.list_movies>.items').html(data);
+                        selector.html(data);
                     }
                 }).fail(function (jqXHR, textStatus, error) {
                     alert(error);
@@ -238,7 +259,7 @@ $MyFunc = new App\Library\MyFunction;
         <div class="most_view">
             <div class="titleBar">
                 <span>Anime Xem Nhiều</span>
-                <div style="float: right">
+                <div class="findButtons">
                     <a class="buttonD @if($mostViewSelected == 'D') selected @endif ">D</a>
                     <span>-</span>
                     <a class="buttonW @if($mostViewSelected == 'W') selected @endif ">W</a>

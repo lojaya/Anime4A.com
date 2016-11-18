@@ -13,6 +13,10 @@ use App\DBAnimes;
 
 class SearchController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return bool|string
+     */
     public function Find(Request $request)
     {
         try
@@ -32,6 +36,10 @@ class SearchController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function AdvancedSearch(Request $request)
     {
 
@@ -53,6 +61,31 @@ class SearchController extends Controller
             }
 
             return View::make('templates.NewUpdated', array('films' => $films))->render();
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function SearchFilmByCategory(Request $request)
+    {
+        try
+        {
+            // search codes
+            $id = Input::get('id');
+            $page = Input::get('page');
+
+            $seachFilms = App\DBAnimes::where('category', 'LIKE', '%'.$id.'%')
+                ->orderBy('updated_at', 'desc')
+                ->paginate(env('PAGE_SPLIT_SMALL'), ['*'], 'page', $page);
+            $seachFilms->setPath('search/category/'.$id);
+
+            return View::make('templates.SearchAnime', array('seachFilms' => $seachFilms))->render();
         }
         catch(\Exception $e)
         {

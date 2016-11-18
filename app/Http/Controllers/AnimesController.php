@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
+
 class AnimesController extends Controller
 {
     // Lấy thông tin animes mới cập nhật
@@ -22,7 +23,7 @@ class AnimesController extends Controller
         try
         {
             $films = array();
-            $pageSplit = 25;
+            $pageSplit = env('PAGE_SPLIT_BIG');
             if(Request::ajax())  {
                 $type = '';
                 if(Input::has('type')){
@@ -75,6 +76,7 @@ class AnimesController extends Controller
 
             }
 
+            $films->setPath('get-list-newUpdated');
             return View::make('templates.NewUpdated', array('films' => $films))->render();
         }
         catch(\Exception $e)

@@ -54,7 +54,6 @@
     }
     #header_bar {
         margin: 0 auto;
-        padding: 10px 0px 0px 0px;
         width: 980px;
         max-height: 260px;
     }
@@ -116,22 +115,30 @@
         width: 980px;
     }
     .titleBar {
+        position: relative;
         padding: 3px;
-        height: 15px;
+        height: 25px;
         line-height: 11pt;
         color: rgba(120,250,250,1);
         border-top-width: thin;
         border-top-color: rgba(20,120,130,1);
         border-top-style: outset;
-        margin-right: 5px;
         font-size: 9pt;
         font-weight: 600;
         background: -webkit-linear-gradient(left,rgba(20,70,90,1), rgba(0,0,0,0));
     }
     .titleBar>span{
         color: rgba(250,250,50,1);
+        top: 8px;
+        left: 16px;
+        position: absolute;
     }
-    .titleBar>div>span{
+    .titleBar>.findButtons{
+        position: absolute;
+        right: 0;
+        top: 8px;
+    }
+    .titleBar>.findButtons>span{
         color: rgba(120,250,250,1);
     }
     .titleBar a{
