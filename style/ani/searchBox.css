@@ -1,0 +1,88 @@
+#searchForm {
+}
+
+#searchForm fieldset {
+    position:relative;
+    display:block;
+}
+
+div.input {
+    width:240px;
+    padding:4px 15px 4px 10px;
+    border:1px solid #c6d2db;
+    border-top:1px solid #b4c1cb;
+    box-shadow:inset 0 1px 2px rgba(0,0,0,0.08);
+    float: right;
+    background:#e8edf1;
+}
+
+div.input.focus {
+    border:1px solid #9ecbe2;
+    box-shadow:0 0 6px #abdcff, inset 0 1px 2px rgba(0,0,0,0.08);
+}
+
+input#searchInput {
+    width:100%;
+    border:0;
+    background:transparent;
+    height:16px;
+    color:#b4bdc4;
+    text-shadow:0 1px 1px #fff;
+}
+
+input#searchInput:focus {
+    outline:none
+}
+
+input#searchSubmit {
+    width:19px;
+    height:19px;
+    text-indent:-9999px;
+    overflow:hidden;
+    background:url(http://localhost/anime4a/images/search-icon.png) no-repeat;
+    border:0;
+    position:absolute;
+    top: 4px; right:13px;
+    z-index:5;
+    display:none;
+    cursor:pointer;
+}
+#suggestions {
+    position: relative;
+    display: none;
+}
+#searchresults {
+    background-color: #5b697a;
+    margin-left: 5px;
+    padding: 5px;
+    height: 400px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+#searchresults a {
+    padding: 3px 0px;
+    text-decoration: none;
+    display: block;
+    min-height: 75px;
+    color: #fff;
+    font-size: 10pt;
+    background: #344;
+}
+#searchresults a:nth-child(2n) {
+    background: #577;
+}
+#searchresults a:hover {
+    background: #899;
+}
+#searchresults img {
+    width: 53px;
+    height: 75px;
+    float: left;
+}
+#searchresults span {
+    display: block;
+    padding-left: 55px;
+}
+#searchresults span.searchheading {
+    color: #8FF;
+}

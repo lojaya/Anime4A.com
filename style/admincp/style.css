@@ -1,0 +1,423 @@
+@charset "utf-8";
+html {
+    font-family: sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%
+}
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+    border: 0;
+    font-size: 100%;
+    margin: 0 auto;
+    outline: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+body {
+    background: url(http://localhost/images/bg4.jpg) fixed no-repeat;
+    background-size: 100% auto;
+    color: #BFBFBF;
+    font-family: Tahoma, sans-serif;
+    font-size: 12px;
+    line-height: 1.3;
+    text-decoration: none;
+}
+
+body {
+    z-index: -2;
+}
+ul, li {
+    list-style: none;
+}
+a:hover,
+button:hover {
+    text-decoration: none;
+    background-position: bottom;
+    cursor: url("http://localhost/cursors/Link.cur"), progress
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+    display: block
+}
+audio,
+canvas,
+progress,
+video {
+    display: inline-block;
+    vertical-align: baseline
+}
+audio:not([controls]) {
+    display: none;
+    height: 0
+}
+[hidden],
+template {
+    display: none
+}
+a {
+    background-color: transparent
+}
+a:active,
+a:hover {
+    outline: 0
+}
+abbr[title] {
+    border-bottom: 1px dotted
+}
+b,
+strong {
+    font-weight: 700
+}
+dfn {
+    font-style: italic
+}
+h1 {
+    margin: .67em 0;
+    font-size: 2em
+}
+mark {
+    color: #000;
+    background: #ff0
+}
+small {
+    font-size: 80%
+}
+sub,
+sup {
+    position: relative;
+    font-size: 75%;
+    line-height: 0;
+    vertical-align: baseline
+}
+sup {
+    top: -.5em
+}
+sub {
+    bottom: -.25em
+}
+img {
+    border: 0
+}
+svg:not(:root) {
+    overflow: hidden
+}
+figure {
+    margin: 1em 40px
+}
+hr {
+    height: 0;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box
+}
+pre {
+    overflow: auto
+}
+code,
+kbd,
+pre,
+samp {
+    font-family: monospace, monospace;
+    font-size: 1em
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+    margin: 0;
+    font: inherit;
+    color: inherit
+}
+button {
+    overflow: visible
+}
+button,
+select {
+    text-transform: none
+}
+button,
+html input[type=button],
+input[type=reset],
+input[type=submit] {
+    -webkit-appearance: button;
+    cursor: pointer
+}
+button[disabled],
+html input[disabled] {
+    cursor: default
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    padding: 0;
+    border: 0
+}
+input {
+    line-height: normal
+}
+input[type=checkbox],
+input[type=radio] {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    height: auto
+}
+input[type=search] {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    -webkit-appearance: textfield
+}
+input[type=search]::-webkit-search-cancel-button,
+input[type=search]::-webkit-search-decoration {
+    -webkit-appearance: none
+}
+fieldset {
+    padding: .35em .625em .75em;
+    margin: 0 2px;
+    border: 1px solid silver
+}
+legend {
+    padding: 0;
+    border: 0
+}
+textarea {
+    overflow: auto
+}
+optgroup {
+    font-weight: 700
+}
+table {
+    border-spacing: 0;
+    border-collapse: collapse
+}
+td,
+th {
+    padding: 0
+}
+
+/************* ********************/
+#pagebody {
+    width: 1300px;
+}
+#header {
+    margin: 0 auto;
+    padding: 0px 0px;
+    position: relative;
+}
+#top_menu {
+    position: fixed;
+    z-index: 201;
+    width: 100%;
+    height: 40px;
+    max-height: 40px;
+    background-color: rgba(0,0,0,0.9);
+}
+#top_menu #utilitiesRegion {
+    width: 440px;
+    float: right;
+    padding-right: 100px;
+}
+
+#menu_space {
+    height: 40px;
+}
+#toolBox {
+    position: relative;
+    height: 40px;
+    margin-top: -40px;
+    z-index: 999;
+}
+.toolBox_region {
+    float: right;
+    height: 40px;
+ }
+.toolBox_region>a {
+    background: #ff3b73;
+    background-image: -webkit-linear-gradient(top, #4f8797, #4c8797, #4f8797);
+    background-image: -moz-linear-gradient(top, #4f8797, #4c8797, #4f8797);
+    background-image: -ms-linear-gradient(top, #4f8797, #4c8797, #4f8797);
+    background-image: -o-linear-gradient(top, #4f8797, #4c8797, #4f8797);
+    background-image: linear-gradient(to bottom, #4f8797, #4c8797, #4f8797);
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0px;
+    color: #ffffff;
+    font-size: 10pt;
+    padding: 5px;
+    text-decoration: none;
+    line-height: 40px;
+}
+.toolBox_region>a:hover {
+    background: #c40e0e;
+    background-image: -webkit-linear-gradient(top, #6fa7e7, #6ca7b7, #8fa7b7);
+    background-image: -moz-linear-gradient(top, #6fa7e7, #6ca7b7, #8fa7b7);
+    background-image: -ms-linear-gradient(top, #6fa7e7, #6ca7b7, #8fa7b7);
+    background-image: -o-linear-gradient(top, #6fa7e7, #6ca7b7, #8fa7b7);
+    background-image: linear-gradient(to bottom, #6fa7e7, #6ca7b7, #8fa7b7);
+    text-decoration: none;
+}
+#sideBar {
+    width: 120px;
+    float: left;
+    height: 100%;
+    background-color: rgba(0,0,0,0.9);
+}
+#sideBar>.btn{
+    padding: 5px;
+    margin-bottom: 1px;
+    background: #ff3b73;
+    background-image: -webkit-linear-gradient(top, #4f8797, #4c8797, #4f8797);
+    background-image: -moz-linear-gradient(top, #4f8797, #4c8797, #4f8797);
+    background-image: -ms-linear-gradient(top, #4f8797, #4c8797, #4f8797);
+    background-image: -o-linear-gradient(top, #4f8797, #4c8797, #4f8797);
+    background-image: linear-gradient(to bottom, #4f8797, #4c8797, #4f8797);
+}
+#sideBar>.btn:hover{
+    padding: 5px;
+    margin-bottom: 1px;
+    background: #c40e0e;
+    background-image: -webkit-linear-gradient(top, #6fa7e7, #6ca7b7, #8fa7b7);
+    background-image: -moz-linear-gradient(top, #6fa7e7, #6ca7b7, #8fa7b7);
+    background-image: -ms-linear-gradient(top, #6fa7e7, #6ca7b7, #8fa7b7);
+    background-image: -o-linear-gradient(top, #6fa7e7, #6ca7b7, #8fa7b7);
+    background-image: linear-gradient(to bottom, #6fa7e7, #6ca7b7, #8fa7b7);
+    cursor: url("http://localhost/cursors/Link.cur"), progress
+}
+#sideBar>.btn>a{
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0px;
+    color: #ffffff;
+    font-size: 10pt;
+    padding: 5px;
+    text-decoration: none;
+    line-height: 20px;
+}
+
+
+/***********************
+ START LISTVIEW CSS
+***********************/
+#listView {
+    width: 380px;
+    background-color: rgba(10,20,40,0.9);
+    float: left;
+}
+#listView .items {
+    padding: 0px 0px;
+    height: 100%;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+#listView .item {
+    padding: 0px 0px 0px 5px;
+    height: 30px;
+    line-height: 30px;
+}
+#listView .item:nth-child(2n) {
+    background-color: rgba(0,40,40,0.6);
+}
+#listView .item:hover {
+    background-color: rgba(0,0,0,0.9);
+    cursor: url("http://localhost/cursors/Link.cur"), progress
+}
+#listView input {
+    margin-top: 10px;
+    position: relative;
+    float: left;
+}
+#listView a {
+    padding: 5px;
+}
+/***********************
+ START EDITOR VIEW CSS
+***********************/
+#editorView {
+    width: 800px;
+    background-color: rgba(0,10,0,0.9);
+    float: left;
+    position: relative;
+    z-index: 999;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+#inputArea {
+
+}
+#inputArea input, #inputArea select {
+    width: 120px;
+    color: #000;
+    border: 0;
+}
+#inputArea textarea {
+    width: 700px;
+    height: 120px;
+    color: #000;
+}
+#inputArea .submit {
+    padding: 5px;
+    margin: 5px;
+}
+#inputArea .input_box {
+    padding: 5px;
+}
+#inputArea .button_add {
+    width: 40px;
+}
+#img, #banner {
+    color: #fff !important;
+}
+
+div[class^='cat_'] {
+    display: inline-block;
+    padding: 5px;
+}
+div[class^='cat_']>h2 {
+    float: left;
+    padding-right: 4px;
+}
+div[class^='cat_']>input {
+    width: 32px !important;
+}
+.col0 {
+    width: 15px;
+}
+.col1, .col2, .col3 {
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.report {
+    padding: 40px 0px 0px 20px;
+    font-size: 12pt;
+    color: #f88;
+    font-weight: 800;
+}
+/***********************
+ START FOOTER CSS
+***********************/
+#footer {
+    float: left;
+    width: 100%;
+    background-color: rgba(0,0,0,0.8);
+    position: fixed;
+    bottom: 0px;
+}

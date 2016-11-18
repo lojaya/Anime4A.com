@@ -1,0 +1,260 @@
+/**
+ * Created by Azure Cloud on 10/13/2016.
+ */
+
+/****************************
+**    START HOMEPAGE scripts
+*****************************/
+$(document).ready(function () {
+    // Login actions
+    var loginButton = $('#btnLogin');
+    var closeButton = $('#userBox>.closeBtn');
+
+    loginButton.on('click', function (){
+        $('#userBox').css('display', 'block');
+    });
+    closeButton.on( "click", function (){
+        $('#userBox').css('display', 'none');
+    });
+
+
+    // Khởi tạo vị trí searchBox và loginBox và background overlay
+    var headerBarOffsetRight = ($(window).width() - ($("#container").offset().left + $("#container").outerWidth()));
+    var loginButtonWidth = $(".login_region").outerWidth();
+    $("#utilitiesRegion").css("padding-right", headerBarOffsetRight - loginButtonWidth);
+
+    // START LOAD ANIMES DATA
+    // Ajax load animes data
+    // Danh sách anime mới cập nhật
+    var films_data = getAnimesList($('#homepage>.titleBar>div>.buttonM'), 'AnimesList', 'M');
+    $('#homepage>.list_movies>.items').html(films_data);
+
+    // Danh sách anime mới nhất
+    films_data = getAnimesList($('#sidebar>.newest_film>.titleBar>div>.buttonS'), 'NewestList', 'S');
+    $('#sidebar>.newest_film>.sidebar_items').html(films_data);
+
+    // Danh sách anime xem nhiều
+    films_data = getAnimesList($('#sidebar>.most_view>.titleBar>div>.buttonD'), 'MostViewList', 'D');
+    $('#sidebar>.most_view>.sidebar_items').html(films_data);
+    // END LOAD ANIMES DATA
+});
+
+/****************************
+**    END HOMEPAGE scripts
+*****************************/
+
+/****************************
+**    START FILTER
+*****************************/
+$(document).ready(function () {
+    // Danh sách anime mới cập nhật
+    $('#homepage>.titleBar>div>.buttonD').on( "click", function() {
+        var films_data = getAnimesList($(this), 'AnimesList', 'D');
+        $('#homepage>.list_movies>.items').html(films_data);
+    });
+    $('#homepage>.titleBar>div>.buttonW').on( "click", function() {
+        var films_data = getAnimesList($(this), 'AnimesList', 'W');
+        $('#homepage>.list_movies>.items').html(films_data);
+    });
+    $('#homepage>.titleBar>div>.buttonM').on( "click", function() {
+        var films_data = getAnimesList($(this), 'AnimesList', 'M');
+        $('#homepage>.list_movies>.items').html(films_data);
+    });
+    $('#homepage>.titleBar>div>.buttonS').on( "click", function() {
+        var films_data = getAnimesList($(this), 'AnimesList', 'S');
+        $('#homepage>.list_movies>.items').html(films_data);
+    });
+    $('#homepage>.titleBar>div>.buttonY').on( "click", function() {
+        var films_data = getAnimesList($(this), 'AnimesList', 'Y');
+        $('#homepage>.list_movies>.items').html(films_data);
+    });
+    $('#homepage>.titleBar>div>.buttonA').on( "click", function() {
+        var films_data = getAnimesList($(this), 'AnimesList', 'A');
+        $('#homepage>.list_movies>.items').html(films_data);
+    });
+
+    // Danh sách anime mới nhất
+    //
+    $('#sidebar>.newest_film>.titleBar>div>.buttonD').on( "click", function() {
+        var films_data = getAnimesList($(this), 'NewestList', 'D');
+        $('#sidebar>.newest_film>.sidebar_items').html(films_data);
+    });
+    $('#sidebar>.newest_film>.titleBar>div>.buttonW').on( "click", function() {
+        var films_data = getAnimesList($(this), 'NewestList', 'W');
+        $('#sidebar>.newest_film>.sidebar_items').html(films_data);
+    });
+    $('#sidebar>.newest_film>.titleBar>div>.buttonM').on( "click", function() {
+        var films_data = getAnimesList($(this), 'NewestList', 'M');
+        $('#sidebar>.newest_film>.sidebar_items').html(films_data);
+    });
+    $('#sidebar>.newest_film>.titleBar>div>.buttonS').on( "click", function() {
+        var films_data = getAnimesList($(this), 'NewestList', 'S');
+        $('#sidebar>.newest_film>.sidebar_items').html(films_data);
+    });
+    $('#sidebar>.newest_film>.titleBar>div>.buttonY').on( "click", function() {
+        var films_data = getAnimesList($(this), 'NewestList', 'Y');
+        $('#sidebar>.newest_film>.sidebar_items').html(films_data);
+    });
+
+    // Danh sách anime xem nhiều
+    //
+    $('#sidebar>.most_view>.titleBar>div>.buttonD').on( "click", function() {
+        var films_data = getAnimesList($(this), 'MostViewList', 'D');
+        $('#sidebar>.most_view>.sidebar_items').html(films_data);
+    });
+    $('#sidebar>.most_view>.titleBar>div>.buttonW').on( "click", function() {
+        var films_data = getAnimesList($(this), 'MostViewList', 'W');
+        $('#sidebar>.most_view>.sidebar_items').html(films_data);
+    });
+    $('#sidebar>.most_view>.titleBar>div>.buttonM').on( "click", function() {
+        var films_data = getAnimesList($(this), 'MostViewList', 'M');
+        $('#sidebar>.most_view>.sidebar_items').html(films_data);
+    });
+    $('#sidebar>.most_view>.titleBar>div>.buttonS').on( "click", function() {
+        var films_data = getAnimesList($(this), 'MostViewList', 'S');
+        $('#sidebar>.most_view>.sidebar_items').html(films_data);
+    });
+    $('#sidebar>.most_view>.titleBar>div>.buttonY').on( "click", function() {
+        var films_data = getAnimesList($(this), 'MostViewList', 'Y');
+        $('#sidebar>.most_view>.sidebar_items').html(films_data);
+    });
+});
+
+function getAnimesList(selector, filterMode, filterType) {
+    var films_data = null;
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+    var requestUrl = '';
+    switch (filterMode){
+        case 'AnimesList':
+            $('#homepage>.titleBar>div>.selected').removeClass('selected');
+            requestUrl = location.protocol + '//' + location.host + '/Anime4A/get-list-newUpdated';
+            break;
+        case 'NewestList':
+            $('#sidebar>.newest_film>.titleBar>div>.selected').removeClass('selected');
+            requestUrl = location.protocol + '//' + location.host + '/Anime4A/get-list-newestAnime';
+            break;
+        case 'MostViewList':
+            $('#sidebar>.most_view>.titleBar>div>.selected').removeClass('selected');
+            requestUrl = location.protocol + '//' + location.host + '/Anime4A/get-list-mostView';
+            break;
+        default:
+            ;
+    }
+    selector.addClass('selected');
+    $.ajax({
+        url: requestUrl,
+        type: "post",
+        data: {'type': filterType, 'page': 1, _token: CSRF_TOKEN},
+        async: false,
+        success: function(data){
+            films_data = data;
+        }
+    });
+    return films_data;
+}
+// Search scripts
+function lookup(inputString) {
+    if(inputString.length === 0) {
+        $('#suggestions').fadeOut(); // Hide the suggestions box
+    } else {
+        $('#suggestions').fadeIn(); // Show the suggestions box
+
+        var requestUrl = location.protocol + '//' + location.host + '/Anime4A/search';
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({ // Do an AJAX call
+            url: requestUrl,
+            type: "post",
+            data: {'searchString': inputString, _token: CSRF_TOKEN},
+            async: false,
+            success: function(data){
+                if(data)
+                    $('#searchresults').html(data); // Fill the suggestions box
+            }
+        });
+    }
+}
+/****************************
+**   END FILTER
+*******************************/
+
+/****************************
+**   START VIEWPAGE scripts
+*****************************/
+// Video View Page Animation
+$(document).ready(function () {
+    // Cuộn tới vị trí đầu Player
+    $(window).scroll(function () {
+        $(this).delay(1000).queue(function () {
+
+            var pos = $(window).scrollTop();
+            var offset = $("div#player").offset().top;
+            if (Math.abs(pos - offset) <= 50) {
+                $('html,body').animate({
+                        scrollTop: offset - 40
+                    },
+                    'fast');
+            }
+
+            $(this).dequeue();
+        });
+    });
+});
+
+// Script Zoom or Light Off Player
+var playerZoom = false;
+$(document).ready(function () {
+    $(".shadow").css("height", $(document).height()).hide();
+    $(".videozoom").on( "click", function() {
+        playerZoom = !playerZoom;
+        if(playerZoom) {
+            $(this).text("Thu Nhỏ");
+            jwplayer("player").resize(980, 572);
+            $("#sidebar").css("margin-top", "0");
+            $("#pagebody").css("min-height", "1480px");
+            $(".shadow").css("height", $(document).height());
+        }
+        else {
+            $(this).text("Phóng To");
+            jwplayer("player").resize(680, 480);
+            $("#sidebar").css("margin-top", "-480px");
+            $("#pagebody").css("min-height", "920px");
+            $(".shadow").css("height", $(document).height());
+        }
+        $('html,body').animate({
+                scrollTop: $("div#player").offset().top - 40},
+            'slow');
+    });
+
+    $(".lightoff").on( "click", function() {
+        $(".shadow").toggle();
+        if($("#top_menu").css("z-index")>200)
+        {
+            $(this).text("Bật Đèn");
+            $("#top_menu").css("z-index", 198);
+        }else {
+            $(this).text("Tắt Đèn");
+            $("#top_menu").css("z-index", 201);
+        }
+    });
+
+    $('.video_control>.item>.video_info').on( "click", function(e) {
+        if($('.video_detail').css('display')==='none')
+        {
+            $('.video_player').fadeOut();
+            $('.video_detail').fadeIn();
+            $('#sidebar').css('margin-top', '-' + $('.video_detail').height() + 'px');
+            $(this).html('Xem Phim');
+        }
+        else
+        {
+            $('.video_player').fadeIn();
+            $('.video_detail').fadeOut();
+            $('#sidebar').css('margin-top', '-' + $('.video_player').height() + 'px');
+            $(this).html('Thông Tin');
+        }
+    });
+});
+
+/*****************************
+**   END VIEWPAGE scripts
+******************************/

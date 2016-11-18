@@ -1,0 +1,588 @@
+
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+@charset "utf-8";
+@media screen and (max-width: 1590px) {
+  body {
+    background: #222222;
+    color: #BFBFBF;
+    font-family: Tahoma, sans-serif;
+    font-size: 12px;
+    line-height: 1.3;
+    text-decoration: none;
+  }
+}
+@media screen and (max-width: 1600px) {
+  body {
+    background: url(http://localhost/images/bg4.jpg) fixed no-repeat !important;
+    color: #BFBFBF;
+    font-family: Tahoma, sans-serif;
+    font-size: 12px;
+    line-height: 1.3;
+    text-decoration: none;
+  }
+}
+/*
+@media screen and (max-width: 1920px) {
+    body {
+        background: #000000 url(../../images/bg1.jpg) fixed no-repeat;
+        background-repeat: no-repeat;
+        color: #BFBFBF;
+        font-family: Arial;
+        font-size: 12px;
+        text-decoration: none;
+    }
+}
+*/
+html,
+body,
+.search-button-vpt {
+
+}
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+  border: 0;
+  font-size: 100%;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+}
+ul, li {
+  list-style: none;
+}
+a:hover,
+button:hover {
+  text-decoration: none;
+  background-position: bottom;
+  cursor: url("http://animet.biz/skin/animetbiz/images/animehover.cur"), progress
+}
+.abutton:hover {
+  color: #44ffff;
+}
+.breadcrumb a {
+  color: #98FF00;
+}
+#header {
+  margin: 0 auto;
+  padding: 0px 0px;
+}
+#header_bar {
+  margin: 0 auto;
+  padding: 0px 0px;
+  width: 980px;
+  height: 270px;
+  max-height: 270px;
+}
+#header_banner {
+  margin: 0 auto;
+  padding: 0px 0px;
+  width: 980px;
+}
+#header_banner img.logo {
+  position: absolute;
+  top: 10px;
+  left: 45%;
+  margin: 0 auto;
+  padding: 0px 0px;
+  width: 180px;
+}
+#top_menu {
+  position: relative;
+  margin: 0 auto;
+  padding: 0px 0px;
+  width: 980px;
+  height: 40px;
+  max-height: 40px;
+  /*background-color: rgba(0,0,0,0.5);*/
+  background: #000000 url(http://localhost/images/outlets.png) repeat;
+}
+#top_menu #cat{
+  background-color: rgba(0,0,0,0.5);
+}
+#container {
+  background: #000000 url(http://localhost/images/dark_brick_wall.png) repeat;
+  margin: 0 auto;
+  padding: 0px 0px;
+  width: 980px;
+  height: auto;
+}
+#main {
+  margin: 0 auto;
+  padding: 0px 0px;
+  width: 680px;
+  height: auto;
+  float: left;
+}
+#pagebody {
+  min-height: 920px;
+}
+#sidebar {
+  margin: 0 auto;
+  padding: 0px 0px;
+  width: 300px;
+  height: auto;
+  float: left;
+}
+.homepage {
+  margin: 0 auto;
+  padding: 0px 0px;
+}
+.homepage .title{
+  padding: 5px 5px;
+  height: 15px;
+  border-bottom-width: medium;
+  border-bottom-color: #2FAF4F;
+  border-bottom-style: ridge;
+  margin: 0px 5px;
+  color: #4FFF8F;
+  font-size: 11pt;
+  font-weight: 600;
+}
+.hidden {
+  display: none;
+}
+
+/* Danh sách Phim tại trang chủ */
+.list_movies {
+  margin: 0 auto;
+  padding: 0px 0px;
+}
+
+.list_movies div {
+  margin: 0px 0px;
+  padding: 0px 0px;
+}
+.list_movies div.items {
+  width: 680px;
+  margin: 0 0 10px 15px;
+  padding: 0px 0px;
+  border-radius: 2px;
+  position: relative;
+  float: left;
+}
+.list_movies .item {
+  width: 115px;
+  height: 150px;
+  margin: 0 0px;
+  padding: 5px 20px 25px 0px;
+  position: relative;
+  border-radius: 2px;
+  float: left;
+}
+.list_movies .info {
+  position: relative;
+  width: 115px;
+  height: 150px;
+  margin: 10px 0px;
+  display: block;
+}
+.list_movies .info:hover {
+  color: #00CCFF;
+}
+.list_movies .luotxem{
+  float: left;
+  background-color: rgba(0,0,0,0.60);
+  color: #fff;
+  font-size: 10px;
+  text-align: left;
+  margin-top: -150px;
+  padding-top: 0px;
+  padding-left: 5px;
+  padding-right: 5px;
+  height: 15px;
+  display: block;
+  position: absolute;
+}
+.list_movies .episode{
+  -moz-border-radius: 2px;
+  font-size: 130%;
+  font-weight: 700;
+  right: 0px;
+  bottom: 20px;
+  padding: 2px 3px;
+  position: absolute;
+  color: #FFF;
+  font-size: 10px;
+  float: right;
+  background-color: rgba(114,14,255,0.80);
+}
+.list_movies div .thumb {
+  width: 115px;
+  height: 150px;
+  margin: 0px;
+  border-radius: 2px;
+}
+
+.list_movies a .play, .list_movies a .overlay {position: absolute; top: 0; display: block; width: 100%; height: 100%; text-align: center; text-decoration: none;}
+.list_movies a .play, .list_movies a .overlay {opacity: 100;}
+.list_movies a:hover .play, .list_movies a:hover .overlay {display: block; transition: opacity .25s ease-in-out;-moz-transition: opacity .25s ease-in-out;-webkit-transition: opacity .25s ease-in-out;}
+.list_movies a:hover .play {position: absolute; font-size: 64px; color: #ffffff; margin-top: 20%; z-index: 1000; opacity: 1;}
+.list_movies a:hover .overlay {position: absolute; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.80); opacity: .7;}
+
+.list_movies .item_name {
+  width: 112px;
+  padding: 3px 2px;
+  background: rgba(0,50,100,0.95);
+  position: absolute;
+  bottom: 15px;
+  left: -1px;
+}
+.list_movies .item_name a{
+  font-size: 10px;
+  text-align: center;
+  width: auto;
+  text-decoration: none;
+}
+.list_movies .item_name h2{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #FFF!important;
+  width: 112px;
+  max-height: 25px;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 0;
+}
+
+
+/* Thông Tin Phim */
+
+.film_info {
+  word-wrap: break-word;
+  height: 200px;
+}
+.film_info .item_info {
+  width: 450px;
+  padding: 15px;
+  float: left;
+}
+.film_info .item_info .title {
+  color: #FFCC00;
+  font-size: 10pt;
+}
+.film_info .item_info .n_font {
+  color: #FFFFFF;
+  font-size: 10pt;
+  text-decoration: none;
+}.film_info .item_info .n_font a{
+   color: #00D7A7;
+   text-decoration: none;
+ }
+.film_info .item_info .tenphim {
+  padding: 10px;
+  color: #FF004A;
+  font-size: 24pt;
+  font-family: Century;
+}
+.film_info .item_info .tenkhac {
+  padding: 10px;
+  font-size: 12pt;
+}
+.film_info .item_play {
+  width: 170px;
+  padding: 15px;
+  float: left;
+}
+
+.film_info .btn_play {
+  background: #ff3b73;
+  background-image: -webkit-linear-gradient(top, #ff3b73, #cc003a);
+  background-image: -moz-linear-gradient(top, #ff3b73, #cc003a);
+  background-image: -ms-linear-gradient(top, #ff3b73, #cc003a);
+  background-image: -o-linear-gradient(top, #ff3b73, #cc003a);
+  background-image: linear-gradient(to bottom, #ff3b73, #cc003a);
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0px;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 5px 10px;
+  text-decoration: none;
+  position: absolute;
+  margin-top: 10px;
+}
+.film_info .btn_play:hover {
+  background: #c40e0e;
+  background-image: -webkit-linear-gradient(top, #c40e0e, #ad0000);
+  background-image: -moz-linear-gradient(top, #c40e0e, #ad0000);
+  background-image: -ms-linear-gradient(top, #c40e0e, #ad0000);
+  background-image: -o-linear-gradient(top, #c40e0e, #ad0000);
+  background-image: linear-gradient(to bottom, #c40e0e, #ad0000);
+  text-decoration: none;
+}
+.film_info .btn_save {
+  background: #34d939;
+  background-image: -webkit-linear-gradient(top, #34d939, #158000);
+  background-image: -moz-linear-gradient(top, #34d939, #158000);
+  background-image: -ms-linear-gradient(top, #34d939, #158000);
+  background-image: -o-linear-gradient(top, #34d939, #158000);
+  background-image: linear-gradient(to bottom, #34d939, #158000);
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0px;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 5px 10px;
+  text-decoration: none;
+  position: absolute;
+  margin-top: 10px;
+  margin-left: 120px;
+}
+.film_info .btn_save:hover {
+  background: #1b9114;
+  background-image: -webkit-linear-gradient(top, #1b9114, #056600);
+  background-image: -moz-linear-gradient(top, #1b9114, #056600);
+  background-image: -ms-linear-gradient(top, #1b9114, #056600);
+  background-image: -o-linear-gradient(top, #1b9114, #056600);
+  background-image: linear-gradient(to bottom, #1b9114, #056600);
+  text-decoration: none;
+}
+.film_description {
+  width: 650px;
+  padding: 15px;
+  float: left;
+  background-color: rgba(100,150,100,0.15);
+}
+
+
+/* Side Bar */
+.newest_film {
+  height: 450px;
+  position: relative;
+}
+.newest_film .title{
+  padding: 5px 5px;
+  height: 15px;
+  border-bottom-width: medium;
+  border-bottom-color: #FFAF4F;
+  border-bottom-style: ridge;
+  margin: 0px 5px;
+  color: #FFFF4F;
+  font-size: 11pt;
+  font-weight: 600;
+}
+.most_view {
+  height: 450px;
+  position: relative;
+}
+.most_view .title{
+  padding: 5px 5px;
+  height: 15px;
+  border-bottom-width: medium;
+  border-bottom-color: #4FAFFF;
+  border-bottom-style: ridge;
+  margin: 5px;
+  color: #6FFFFF;
+  font-size: 11pt;
+  font-weight: 600;
+}
+.sidebar_items {
+}
+.sidebar_items .item{
+  padding: 4px 2px 5px 2px;
+  clear: both;
+  line-height: 1.2;
+  list-style-type: none;
+  min-height: 75px;
+}
+.sidebar_items .item:hover {
+  background-color: rgba(50,50,50,0.45);
+  padding: 4px 2px 5px 2px;
+  clear: both;
+  line-height: 1.2;
+  list-style-type: none;
+}
+.sidebar_items .item a{
+  text-decoration: none;
+}
+.sidebar_items .item .item_link{
+  display: block;
+}
+.sidebar_items .item .item_thumb{
+  float: left;
+  height: 75px;
+  margin: 0 4px;
+  width: 53px;
+}
+.sidebar_items .name, .sidebar_items .view, .sidebar_items .ep{
+  display: block;
+  max-height: 32px;
+  margin: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 8pt;
+}
+.sidebar_items .name{
+  color: #00A8FF;
+}
+.sidebar_items .view{
+  color: #779977;
+}
+.sidebar_items .ep{
+  color: #779977;
+}
+.sidebar_items .desc{
+  color: #AAAAAA;
+  font-size: 8pt;
+  height: auto;
+  max-height: 3.4em;
+  overflow: hidden;
+  display: block;
+  text-overflow: ellipsis;
+}
+@supports (-moz-box-orient: vertical) {
+  .sidebar_items .desc {
+    font-size: 7pt;
+    height: auto;
+    max-height: 33px;
+    overflow: hidden;
+    display: block;
+    text-overflow: ellipsis;
+    -moz-box-orient: vertical;
+    -moz-box-sizing: content-box;
+  }
+}
+@supports (-webkit-line-clamp: 3) {
+  .sidebar_items .desc {
+    font-size: 8pt;
+    height: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    max-height: 3.4em;
+  }
+}
+
+/* MEDIA PLAYER */
+/*.jwplayer{overflow:visible !important;}
+/*.jw-skin-seven .jw-controlbar{display:block !important;bottom:-40px;}*/
+#player {
+  z-index: 200;
+}
+#video_page {
+  width: 980px;
+  margin: 0px;
+  float: left;
+}
+.video_player {
+  width: 680px;
+  float: left;
+  z-index: 999;
+}
+.video_player .video_name{
+  font-family: Nobile, sans-serif;
+  font-size: 12pt;
+  height: 15px;
+  padding: 5px 10px;
+}
+.video_selection {
+  width: 680px;
+  float: left;
+}
+.video_selection a{
+  text-decoration: none;
+  color: #FFCC00;
+}
+.video_selection a.active{
+  text-decoration: none;
+  color: #FF004A;
+}
+.video_body {
+  width: 100%;
+  position: relative;
+}
+.video_body #sidebar{
+  right: 0;
+  float: left;
+  position: absolute;
+}
+.video_body .video_control, .video_body .video_episode, .video_body .video_fansub, .video_body .video_server {
+  margin: 10px;
+  font-size: 10pt;
+  width: 100%;
+  display: inline-block;
+}
+.video_body .video_control{
+  width: 80%;
+  padding-left: 20%;
+  margin: 0px 0px;
+  min-height: 30px;
+  z-index: 999;
+  position: relative;
+}
+.video_body .video_control .item {
+  color: #FFCC00;
+  margin: 5px 10px;
+  float: left;
+}
+.video_body .video_control .item a {
+  color: #FFFFFF;
+}
+.video_body .video_control .item a:hover {
+  color: #4488FF;
+}
+.video_body .video_episode {
+}
+.video_body .video_episode .title {
+  color: #00FF00;
+}
+.video_body .video_episode .item {
+  color: #FFCC00;
+  padding-left: 5px;
+  float: left;
+}
+.video_body .video_fansub .title {
+  color: #00FF00;
+}
+.video_body .video_fansub .item {
+  color: #FFCC00;
+  padding-left: 5px;
+  float: left;
+}
+.video_body .video_server .title {
+  color: #00FF00;
+}
+.video_body .video_server .item {
+  color: #FFCC00;
+  padding-left: 5px;
+  float: left;
+}
+.video_body .video_page_advertise {
+
+}
+.shadow {
+  background-color: #000;
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  z-index:199;
+}
+
+
+/* SEARCH BOX*/
+.search_region {
+  position: absolute;
+  top: 8px;
+  right: 5px;
+}
+
+
+/* FOOTER */
+#footer {
+  width: 980px;
+  height: 120px;
+  margin: 0 auto;
+  padding: 0px 0px;
+  font-size: 10pt;
+  background: #000000 url(http://localhost/images/subtle_carbon.png) repeat;
+}
