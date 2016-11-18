@@ -11,10 +11,10 @@ $(document).ready(function () {
     var closeButton = $('#userBox>.closeBtn');
 
     loginButton.on('click', function (){
-        $('#userBox').css('display', 'block');
+        $('#userBox').fadeIn();
     });
     closeButton.on( "click", function (){
-        $('#userBox').css('display', 'none');
+        $('#userBox').fadeOut();
     });
 
 
@@ -26,7 +26,7 @@ $(document).ready(function () {
     // START LOAD ANIMES DATA
     // Ajax load animes data
     // Danh sách anime mới cập nhật
-    var films_data = getAnimesList($('#homepage>.titleBar>div>.buttonM'), 'AnimesList', 'M');
+    var films_data = getAnimesList($('#homepage>.titleBar>div>.buttonW'), 'NewUpdated', 'W');
     $('#homepage>.list_movies>.items').html(films_data);
 
     // Danh sách anime mới nhất
@@ -37,6 +37,7 @@ $(document).ready(function () {
     films_data = getAnimesList($('#sidebar>.most_view>.titleBar>div>.buttonD'), 'MostViewList', 'D');
     $('#sidebar>.most_view>.sidebar_items').html(films_data);
     // END LOAD ANIMES DATA
+
 });
 
 /****************************
@@ -48,73 +49,73 @@ $(document).ready(function () {
 *****************************/
 $(document).ready(function () {
     // Danh sách anime mới cập nhật
-    $('#homepage>.titleBar>div>.buttonD').on( "click", function() {
-        var films_data = getAnimesList($(this), 'AnimesList', 'D');
+    $('#homepage>.titleBar>div>.buttonD').on( "click", function(e) {
+        var films_data = getAnimesList($(this), 'NewUpdated', 'D');
         $('#homepage>.list_movies>.items').html(films_data);
     });
-    $('#homepage>.titleBar>div>.buttonW').on( "click", function() {
-        var films_data = getAnimesList($(this), 'AnimesList', 'W');
+    $('#homepage>.titleBar>div>.buttonW').on( "click", function(e) {
+        var films_data = getAnimesList($(this), 'NewUpdated', 'W');
         $('#homepage>.list_movies>.items').html(films_data);
     });
-    $('#homepage>.titleBar>div>.buttonM').on( "click", function() {
-        var films_data = getAnimesList($(this), 'AnimesList', 'M');
+    $('#homepage>.titleBar>div>.buttonM').on( "click", function(e) {
+        var films_data = getAnimesList($(this), 'NewUpdated', 'M');
         $('#homepage>.list_movies>.items').html(films_data);
     });
-    $('#homepage>.titleBar>div>.buttonS').on( "click", function() {
-        var films_data = getAnimesList($(this), 'AnimesList', 'S');
+    $('#homepage>.titleBar>div>.buttonS').on( "click", function(e) {
+        var films_data = getAnimesList($(this), 'NewUpdated', 'S');
         $('#homepage>.list_movies>.items').html(films_data);
     });
-    $('#homepage>.titleBar>div>.buttonY').on( "click", function() {
-        var films_data = getAnimesList($(this), 'AnimesList', 'Y');
+    $('#homepage>.titleBar>div>.buttonY').on( "click", function(e) {
+        var films_data = getAnimesList($(this), 'NewUpdated', 'Y');
         $('#homepage>.list_movies>.items').html(films_data);
     });
-    $('#homepage>.titleBar>div>.buttonA').on( "click", function() {
-        var films_data = getAnimesList($(this), 'AnimesList', 'A');
+    $('#homepage>.titleBar>div>.buttonA').on( "click", function(e) {
+        var films_data = getAnimesList($(this), 'NewUpdated', 'A');
         $('#homepage>.list_movies>.items').html(films_data);
     });
 
     // Danh sách anime mới nhất
     //
-    $('#sidebar>.newest_film>.titleBar>div>.buttonD').on( "click", function() {
+    $('#sidebar>.newest_film>.titleBar>div>.buttonD').on( "click", function(e) {
         var films_data = getAnimesList($(this), 'NewestList', 'D');
         $('#sidebar>.newest_film>.sidebar_items').html(films_data);
     });
-    $('#sidebar>.newest_film>.titleBar>div>.buttonW').on( "click", function() {
+    $('#sidebar>.newest_film>.titleBar>div>.buttonW').on( "click", function(e) {
         var films_data = getAnimesList($(this), 'NewestList', 'W');
         $('#sidebar>.newest_film>.sidebar_items').html(films_data);
     });
-    $('#sidebar>.newest_film>.titleBar>div>.buttonM').on( "click", function() {
+    $('#sidebar>.newest_film>.titleBar>div>.buttonM').on( "click", function(e) {
         var films_data = getAnimesList($(this), 'NewestList', 'M');
         $('#sidebar>.newest_film>.sidebar_items').html(films_data);
     });
-    $('#sidebar>.newest_film>.titleBar>div>.buttonS').on( "click", function() {
+    $('#sidebar>.newest_film>.titleBar>div>.buttonS').on( "click", function(e) {
         var films_data = getAnimesList($(this), 'NewestList', 'S');
         $('#sidebar>.newest_film>.sidebar_items').html(films_data);
     });
-    $('#sidebar>.newest_film>.titleBar>div>.buttonY').on( "click", function() {
+    $('#sidebar>.newest_film>.titleBar>div>.buttonY').on( "click", function(e) {
         var films_data = getAnimesList($(this), 'NewestList', 'Y');
         $('#sidebar>.newest_film>.sidebar_items').html(films_data);
     });
 
     // Danh sách anime xem nhiều
     //
-    $('#sidebar>.most_view>.titleBar>div>.buttonD').on( "click", function() {
+    $('#sidebar>.most_view>.titleBar>div>.buttonD').on( "click", function(e) {
         var films_data = getAnimesList($(this), 'MostViewList', 'D');
         $('#sidebar>.most_view>.sidebar_items').html(films_data);
     });
-    $('#sidebar>.most_view>.titleBar>div>.buttonW').on( "click", function() {
+    $('#sidebar>.most_view>.titleBar>div>.buttonW').on( "click", function(e) {
         var films_data = getAnimesList($(this), 'MostViewList', 'W');
         $('#sidebar>.most_view>.sidebar_items').html(films_data);
     });
-    $('#sidebar>.most_view>.titleBar>div>.buttonM').on( "click", function() {
+    $('#sidebar>.most_view>.titleBar>div>.buttonM').on( "click", function(e) {
         var films_data = getAnimesList($(this), 'MostViewList', 'M');
         $('#sidebar>.most_view>.sidebar_items').html(films_data);
     });
-    $('#sidebar>.most_view>.titleBar>div>.buttonS').on( "click", function() {
+    $('#sidebar>.most_view>.titleBar>div>.buttonS').on( "click", function(e) {
         var films_data = getAnimesList($(this), 'MostViewList', 'S');
         $('#sidebar>.most_view>.sidebar_items').html(films_data);
     });
-    $('#sidebar>.most_view>.titleBar>div>.buttonY').on( "click", function() {
+    $('#sidebar>.most_view>.titleBar>div>.buttonY').on( "click", function(e) {
         var films_data = getAnimesList($(this), 'MostViewList', 'Y');
         $('#sidebar>.most_view>.sidebar_items').html(films_data);
     });
@@ -122,25 +123,27 @@ $(document).ready(function () {
 
 function getAnimesList(selector, filterMode, filterType) {
     var films_data = null;
-    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-    var requestUrl = '';
+
+    var requestUrl = $('#MainUrl').attr('href');
     switch (filterMode){
-        case 'AnimesList':
+        case 'NewUpdated':
+            requestUrl += '/get-list-newUpdated';
             $('#homepage>.titleBar>div>.selected').removeClass('selected');
-            requestUrl = location.protocol + '//' + location.host + '/Anime4A/get-list-newUpdated';
             break;
         case 'NewestList':
+            requestUrl += '/get-list-newestAnime';
             $('#sidebar>.newest_film>.titleBar>div>.selected').removeClass('selected');
-            requestUrl = location.protocol + '//' + location.host + '/Anime4A/get-list-newestAnime';
             break;
         case 'MostViewList':
+            requestUrl += '/get-list-mostView';
             $('#sidebar>.most_view>.titleBar>div>.selected').removeClass('selected');
-            requestUrl = location.protocol + '//' + location.host + '/Anime4A/get-list-mostView';
             break;
         default:
             ;
     }
     selector.addClass('selected');
+
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
         url: requestUrl,
         type: "post",
@@ -159,7 +162,7 @@ function lookup(inputString) {
     } else {
         $('#suggestions').fadeIn(); // Show the suggestions box
 
-        var requestUrl = location.protocol + '//' + location.host + '/Anime4A/search';
+        var requestUrl = $('#MainUrl').attr('href') + '/search';
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $.ajax({ // Do an AJAX call
             url: requestUrl,

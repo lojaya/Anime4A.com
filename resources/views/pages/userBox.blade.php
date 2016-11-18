@@ -36,7 +36,7 @@
 
                                     if(completed)
                                     {
-                                        location.href = location.protocol + '//' + location.host + '/Anime4A';
+                                        location.href = $('#MainUrl').attr('href');
                                     }
                                     else {
                                         var error = temp.error;

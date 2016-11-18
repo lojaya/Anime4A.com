@@ -54,6 +54,7 @@
                                 logoutButton.on('click', function (e){
                                     e.preventDefault();
                                     var _url = $(this).attr('href');
+                                    var requestUrl = $('#MainUrl').attr('href');
                                     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                                     $.ajax({
                                         url: _url,
@@ -66,7 +67,7 @@
 
                                             if(completed)
                                             {
-                                                location.href = location.protocol + '//' + location.host + '/Anime4A';
+                                                location.href = requestUrl;
                                             }
                                             else {
                                                 var error = temp.error;

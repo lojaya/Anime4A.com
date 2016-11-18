@@ -33,7 +33,7 @@ $(document).ready(function () {
 
     // Khởi tạo trang xem đầu tiên
     var path = $('#path>input').val();
-    var data = getList(location.protocol + '//' + location.host + '/Anime4A/admincp/' + path);
+    var data = getList($('#MainUrl').attr('href') + '/admincp/' + path);
     $('#listView').html(data);
 
     $('.btn').bind('click', function (e) {
@@ -178,7 +178,7 @@ $(document).on("change","#anime_id",function(e) {
     var _id = $(this).val();
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
-        url: location.protocol + '//' + location.host + '/Anime4A/admincp/video/getEpisode',
+        url: $('#MainUrl').attr('href') + '/admincp/video/getEpisode',
         type: "post",
         data: {'id': _id, _token: CSRF_TOKEN},
         async: false,

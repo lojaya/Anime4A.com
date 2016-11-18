@@ -110,6 +110,10 @@ $MyFunc = new App\Library\MyFunction;
     @endforeach
 @stop
 
+@section('MainUrl')
+    <a href="{{ Request::root() }}" style="display: none" id="MainUrl"></a>
+@stop
+
 @section('content')
     <!-- Home Region -->
     <div id="homepage">
@@ -120,12 +124,14 @@ $MyFunc = new App\Library\MyFunction;
                 <span style="color: #2FAF4F">-</span>
                 <a class="buttonW @if($homepageSelected == 'W') selected @endif ">Tuần</a>
                 <span style="color: #2FAF4F">-</span>
+                <!--
                 <a class="buttonM @if($homepageSelected == 'M') selected @endif ">Tháng</a>
                 <span style="color: #2FAF4F">-</span>
                 <a class="buttonS @if($homepageSelected == 'S') selected @endif ">Mùa</a>
                 <span style="color: #2FAF4F">-</span>
                 <a class="buttonY @if($homepageSelected == 'Y') selected @endif ">Năm</a>
                 <span style="color: #2FAF4F">-</span>
+                -->
                 <a class="buttonA @if($homepageSelected == 'A') selected @endif ">Tất Cả</a>
             </div>
         </div>
@@ -140,7 +146,7 @@ $MyFunc = new App\Library\MyFunction;
             function getPosts(page) {
                 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
-                    url : location.protocol + '//' + location.host + '/Anime4A/get-list-newUpdated',
+                    url : location.protocol + '//' + location.host + '/get-list-newUpdated',
                     type: "post",
                     data: {'page': page, _token: CSRF_TOKEN},
                     async: false,

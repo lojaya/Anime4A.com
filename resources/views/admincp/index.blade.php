@@ -21,6 +21,10 @@ $MyFunc = new App\Library\MyFunction;
     <script type="text/javascript" src="{{Request::root()}}/js/admincp.js"></script>
 @stop
 
+@section('MainUrl')
+    <a href="{{ Request::root() }}" style="display: none" id="MainUrl"></a>
+@stop
+
 @section('path')
     <div id="path" style="display: none">
         <input type="text" value="@if(isSet($path)){{ $path }}@endif">

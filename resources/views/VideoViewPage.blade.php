@@ -87,8 +87,9 @@ $MyFunc = new App\Library\MyFunction;
             // Get video file for play
             function getVideoData() {
                 var video_url_temp = null;
+                var requestUrl = $('#MainUrl').attr('href');
                 $.ajax({
-                    url: location.protocol + '//' + location.host + '/Anime4A/get-video-data',
+                    url: requestUrl + '/get-video-data',
                     type: 'get',
                     data: {},
                     async: false,

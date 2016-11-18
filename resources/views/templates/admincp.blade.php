@@ -31,6 +31,7 @@
 </head>
 <body>
 <div class="shadow"></div>
+@yield('MainUrl')
 @yield('path')
 <div id="wrap">
 

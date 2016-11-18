@@ -4,25 +4,24 @@ namespace App\Http\Controllers;
 
 use App;
 use App\Providers\AppServiceProvider;
-use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
-use App\Library\MyFunction;
-
 class AnimesController extends Controller
 {
     // Lấy thông tin animes mới cập nhật
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function newUpdated(Request $request)
     {
         try
         {
             $films = array();
-            $myFunc = new MyFunction();
-            $htmlCode = '';
             $pageSplit = 25;
             if(Request::ajax())  {
                 $type = '';
@@ -68,7 +67,7 @@ class AnimesController extends Controller
                     case 'A':
                         Session::put('type', 'A');
                         $films = App\DBAnimes::orderBy('updated_at', 'desc')
-                            ->paginate(5, ['*'], 'page', $page);
+                            ->paginate($pageSplit, ['*'], 'page', $page);
                         break;
                     default:
                         return '';
@@ -85,6 +84,10 @@ class AnimesController extends Controller
     }
 
     // Lấy thông tin animes mới ra mắt
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function newestAnime(Request $request)
     {
         try
@@ -133,6 +136,10 @@ class AnimesController extends Controller
     }
 
     // Lấy thông tin animes xem nhiều nhất
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function mostView(Request $request)
     {
         try
