@@ -38,7 +38,7 @@ $MyFunc = new App\Library\MyFunction;
         </div>
     </div>
     <div id="popover-toggle-{{ $i->id }}" style="display: none">
-        <div class="popoverTitle">{{ $tenphim }}</div>
+        <div class="popoverTitle">{{ $i->name }}</div>
         <div class="popoverContent">
             <div>Số tập: {{ $i->episode_new }}/{{ $i->episode_total}}</div>
             <hr>

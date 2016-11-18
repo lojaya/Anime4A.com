@@ -1016,3 +1016,10 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     display: inline;
     font-size: 11pt;
 }
+
+.search_movies>div.items {
+    width: 980px !important;
+}
+.search_movies .paging {
+    width: 980px !important;
+}

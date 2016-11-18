@@ -100,13 +100,13 @@ $MyFunc = new App\Library\MyFunction;
 
 @section('header-menu-category')
     @foreach ($category_list as $i)
-        <li><a href='#'>{{ $i->name }}</a></li>
+        <li><a href='{{ Request::root() }}/the-loai/{{ $i->id }}.anime4a'>{{ $i->name }}</a></li>
     @endforeach
 @stop
 
 @section('header-menu-country')
     @foreach ($country_list as $i)
-        <li><a href='#'>{{ $i->name }}</a></li>
+        <li><a href='{{ Request::root() }}/quoc-gia/{{ $i->id }}.anime4a'>{{ $i->name }}</a></li>
     @endforeach
 @stop
 
@@ -116,9 +116,42 @@ $MyFunc = new App\Library\MyFunction;
 
 @section('content')
     <!-- Home Region -->
+    @if(isSet($seaching))
+        @if($seaching)
+            <div id="search_movies">
+                <div class="titleBar">
+                    <span>
+                        @if(isSet($breadcrumb))
+                            {{ $breadcrumb->key }} ><a>{{ $breadcrumb->value }}</a>
+                        @endif
+                    </span>
+                </div>
+                <div class="list_movies search_movies">
+                    <div class="items">
+                        @include('templates.SearchAnime')
+                    </div>
+                </div>
+            </div>
+        @else
+            <div id="hot_movies">
+                <div class="titleBar">
+                    <span>
+                        Anime Hot
+                    </span>
+                </div>
+                <div class="list_movies search_movies">
+                    <div class="items">
+                        @include('templates.AnimeHot')
+                    </div>
+                </div>
+            </div>
+        @endif
+    @endif
     <div id="homepage">
         <div class="titleBar">
-            <span>Anime vừa cập nhật</span>
+            <span>
+                Anime vừa cập nhật
+            </span>
             <div style="float: right">
                 <a class="buttonD @if($homepageSelected == 'D') selected @endif ">Ngày</a>
                 <span style="color: #2FAF4F">-</span>
@@ -160,6 +193,7 @@ $MyFunc = new App\Library\MyFunction;
         </script>
         <div class="list_movies">
             <div class="items">
+                @include('templates.NewUpdated')
             </div>
         </div>
     </div>
@@ -214,27 +248,6 @@ $MyFunc = new App\Library\MyFunction;
                     <a class="buttonS @if($mostViewSelected == 'S') selected @endif ">S</a>
                     <span>-</span>
                     <a class="buttonY @if($mostViewSelected == 'Y') selected @endif ">Y</a>
-                </div>
-            </div>
-            <ul class="sidebar_items">
-
-            </ul>
-        </div>
-        <div class="newest_film">
-            <div class="titleBar">
-                <span>Anime Mới</span>
-                <div style="float: right">
-                    <!--
-                    <a class="buttonD @if($newestFilmSelected == 'D') selected @endif ">D</a>
-                    <span>/</span>
-                    <a class="buttonW @if($newestFilmSelected == 'W') selected @endif ">W</a>
-                    <span>/</span>
-                    -->
-                    <a class="buttonM @if($newestFilmSelected == 'M') selected @endif ">M</a>
-                    <span>-</span>
-                    <a class="buttonS @if($newestFilmSelected == 'S') selected @endif ">S</a>
-                    <span>-</span>
-                    <a class="buttonY @if($newestFilmSelected == 'Y') selected @endif ">Y</a>
                 </div>
             </div>
             <ul class="sidebar_items">

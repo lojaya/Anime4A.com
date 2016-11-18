@@ -1,7 +1,7 @@
 ul#cssmenu,ul#cssmenu ul{
 	margin:0;list-style:none;padding:0;/*background-color:rgba(0,50,50,0.85);*/}
 ul#cssmenu ul{
-	display:none;position:absolute;left:0;top:100%;background-color:rgba(0,50,50,0.85);border-radius:0 0 10px 10px;-moz-border-radius:0 0 10px 10px;-webkit-border-radius:0;-webkit-border-bottom-right-radius:10px;-webkit-border-bottom-left-radius:10px;padding:0 0 4px;}
+	display:none;position:absolute;left:0;top:100%;background-color:rgba(0,50,50,0.9);padding:0 0 4px;}
 ul#cssmenu li:hover>*{
 	display:block;}
 ul#cssmenu li{
@@ -28,7 +28,7 @@ ul#cssmenu ul a{
 ul#cssmenu li:hover>a,ul#cssmenu li a.pressed{
 	background-color:#47515B;border-style:none;color:#FFFFFF;cursor: url("http://localhost/cursors/Link.cur"), progress}
 ul#cssmenu img{
-	border:none;vertical-align:middle;margin-right:3px;}
+	border:none;vertical-align:middle;margin-right:3px;left: 13px;top: 3px;padding-right: 20px;height: 30px;position: relative;float: left;}
 ul#cssmenu span{
 	display:block;overflow:visible;background-image:url("../../images/menuitems/arrowmain0.gif");background-position:right center;background-repeat:no-repeat;padding-right:17px;}
 ul#cssmenu li:hover>a>span{

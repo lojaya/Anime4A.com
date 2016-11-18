@@ -145,35 +145,35 @@ class AnimesController extends Controller
         try
         {
             $films = array();
-            $myFunc = new MyFunction();
-            $htmlCode = '';
+
+            $nItem = 10;
             if(Request::ajax())  {
                 $type = Input::get('type');
                 switch ($type) {
                     case 'D':
                         $films = App\DBAnimes::whereDate('updated_at', '=', date('Y-m-d'))
                             ->orderBy('view_count', 'desc')
-                            ->take(5)->get();
+                            ->take($nItem)->get();
                         break;
                     case 'W':
                         $films = App\DBAnimes::where('updated_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 7 DAY)'))
                             ->orderBy('view_count', 'desc')
-                            ->take(5)->get();
+                            ->take($nItem)->get();
                         break;
                     case 'M':
                         $films = App\DBAnimes::where('updated_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 30 DAY)'))
                             ->orderBy('view_count', 'desc')
-                            ->take(5)->get();
+                            ->take($nItem)->get();
                         break;
                     case 'S':
                         $films = App\DBAnimes::where('updated_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 120 DAY)'))
                             ->orderBy('view_count', 'desc')
-                            ->take(5)->get();
+                            ->take($nItem)->get();
                         break;
                     case 'Y':
                         $films = App\DBAnimes::whereYear('updated_at', '=', date('Y'))
                             ->orderBy('view_count', 'desc')
-                            ->take(5)->get();
+                            ->take($nItem)->get();
                         break;
                     default:
                         return '';

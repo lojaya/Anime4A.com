@@ -26,8 +26,7 @@ $(document).ready(function () {
     // START LOAD ANIMES DATA
     // Ajax load animes data
     // Danh sách anime mới cập nhật
-    var films_data = getAnimesList($('#homepage>.titleBar>div>.buttonW'), 'NewUpdated', 'W');
-    $('#homepage>.list_movies>.items').html(films_data);
+    $('#homepage>.titleBar>div>.buttonA').addClass('selected');
 
     // Danh sách anime mới nhất
     films_data = getAnimesList($('#sidebar>.newest_film>.titleBar>div>.buttonS'), 'NewestList', 'S');

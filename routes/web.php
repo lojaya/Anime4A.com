@@ -27,6 +27,10 @@ Route::get('/advanced-search.html', 'PagesController@searchPage');
 Route::post('/search', 'SearchController@Find');
 Route::post('/adv-search', 'SearchController@Find');
 
+Route::get('/the-loai/{id?}.anime4a', 'PagesController@showFilmByCategory');
+Route::get('/quoc-gia/{id?}.anime4a', 'PagesController@showFilmByCountry');
+Route::get('/nam-san-xuat/{year?}.anime4a', 'PagesController@showFilmByYear');
+
 // Xem thông tin bộ phim
 Route::get('/xem-thong-tin/{name?}/{id?}.html', 'PagesController@showFilmInfoPage');
 

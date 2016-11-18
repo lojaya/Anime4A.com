@@ -16,6 +16,10 @@ use App\Library\MyFunction;
 class PagesController extends Controller
 {
     // Hiện trang chủ
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function showHomePage(Request $request)
     {
         try
@@ -68,11 +72,324 @@ class PagesController extends Controller
             $filmsRandom = App\DBAnimes::inRandomOrder()->take(25)->get();
 
             // Data for header
-            $category_list = App\DBCategory::select('name')->get();
-            $country_list = App\DBCountry::select('name')->get();
+            $category_list = App\DBCategory::select('id', 'name')->get();
+            $country_list = App\DBCountry::select('id', 'name')->get();
+
+            $breadcrumb = (object) array(
+                'key' => 'Thể Loại',
+                'value' => 'Hành Động',
+            );
+
+            $films = App\DBAnimes::orderBy('updated_at', 'desc')
+                ->paginate(25, ['*'], 'page', 1);
+            $hotFilms = App\DBAnimes::orderBy('updated_at', 'desc')
+                ->take(10)->get();
+
+            $seaching = false;
+
 
             return View::make('index')->with([
                 'userSigned' => $userSigned,
+                'breadcrumb' => $breadcrumb,
+                'seaching' => $seaching,
+                'films' => $films,
+                'hotFilms' => $hotFilms,
+                'category_list' => $category_list,
+                'country_list' => $country_list,
+                'headerItems' => $filmsRandom,
+                'homepageSelected' => 'M',
+                'newestFilmSelected' => 'S',
+                'mostViewSelected' => 'W'
+            ]);
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return string
+     */
+    public function showFilmByCategory(Request $request, $id)
+    {
+        try
+        {
+            // Set Localization
+            // Checking & create session data
+            $lang = session('lang');
+            if(strlen($lang) <= 0){
+                // Checking IP Location
+                $ip = $_SERVER['REMOTE_ADDR'];
+                //$details = json_decode(file_get_contents("http://freegeoip.net/json/{$ip}"));
+                $country = 'vn';//$details->country_code;
+                switch(strtolower($country)){
+                    case 'en':
+                        session(['lang' => 'en']);
+                        $lang = 'en';
+                        break;
+                    case 'vn':
+                        session(['lang' => 'vn']);
+                        $lang = 'vn';
+                        break;
+                    default:
+                        session(['lang' => 'en']);
+                        $lang = 'en';
+                        break;
+                }
+            }
+
+            switch ($lang){
+                case 'en':
+                    App::setLocale('en');
+                    break;
+                case 'vn':
+                    App::setLocale('vn');
+                    break;
+                default:
+                    App::setLocale('en');
+            }
+
+            // session(['lang' => 'en']); // GLOBAL
+            // Via a request instance...
+            // $request->session()->put('lang', 'value');
+
+
+            // Check user login
+            $userSigned = PagesController::CheckUserLogin();
+
+            // Khởi tạo dữ liệu của trang
+
+            $filmsRandom = App\DBAnimes::inRandomOrder()->take(25)->get();
+
+            // Data for header
+            $category_list = App\DBCategory::select('id', 'name')->get();
+            $country_list = App\DBCountry::select('id', 'name')->get();
+
+            $breadcrumb = (object) array(
+                'key' => '',
+                'value' => '',
+            );
+
+            $films = App\DBAnimes::orderBy('updated_at', 'desc')
+                ->paginate(25, ['*'], 'page', 1);
+
+            $seaching = true;
+            $breadcrumb->key = 'Thể Loại';
+
+            $category = App\DBCategory::find($id);
+            $breadcrumb->value = $category->name;
+
+            // search codes
+            $seachFilms = App\DBAnimes::where('category', 'LIKE', '%'.$id.'%')
+                ->orderBy('updated_at', 'desc')
+                ->paginate(14, ['*'], 'page', 1);
+
+            return View::make('index')->with([
+                'userSigned' => $userSigned,
+                'breadcrumb' => $breadcrumb,
+                'seaching' => $seaching,
+                'films' => $films,
+                'seachFilms' => $seachFilms,
+                'category_list' => $category_list,
+                'country_list' => $country_list,
+                'headerItems' => $filmsRandom,
+                'homepageSelected' => 'M',
+                'newestFilmSelected' => 'S',
+                'mostViewSelected' => 'W'
+            ]);
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return string
+     */
+    public function showFilmByCountry(Request $request, $id)
+    {
+        try
+        {
+            // Set Localization
+            // Checking & create session data
+            $lang = session('lang');
+            if(strlen($lang) <= 0){
+                // Checking IP Location
+                $ip = $_SERVER['REMOTE_ADDR'];
+                //$details = json_decode(file_get_contents("http://freegeoip.net/json/{$ip}"));
+                $country = 'vn';//$details->country_code;
+                switch(strtolower($country)){
+                    case 'en':
+                        session(['lang' => 'en']);
+                        $lang = 'en';
+                        break;
+                    case 'vn':
+                        session(['lang' => 'vn']);
+                        $lang = 'vn';
+                        break;
+                    default:
+                        session(['lang' => 'en']);
+                        $lang = 'en';
+                        break;
+                }
+            }
+
+            switch ($lang){
+                case 'en':
+                    App::setLocale('en');
+                    break;
+                case 'vn':
+                    App::setLocale('vn');
+                    break;
+                default:
+                    App::setLocale('en');
+            }
+
+            // session(['lang' => 'en']); // GLOBAL
+            // Via a request instance...
+            // $request->session()->put('lang', 'value');
+
+
+            // Check user login
+            $userSigned = PagesController::CheckUserLogin();
+
+            // Khởi tạo dữ liệu của trang
+
+            $filmsRandom = App\DBAnimes::inRandomOrder()->take(25)->get();
+
+            // Data for header
+            $category_list = App\DBCategory::select('id', 'name')->get();
+            $country_list = App\DBCountry::select('id', 'name')->get();
+
+            $breadcrumb = (object) array(
+                'key' => '',
+                'value' => '',
+            );
+
+            $films = App\DBAnimes::orderBy('updated_at', 'desc')
+                ->paginate(25, ['*'], 'page', 1);
+
+            $seaching = true;
+            $breadcrumb->key = 'Quốc Gia';
+
+            $country = App\DBCountry::find($id);
+            $breadcrumb->value = $country->name;
+
+            // search codes
+            $seachFilms = App\DBAnimes::where('country', '=', $id)
+                ->orderBy('updated_at', 'desc')
+                ->paginate(14, ['*'], 'page', 1);
+
+            return View::make('index')->with([
+                'userSigned' => $userSigned,
+                'breadcrumb' => $breadcrumb,
+                'seaching' => $seaching,
+                'films' => $films,
+                'seachFilms' => $seachFilms,
+                'category_list' => $category_list,
+                'country_list' => $country_list,
+                'headerItems' => $filmsRandom,
+                'homepageSelected' => 'M',
+                'newestFilmSelected' => 'S',
+                'mostViewSelected' => 'W'
+            ]);
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return string
+     */
+    public function showFilmByYear(Request $request, $year)
+    {
+        try
+        {
+            // Set Localization
+            // Checking & create session data
+            $lang = session('lang');
+            if(strlen($lang) <= 0){
+                // Checking IP Location
+                $ip = $_SERVER['REMOTE_ADDR'];
+                //$details = json_decode(file_get_contents("http://freegeoip.net/json/{$ip}"));
+                $country = 'vn';//$details->country_code;
+                switch(strtolower($country)){
+                    case 'en':
+                        session(['lang' => 'en']);
+                        $lang = 'en';
+                        break;
+                    case 'vn':
+                        session(['lang' => 'vn']);
+                        $lang = 'vn';
+                        break;
+                    default:
+                        session(['lang' => 'en']);
+                        $lang = 'en';
+                        break;
+                }
+            }
+
+            switch ($lang){
+                case 'en':
+                    App::setLocale('en');
+                    break;
+                case 'vn':
+                    App::setLocale('vn');
+                    break;
+                default:
+                    App::setLocale('en');
+            }
+
+            // session(['lang' => 'en']); // GLOBAL
+            // Via a request instance...
+            // $request->session()->put('lang', 'value');
+
+
+            // Check user login
+            $userSigned = PagesController::CheckUserLogin();
+
+            // Khởi tạo dữ liệu của trang
+
+            $filmsRandom = App\DBAnimes::inRandomOrder()->take(25)->get();
+
+            // Data for header
+            $category_list = App\DBCategory::select('id', 'name')->get();
+            $country_list = App\DBCountry::select('id', 'name')->get();
+
+            $breadcrumb = (object) array(
+                'key' => '',
+                'value' => '',
+            );
+
+            $films = App\DBAnimes::orderBy('updated_at', 'desc')
+                ->paginate(25, ['*'], 'page', 1);
+
+            $seaching = true;
+            $breadcrumb->key = 'Năm';
+
+            $breadcrumb->value = $year;
+
+            // search codes
+            $seachFilms = App\DBAnimes::whereYear('release_date', $year)
+                ->orderBy('updated_at', 'desc')
+                ->paginate(14, ['*'], 'page', 1);
+
+            return View::make('index')->with([
+                'userSigned' => $userSigned,
+                'breadcrumb' => $breadcrumb,
+                'seaching' => $seaching,
+                'films' => $films,
+                'seachFilms' => $seachFilms,
                 'category_list' => $category_list,
                 'country_list' => $country_list,
                 'headerItems' => $filmsRandom,
@@ -88,6 +405,12 @@ class PagesController extends Controller
     }
 
     // Hiện trang thông tin phim
+    /**
+     * @param Request $request
+     * @param $name
+     * @param $id
+     * @return mixed
+     */
     public function showFilmInfoPage(Request $request, $name, $id)
     {
         // Khởi tạo dữ liệu của trang
@@ -116,6 +439,15 @@ class PagesController extends Controller
     }
 
     // Hiện trang xem phim
+    /**
+     * @param Request $request
+     * @param $name
+     * @param $anime_id
+     * @param bool $episode_id
+     * @param bool $fansub_id
+     * @param bool $server_id
+     * @return string
+     */
     public function showVideoViewPage(Request $request, $name, $anime_id, $episode_id = false, $fansub_id = false, $server_id = false)
     {
         try
@@ -234,6 +566,10 @@ class PagesController extends Controller
     }
 
     // Trang danh sách
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function listPage(Request $request)
     {
         try
@@ -260,6 +596,10 @@ class PagesController extends Controller
     }
 
     // Trang tìm kiếm
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function searchPage(Request $request)
     {
         try
