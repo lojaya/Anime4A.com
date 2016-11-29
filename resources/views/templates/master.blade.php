@@ -30,7 +30,7 @@
     @yield('stylesheet')
 </head>
 <body>
-<div class="shadow"></div>
+<div class="shadow" style="position: fixed; display: none"></div>
 @yield('MainUrl')
 <div id="wrap">
 

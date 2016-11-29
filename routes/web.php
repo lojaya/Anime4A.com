@@ -43,11 +43,16 @@ Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}/{fansub_id?}/{server_id?
 
 // Video Data
 Route::get('/get-video-data', 'VideoController@getVideoFileUrlTemp');
+Route::get('/get-video-{id?}', 'VideoController@GetVideo');
 
 // Filter Animes Data
 Route::post('/get-list-newUpdated', 'AnimesController@newUpdated');
 Route::post('/get-list-newestAnime', 'AnimesController@newestAnime');
 Route::post('/get-list-mostView', 'AnimesController@mostView');
+
+// Bookmark
+Route::post('/bookmark', 'AnimesController@Bookmark');
+Route::post('/bookmark-delete', 'AnimesController@BookmarkDelete');
 
 // Admincp
 Route::get('/admincp', 'ACPIndexPagesController@index')->name('Admincp');
@@ -142,3 +147,4 @@ Route::post('/admincp/tag/save', 'ACPTagPagesController@_Save');
 Route::get('/test', function () {
     return view('test');
 });
+

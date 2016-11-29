@@ -23,9 +23,13 @@ class ACPIndexPagesController extends Controller
     public function index(Request $request)
     {
         $adminHash = hash('sha256', 'Anime4A.com Admin Signed');
+        $path = 'anime';
+        if(Input::has('path'))
+            $path = Input::get('path');
+
         if(Session::has('AdminSigned')&&Session::get('AdminSigned')==$adminHash)
         {
-            return View::make('admincp.index', array('path' => Input::get('path')));
+            return View::make('admincp.index', array('path' => $path));
         }
         else
         {
@@ -41,7 +45,8 @@ class ACPIndexPagesController extends Controller
                     if($user->type<0)
                     {
                         Session::put('AdminSigned', $adminHash);
-                        return View::make('admincp.index', array('path' => Input::get('path')));
+
+                        return View::make('admincp.index', array('path' => $path));
                     }
                 }
             }

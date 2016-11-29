@@ -1,6 +1,10 @@
 @extends('templates.master')
 
 <?php
+
+use App\Library\PhpAdfLy;
+use App\Library\MyFunction;
+
 $MyFunc = new App\Library\MyFunction;
 ?>
 
@@ -23,73 +27,36 @@ $MyFunc = new App\Library\MyFunction;
 
 @section('header-menu-category')
     @foreach ($category_list as $i)
-        <li><a href='#'>{{ $i->name }}</a></li>
+        <li><a href='{{ Request::root() }}/the-loai/{{ $i->id }}.anime4a'>{{ $i->name }}</a></li>
     @endforeach
 @stop
 
 @section('header-menu-country')
     @foreach ($country_list as $i)
-        <li><a href='#'>{{ $i->name }}</a></li>
+        <li><a href='{{ Request::root() }}/quoc-gia/{{ $i->id }}.anime4a'>{{ $i->name }}</a></li>
     @endforeach
+@stop
+
+@section('MainUrl')
+    <a href="{{ Request::root() }}" style="display: none" id="MainUrl"></a>
 @stop
 
 @section('content')
     <div class="breadcrumb"></div>
     <!-- Video View Region -->
     <div class="video_player">
-        <!--<div class="video_name"><b><a>{{ $MyFunc->getAnimeName($anime_id) }}</a></b></div>-->
-
-        <div id="player"></div>
-        <script src="{{Request::root()}}/js/jwplayer/jwplayer.js"></script>
-        <script>jwplayer.key="1La4Kp4v+HhGBiJ+p5dWO6sb/AyCdbqtYQKR7w==";</script>
+        <iframe name='player' id="player" src='{{ Request::root() }}/get-video-@if(isSet($video)&&!is_null($video)){{ $video->id }}@else{{ '0' }}@endif' width='680' height='480' frameborder='0' allowfullscreen></iframe>
         <script type='text/javascript'>
-
-            // Setup video player
-            jwplayer("player").setup({
-                sources: [{
-                    file: 'http://thenewcode.com/assets/videos/polina.mp4',
-                    label: "HD"
-                }],
-                "image": "../images/bg1.jpg",
-                "label": "Quality",
-                "type": "video/mp4",
-                "autostart": false,
-                skin: {
-                    name: "seven"
-                },
-                "height": 480,
-                "width": 680
-            });
-
             $(document).ready(function () {
                 $('#sidebar').css('margin-top','-480px');
             });
-
-            window.onload=function () {
-                loadPlayer();
-            };
-
-            // Script for load video player
-            function loadPlayer() {
-                var data = getVideoData();
-
-                // Set download link
-                if(data){
-                    $('.video_control .item .download').attr("href", data);
-                }
-                // Load video
-                jwplayer("player").load([{
-                    file: data,
-                    image: "../images/bg1.jpg"
-                }]);
-            }
-
             // Get video file for play
-            function getVideoData() {
+            function getVideoData(_id) {
                 var video_url_temp = null;
                 var requestUrl = $('#MainUrl').attr('href');
+
                 $.ajax({
-                    url: requestUrl + '/get-video-data',
+                    url: requestUrl + '/get-video-' + _id,
                     type: 'get',
                     data: {},
                     async: false,
@@ -107,26 +74,26 @@ $MyFunc = new App\Library\MyFunction;
     </div>
     <div class="video_detail" style="display: none">
         <div class="video_img">
-            <img src="" style="width: 150px; height: 200px">
+            <img src="{{ $anime->img }}" style="width: 150px; height: 200px">
         </div>
         <div class="video_description">
             <div class="">
-                <span>Anime</span>
+                <span>{{ $anime->name }}</span>
             </div>
             <div>
-                <span>Type: x</span>
+                <span>Type: {{ $anime->status }}</span>
             </div>
             <div>
-                <span>Số tập: x/x</span>
+                <span>Số tập: {{ $anime->episode_new }}/{{ $anime->episode_total }}</span>
             </div>
             <div>
-                <span>Năm sản xuất: YYYY</span>
+                <span>Năm sản xuất: {{ $anime->release_date }}</span>
             </div>
             <div>
                 <span>Thể loại: x</span>
             </div>
             <div>
-                <span>::.....</span>
+                <span>{{ $anime->description }}</span>
             </div>
         </div>
     </div>
@@ -148,12 +115,12 @@ $MyFunc = new App\Library\MyFunction;
                 @foreach ($episode_list as $i)
                     @if(isSet($episode_id))
                         @if($i->id==$episode_id)
-                            <div class="item"><a class="active" >{{ $i->episode }}</a></div>
+                            <div class="item"><a class="epN active" >{{ $i->episode }}</a></div>
                         @else
-                            <div class="item"><a class="n" href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}/{{ $i->id }}.html">{{ $i->episode }}</a></div>
+                            <div class="item"><a class="epN" href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}/{{ $i->id }}.html">{{ $i->episode }}</a></div>
                         @endif
                     @else
-                        <div class="item"><a class="n" href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}/{{ $i->id }}.html">{{ $i->episode }}</a></div>
+                        <div class="item"><a class="epN" href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}/{{ $i->id }}.html">{{ $i->episode }}</a></div>
                     @endif
                 @endforeach
             @endif
@@ -202,15 +169,150 @@ $MyFunc = new App\Library\MyFunction;
 @stop
 
 @section('controlBar')
-    <div class="video_control_region">
-        <div class="video_control">
-            <div class="item"><a class="video_info abutton">Thông Tin</a></div>
-            <div class="item"><a class="videozoom abutton">Phóng To</a></div>
-            <div class="item"><a class="lightoff abutton">Tắt Đèn</a></div>
-            <div class="item"><a class="download abutton">Download</a></div>
-            <div class="item"><a class="abutton">Tập Sau</a></div>
+    @if(isSet($userSigned))
+        @if($userSigned->loginHash==hash('sha256', 'Anime4A Login Successful'))
+            <div class="video_control_region">
+                <div class="video_control">
+                    <div class="item"><a class="video_info abutton" title="Thông Tin">Thông Tin</a></div>
+                    <div class="item"><a class="videozoom abutton" title="Phóng To">Phóng To</a></div>
+                    <div class="item"><a class="lightoff abutton" title="Tắt Đèn">Tắt Đèn</a></div>
+                    <div class="item"><a class="download abutton" title="Download" href="@if(isSet($video)&&!is_null($video)){{ PhpAdfLy::ShortenUrl($video->url_download) }}@endif" target="_blank">Download</a></div>
+                    <div class="item"><a class="nextEpBtn abutton" title="Tập Sau">Tập Sau</a></div>
+                    <div class="item"><a class="bookmarkBtn abutton" title="Đánh Dấu">Đánh Dấu</a></div>
+                    <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh Sách</a></div>
+                </div>
+            </div>
+            <div id="userCP" style="display: none">
+                <div style="width: 980px;">
+                    <div class="bookmarks">
+                        <span>Danh sách Anime đang theo dõi:</span>
+                        <ul id="userCPBookmarks">
+                            @include('templates.BookmarkItem')
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <script>
+                // scripts for show user control panel
+                $('.userCpBtn').bind('click', function (e) {
+                    if($('#userCP').css('display')==='none'){
+                        $("body").css("overflow", "hidden");
+                        $('#userCP').fadeIn();
+                        $('.userCpBtn').text("Đóng");
+                        $('.userCpBtn').attr('title', "Đóng");
+                    }
+                    else{
+                        $("body").css("overflow", "auto");
+                        $('#userCP').fadeOut();
+                        $('.userCpBtn').text("Danh Sách");
+                        $('.userCpBtn').attr('title', "Danh Sách");
+                    }
+                    $('html,body').animate({
+                                scrollTop: $("#header").offset().top},
+                            'fast');
+                });
+                $('#userCP').bind('click', function (e) {
+                    if (!$(e.target).is(".bookmarks>span, .bookmarks>ul>li>a, .bookmarks>ul>li>hr")) {
+                        $('#userCP').fadeOut();
+                        $('.userCpBtn').text("Danh sách Anime đang theo dõi");
+                        $('.userCpBtn').attr('title', "Danh sách Anime đang theo dõi");
+                    }
+                });
+
+                // scripts for save a bookmark
+                $('.bookmarkBtn').bind('click', function (e) {
+                    var _url = window.location.href;
+                    var _id = _url.substring(_url.indexOf('xem-phim/'));
+                    _id = _id.substring(_id.indexOf('/')+1);
+                    _id = _id.substring(_id.indexOf('/')+1);
+                    if(_id.indexOf('/')>0)
+                        _id = _id.substring(0, _id.indexOf('/'));
+                    if(_id.indexOf('.')>0)
+                        _id = _id.substring(0, _id.indexOf('.'));
+
+
+                    var requestUrl = $('#MainUrl').attr('href') + '/bookmark';
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({ // Do an AJAX call
+                        url: requestUrl,
+                        type: "post",
+                        data: {'id': _id, _token: CSRF_TOKEN},
+                        async: false,
+                        success: function(data){
+                            if(data){
+                                alert('Lưu thành công.');
+                            }
+                            else{
+                                alert('Lưu thất bại hoặc đã lưu.');
+                            }
+                        }
+                    });
+                });
+
+                // scripts for redirect to next episode
+                $('.nextEpBtn').bind('click', function (e) {
+                    var x = $('.epN'); //returns the matching elements in an array
+
+                    var _N = -1;
+                    for (i = 0; i < x.length; i++) {
+                        if($(x[i]).hasClass('active'))
+                        {
+                            _N = i + 1;
+                            break;
+                        }
+                    }
+                    if(_N>=0)
+                        $(location).attr('href', $(x[_N]).attr('href'));
+                });
+            </script>
+        @else
+            <div class="video_control_region">
+                <div class="video_control">
+                    <div class="item"><a class="video_info abutton" title="Thông Tin">Thông Tin</a></div>
+                    <div class="item"><a class="videozoom abutton" title="Phóng To">Phóng To</a></div>
+                    <div class="item"><a class="lightoff abutton" title="Tắt Đèn">Tắt Đèn</a></div>
+                    <div class="item"><a class="download abutton" title="Download" href="@if(isSet($video)&&!is_null($video)){{ PhpAdfLy::ShortenUrl($video->url_download) }}@endif" target="_blank">Download</a></div>
+                    <div class="item"><a class="nextEpBtn abutton" title="Tập Sau">Tập Sau</a></div>
+                    <div class="item"><a class="bookmarkBtn abutton" title="Đánh Dấu">Đánh Dấu</a></div>
+                    <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh Sách</a></div>
+                </div>
+            </div>
+            <script>
+                // scripts for show user control panel
+                $('.userCpBtn').bind('click', function (e) {
+                    $('#userBox').fadeIn();
+                });
+
+                // scripts for save a bookmark
+                $('.bookmarkBtn').bind('click', function (e) {
+                    $('#userBox').fadeIn();
+                });
+            </script>
+        @endif
+    @else
+        <div class="video_control_region">
+            <div class="video_control">
+                <div class="item"><a class="video_info abutton" title="Thông Tin">Thông Tin</a></div>
+                <div class="item"><a class="videozoom abutton" title="Phóng To">Phóng To</a></div>
+                <div class="item"><a class="lightoff abutton" title="Tắt Đèn">Tắt Đèn</a></div>
+                <div class="item"><a class="download abutton" title="Download" href="@if(isSet($video)&&!is_null($video)){{ PhpAdfLy::ShortenUrl($video->url_download) }}@endif" target="_blank">Download</a></div>
+                <div class="item"><a class="nextEpBtn abutton" title="Tập Sau">Tập Sau</a></div>
+                <div class="item"><a class="bookmarkBtn abutton" title="Đánh Dấu">Đánh Dấu</a></div>
+                <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh Sách</a></div>
+            </div>
         </div>
-    </div>
+        <script>
+            // scripts for show user control panel
+            $('.userCpBtn').bind('click', function (e) {
+                $('#userBox').fadeIn();
+            });
+
+            // scripts for save a bookmark
+            $('.bookmarkBtn').bind('click', function (e) {
+                $('#userBox').fadeIn();
+            });
+        </script>
+    @endif
 @stop
 
 @section('sidebar')

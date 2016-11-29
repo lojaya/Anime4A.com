@@ -13,10 +13,9 @@
     <div id="top_menu">
         <ul id="cssmenu" class="topmenu">
             <li class="switch"><label onclick="" for="css3menu-switcher"></label></li>
-            <img src="{{Request::root()}}/images/anime4a.com.png">
             <li class="topmenu">
                 <a href="{{Request::root()}}" >
-                    Home
+                    <img src="{{Request::root()}}/images/anime4a.com.png">
                 </a>
             </li>
             <li class="toproot"  ><a><span>Thể Loại</span></a>
@@ -31,7 +30,6 @@
             </li>
             <li class="toproot"><a><span>Năm Sản Xuất</span></a></li>
             <!--<li class="topmenu"><a href="">Tìm Kiếm Nâng Cao</a></li>-->
-            <li class="topmenu"><a href="{{Request::root()}}" >Fanpage</a></li>
         </ul>
         <div id="utilitiesRegion">
             <div class="search_region">

@@ -18,8 +18,11 @@ $(document).ready(function () {
     });
 
 
-    // Khởi tạo vị trí searchBox và loginBox và background overlay
+    // Khởi tạo vị trí menu, searchBox, loginBox và background overlay
     var headerBarOffsetRight = ($(window).width() - ($("#container").offset().left + $("#container").outerWidth()));
+    var headerBarOffsetLeft = $("#container").offset().left;
+
+    $('#cssmenu').css("margin-left", headerBarOffsetLeft - $(".topmenu>a").outerWidth());
     var loginButtonWidth = $(".login_region").outerWidth();
     $("#utilitiesRegion").css("padding-right", headerBarOffsetRight - loginButtonWidth);
 
@@ -28,12 +31,8 @@ $(document).ready(function () {
     // Danh sách anime mới cập nhật
     $('#homepage>.titleBar>div>.buttonA').addClass('selected');
 
-    // Danh sách anime mới nhất
-    films_data = getAnimesList($('#sidebar>.newest_film>.titleBar>div>.buttonS'), 'NewestList', 'S');
-    $('#sidebar>.newest_film>.sidebar_items').html(films_data);
-
     // Danh sách anime xem nhiều
-    films_data = getAnimesList($('#sidebar>.most_view>.titleBar>div>.buttonD'), 'MostViewList', 'D');
+    films_data = getAnimesList($('#sidebar>.most_view>.titleBar>div>.buttonM'), 'MostViewList', 'M');
     $('#sidebar>.most_view>.sidebar_items').html(films_data);
     // END LOAD ANIMES DATA
 
@@ -205,25 +204,26 @@ $(document).ready(function () {
 // Script Zoom or Light Off Player
 var playerZoom = false;
 $(document).ready(function () {
-    $(".shadow").css("height", $(document).height()).hide();
     $(".videozoom").on( "click", function() {
         playerZoom = !playerZoom;
         if(playerZoom) {
             $(this).text("Thu Nhỏ");
-            jwplayer("player").resize(980, 572);
+            $(this).attr('title', "Thu Nhỏ");
+            $("#player").attr('width', 980);
+            $("#player").attr('height', 572);
             $("#sidebar").css("margin-top", "0");
-            $("#pagebody").css("min-height", "1480px");
             $(".shadow").css("height", $(document).height());
         }
         else {
             $(this).text("Phóng To");
-            jwplayer("player").resize(680, 480);
+            $(this).attr('title', "Phóng To");
+            $("#player").attr('width', 680);
+            $("#player").attr('height', 480);
             $("#sidebar").css("margin-top", "-480px");
-            $("#pagebody").css("min-height", "920px");
             $(".shadow").css("height", $(document).height());
         }
         $('html,body').animate({
-                scrollTop: $("div#player").offset().top - 40},
+                scrollTop: $("#player").offset().top - 40},
             'slow');
     });
 
@@ -232,9 +232,11 @@ $(document).ready(function () {
         if($("#top_menu").css("z-index")>200)
         {
             $(this).text("Bật Đèn");
+            $(this).attr('title', "Bật Đèn");
             $("#top_menu").css("z-index", 198);
         }else {
             $(this).text("Tắt Đèn");
+            $(this).attr('title', "Tắt Đèn");
             $("#top_menu").css("z-index", 201);
         }
     });
@@ -245,14 +247,16 @@ $(document).ready(function () {
             $('.video_player').fadeOut();
             $('.video_detail').fadeIn();
             $('#sidebar').css('margin-top', '-' + $('.video_detail').height() + 'px');
-            $(this).html('Xem Phim');
+            $(this).text('Xem Phim');
+            $(this).attr('title', "Xem Phim");
         }
         else
         {
             $('.video_player').fadeIn();
             $('.video_detail').fadeOut();
             $('#sidebar').css('margin-top', '-' + $('.video_player').height() + 'px');
-            $(this).html('Thông Tin');
+            $(this).text('Thông Tin');
+            $(this).attr('title', "Thông Tin");
         }
     });
 });

@@ -188,4 +188,52 @@ class AnimesController extends Controller
             return $e->getMessage();
         }
     }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function Bookmark(Request $request)
+    {
+        try
+        {
+            if(Input::has('id')){
+                $id = Input::get('id');
+                $bookmark = new App\DBBookmarks();
+                $bookmark->user_id = UsersController::CheckUserLogin()->id;
+                $bookmark->anime_id = $id;
+                $bookmark->save();
+                return $id;
+            }
+
+            return false;
+        }
+        catch(\Exception $e)
+        {
+            return false;
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return bool|mixed
+     */
+    public function BookmarkDelete(Request $request)
+    {
+        try
+        {
+            if(Input::has('id')){
+                $id = Input::get('id');
+                App\DBBookmarks::destroy($id);
+                $userSigned = UsersController::CheckUserLogin();
+                $bookmarks = PagesController::GetBookmarks($userSigned->username);
+                return View::make('templates.BookmarkItem', array('bookmarks' => $bookmarks))->render();
+            }
+            return false;
+        }
+        catch(\Exception $e)
+        {
+            return false;
+        }
+    }
 }

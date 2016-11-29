@@ -92,10 +92,13 @@ class PagesController extends Controller
             $seaching = false;
 
 
+            $bookmarks = $this::GetBookmarks($userSigned->username);
+
             return View::make('index')->with([
                 'userSigned' => $userSigned,
                 'breadcrumb' => $breadcrumb,
                 'seaching' => $seaching,
+                'bookmarks' => $bookmarks,
                 'films' => $films,
                 'hotFilms' => $hotFilms,
                 'category_list' => $category_list,
@@ -478,8 +481,8 @@ class PagesController extends Controller
             Session::forget('video_id');
 
             // Data for header
-            $category_list = App\DBCategory::select('name')->get();
-            $country_list = App\DBCountry::select('name')->get();
+            $category_list = App\DBCategory::select('id', 'name')->get();
+            $country_list = App\DBCountry::select('id', 'name')->get();
 
             // Khởi tạo dữ liệu của trang
             $episode_list = array();
@@ -560,13 +563,22 @@ class PagesController extends Controller
             {
                 $video_id = $video->first()->id;
                 Session::put('video_id', $video_id);
-            }
+                $video = $video->first();
+            }else
+                $video = null;
+
+            $anime = App\DBAnimes::find($anime_id);
+
+            $bookmarks = $this::GetBookmarks($userSigned->username);
 
             return view('VideoViewPage')->with([
                 'userSigned' => $userSigned,
                 'episode_list' => $episode_list,
                 'fansub_list' => $fansub_list,
                 'server_list' => $server_list,
+                'bookmarks' => $bookmarks,
+                'anime' => $anime,
+                'video' => $video,
                 'anime_id' => $anime_id,
                 'episode_id' => $episode_id,
                 'fansub_id' => $fansub_id,
@@ -645,6 +657,9 @@ class PagesController extends Controller
         }
     }
 
+    /**
+     * @return object
+     */
     public function CheckUserLogin()
     {
         $user = (object) array('signed' => false, 'loginHash' => '', 'username' => '');
@@ -658,5 +673,21 @@ class PagesController extends Controller
             }
         }
         return $user;
+    }
+
+    /**
+     * @param $user_name
+     * @return null
+     */
+    public static function GetBookmarks($user_name)
+    {
+        $user = App\DBUsers::where('username', $user_name)->get();
+        $bookmarks = null;
+        if(!is_null($user->first()))
+        {
+            $user = $user->first();
+            $bookmarks = App\DBBookmarks::where('user_id',$user->id)->get();
+        }
+        return $bookmarks;
     }
 }

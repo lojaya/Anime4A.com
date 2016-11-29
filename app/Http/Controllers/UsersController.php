@@ -141,4 +141,23 @@ class UsersController extends Controller
             return json_encode($result);
         }
     }
+
+    /**
+     * @return object
+     */
+    public static function CheckUserLogin()
+    {
+        $user = (object) array('signed' => false, 'loginHash' => '', 'username' => '', 'id' => '');
+        $loginHash = hash('sha256', 'Anime4A Login Successful');
+        if(Session::has('loginHash')&&Session::has('username'))
+        {
+            if($loginHash==Session::get('loginHash')){
+                $user->signed = true;
+                $user->loginHash = $loginHash;
+                $user->username = Session::get('username');
+                $user->id = DBUsers::where('username', $user->username)->get()->first()->id;
+            }
+        }
+        return $user;
+    }
 }

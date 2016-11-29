@@ -9,9 +9,23 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Session;
 use JonnyW\PhantomJs\Client;
+use JonnyW\PhantomJs\DependencyInjection\ServiceContainer;
 
 class VideoController extends Controller
 {
+    // Get Video
+    public function GetVideo($id)
+    {
+        try
+        {
+            $video = App\DBVideos::find($id);
+            return redirect($video->url_source);
+        }
+        catch(\Exception $e)
+        {
+            return '<span style="color: white; font-size: 18pt">Video không tồn tại hoặc xảy ra sự cố ngoài ý muốn!!!</span>';
+        }
+    }
     // Get File Url Temp
     // HOST: Google
     public function getGoogle()
@@ -32,8 +46,12 @@ class VideoController extends Controller
         {
             $client = Client::getInstance();
             $client->getEngine()->setPath('D:\Project\www\Anime4A\bin\phantomjs.exe');
+            $client->isLazy();
 
-            $request = $client->getMessageFactory()->createRequest($url, 'GET');
+            $request  = $client->getMessageFactory()->createRequest();
+            $request->setMethod('GET');
+            $request->setUrl('http://onecloud.media/embed/ZXlETGxxMkNYMTc1NDE');
+            $request->addSetting('userAgent', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.120 Safari/537.36');
 
             $response = $client->getMessageFactory()->createResponse();
 
@@ -43,10 +61,11 @@ class VideoController extends Controller
             if ($response->getStatus() === 200) {
                 // Dump the requested page content
                 $data = $response->getContent();
-                $jsonURL = explode('<span id="streamurl">', $data);
-                $jsonURL = explode('</span>', $jsonURL[1]);
-                $source = "https://openload.co/stream/" . $jsonURL[0];
-
+                return $data;
+                $jsonURL = explode('video class="jw-video jw-reset"', $data);
+                $jsonURL = explode('src="', $jsonURL[1]);
+                $jsonURL = explode('"', $jsonURL[1]);
+                $source = $jsonURL[0];
                 return VideoController::getDirectLink($source);
             }
 
@@ -75,8 +94,10 @@ class VideoController extends Controller
 
                 // kiểm tra url temp
                 if (strlen($video_url_temp)){
+                    $video_url_temp = VideoController::GetOpenLoad($video_url);
                     if(VideoController::ValidVideoFileUrl($video_url_temp))
                     {
+
                         // Đã có và còn hoạt động thì sử dụng
                         return $video_url_temp;
                     }
