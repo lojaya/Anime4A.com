@@ -58,6 +58,7 @@ class ACPVideoPagesController extends Controller
                     'fansubList' => $fansubList,
                     'serverList' => $serverList,
                     'anime_id' => $anime_id,
+                    'url_source' => $video->url_source,
                     'episode_id' => $episode_id,
                     'episodeList' => $episodeList
                 ])->render();
@@ -99,6 +100,9 @@ class ACPVideoPagesController extends Controller
                 $server_id = Input::get('server_id');
                 if(strlen($server_id))
                     $video->server_id = $server_id;
+
+                $url_source = Input::get('url_source');
+                $video->url_source = $url_source;
 
                 $video->save();
 

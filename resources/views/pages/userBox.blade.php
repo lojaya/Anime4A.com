@@ -86,11 +86,6 @@
                             scope: 'email'
                         });
                     }
-                    function fb_logout(){
-                        FB.logout(function(response) {
-                            //
-                        });
-                    }
                 </script>
                 <form action="{{Request::root()}}/register" method="post" enctype="multipart/form-data" id="RegisterForm" class="userForm" tabindex='1'>
                     <div class="row">

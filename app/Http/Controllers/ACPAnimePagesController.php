@@ -109,9 +109,33 @@ class ACPAnimePagesController extends Controller
                 $anime->episode_total = $ep_total;
 
             // upload image
-            $img = Input::get('img');
-            $banner = Input::get('banner');
-            $myFunc = new MyFunction();
+            $imgFileName = '';
+            if (Input::hasFile('img')) {
+                $imgFile = Input::file('img');
+                if ($imgFile->isValid()) {
+                    $destinationPath = 'img'; // upload path
+                    $name = $imgFile->getClientOriginalName(); // getting image name
+                    $extension = $imgFile->getClientOriginalExtension(); // getting image extension
+                    $imgFileName = $name . '-' . rand(11111,99999).'.'.$extension; // renameing image
+                    $imgFile->move($destinationPath, $imgFileName); // uploading file to given path
+                }
+            }
+            $anime->img = Request::root() . '/img/' . $imgFileName;
+
+            $bannerFileName = '';
+            if (Input::hasFile('banner'))
+            {
+                $bannerFile = Input::file('banner');
+                if ($bannerFile->isValid()) {
+                    $destinationPath = 'banner';
+                    $name = $imgFile->getClientOriginalName();
+                    $extension = $bannerFile->getClientOriginalExtension();
+                    $bannerFileName = $name . '-' . rand(11111,99999).'.'.$extension;
+                    $bannerFile->move($destinationPath, $bannerFileName);
+                }
+            }
+
+            $anime->banner = Request::root() . '/banner/' . $bannerFileName;
 
             $anime->status = Input::get('status');
             $anime->trailer = Input::get('trailer');

@@ -149,8 +149,14 @@ class AnimesController extends Controller
             $films = array();
 
             $nItem = 10;
-            if(Request::ajax())  {
-                $type = Input::get('type');
+            if(Request::ajax()) {
+                $type = '';
+                if(Input::has('type')){
+                    $type = Input::get('type');
+                }else{
+                    $type = Session::get('type');
+                }
+
                 switch ($type) {
                     case 'D':
                         $films = App\DBAnimes::whereDate('updated_at', '=', date('Y-m-d'))

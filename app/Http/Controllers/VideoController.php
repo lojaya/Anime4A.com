@@ -14,12 +14,22 @@ use JonnyW\PhantomJs\DependencyInjection\ServiceContainer;
 class VideoController extends Controller
 {
     // Get Video
-    public function GetVideo($id)
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
+     */
+    public function GetVideo(Request $request, $id)
     {
         try
         {
             $video = App\DBVideos::find($id);
-            return redirect($video->url_source);
+            if(!is_null($video)&&strlen($video->url_source))
+            {
+                return redirect($video->url_source);
+            }
+            else
+                return '<span style="color: white; font-size: 18pt">Video không tồn tại hoặc xảy ra sự cố ngoài ý muốn!!!</span>';
         }
         catch(\Exception $e)
         {

@@ -64,8 +64,6 @@
                                 var logoutButton = $('#btnLogout');
                                 logoutButton.on('click', function (e){
                                     e.preventDefault();
-                                    //logout facebook, google, twitter
-                                    fb_logout();
 
                                     //logout this website
                                     var _url = $(this).attr('href');

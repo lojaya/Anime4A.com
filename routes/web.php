@@ -41,13 +41,13 @@ Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}/{fansub_id?}.html', 'Pag
 Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}/{fansub_id?}/{server_id?}.html', 'PagesController@showVideoViewPage');
 
 // Video Data
-Route::get('/get-video-data', 'VideoController@getVideoFileUrlTemp');
 Route::get('/get-video-{id?}', 'VideoController@GetVideo');
 
 // Filter Animes Data
 Route::post('/get-list-newUpdated', 'AnimesController@newUpdated');
 Route::post('/get-list-newestAnime', 'AnimesController@newestAnime');
 Route::post('/get-list-mostView', 'AnimesController@mostView');
+Route::get('/get-list-mostView', 'AnimesController@mostView');
 
 // Bookmark
 Route::post('/bookmark', 'AnimesController@Bookmark');

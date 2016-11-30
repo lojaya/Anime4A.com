@@ -303,15 +303,20 @@ class PhpAdfLy {
     }
 
     /**
-     * Example script entry point.
+     * @param $url
+     * @return null|string
      */
     public static function ShortenUrl($url) {
         $ex = new PhpAdfLy();
 
         $res = $ex->shorten(array($url), 'adfly.local');
-        $shortenedUrl1 = $res['data'][0];
-        $hash1 = substr($shortenedUrl1['short_url'],strrpos($shortenedUrl1['short_url'],'/')+1);
-        return 'http://adf.ly/' . $hash1;
+        if(count($res['data'])>0){
+            $shortenedUrl1 = $res['data'][0];
+            $hash1 = substr($shortenedUrl1['short_url'],strrpos($shortenedUrl1['short_url'],'/')+1);
+            return 'http://adf.ly/' . $hash1;
+        }
+
+        return null;
 //             //echo "Starting the demo...".LB.LB;
 //             echo "SHORTENING...".LB;
 
