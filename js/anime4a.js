@@ -2,9 +2,7 @@
  * Created by Azure Cloud on 10/13/2016.
  */
 
-/****************************
-**    START HOMEPAGE scripts
-*****************************/
+/*** START HOMEPAGE scripts ***/
 $(document).ready(function () {
     // Login actions
     var loginButton = $('#btnLogin');
@@ -16,7 +14,9 @@ $(document).ready(function () {
     closeButton.on( "click", function (){
         $('#userBox').fadeOut();
     });
-
+    $('#userBox>.overlay').on( "click", function (){
+        $('#userBox').fadeOut();
+    });
 
     // Khởi tạo vị trí menu, searchBox, loginBox và background overlay
     var headerBarOffsetRight = ($(window).width() - ($("#container").offset().left + $("#container").outerWidth()));
@@ -38,13 +38,9 @@ $(document).ready(function () {
 
 });
 
-/****************************
-**    END HOMEPAGE scripts
-*****************************/
+/*** END HOMEPAGE scripts ***/
 
-/****************************
-**    START FILTER
-*****************************/
+/*** START FILTER ***/
 $(document).ready(function () {
     // Danh sách anime mới cập nhật
     $('#homepage>.titleBar>div>.buttonD').on( "click", function(e) {
@@ -174,13 +170,9 @@ function lookup(inputString) {
         });
     }
 }
-/****************************
-**   END FILTER
-*******************************/
+/*** END FILTER ***/
 
-/****************************
-**   START VIEWPAGE scripts
-*****************************/
+/*** START VIEWPAGE scripts ***/
 // Video View Page Animation
 $(document).ready(function () {
     // Cuộn tới vị trí đầu Player
@@ -261,6 +253,101 @@ $(document).ready(function () {
     });
 });
 
-/*****************************
-**   END VIEWPAGE scripts
-******************************/
+/*** END VIEWPAGE scripts ***/
+
+/*** START USERCP scripts ***/
+$(document).ready(function () {
+    // script for delete a bookmark
+    $('.delBtn').bind('click', function (e) {
+        e.preventDefault();
+        var _url = $(this).attr('href');
+        var _id = _url.substring(_url.lastIndexOf('-')+1);
+
+        var requestUrl = $('#MainUrl').attr('href') + '/bookmark-delete';
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({ // Do an AJAX call
+            url: requestUrl,
+            type: "post",
+            data: {'id': _id, _token: CSRF_TOKEN},
+            async: false,
+            success: function(data){
+                alert('Xóa thành công.');
+                $('#userCPBookmarks').html(data);
+            }
+        });
+    });
+
+    // scripts for save a bookmark
+    $('.bookmarkBtn').bind('click', function (e) {
+        var _url = window.location.href;
+        var _id = _url.substring(_url.indexOf('xem-phim/'));
+        _id = _id.substring(_id.indexOf('/')+1);
+        _id = _id.substring(_id.indexOf('/')+1);
+        if(_id.indexOf('/')>0)
+            _id = _id.substring(0, _id.indexOf('/'));
+        if(_id.indexOf('.')>0)
+            _id = _id.substring(0, _id.indexOf('.'));
+
+
+        var requestUrl = $('#MainUrl').attr('href') + '/bookmark';
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({ // Do an AJAX call
+            url: requestUrl,
+            type: "post",
+            data: {'id': _id, _token: CSRF_TOKEN},
+            async: false,
+            success: function(data){
+                if(data){
+                    alert('Lưu thành công.');
+                }
+                else{
+                    alert('Lưu thất bại hoặc đã lưu.');
+                }
+            }
+        });
+    });
+
+    // scripts for redirect to next episode
+    $('.nextEpBtn').bind('click', function (e) {
+        var x = $('.epN'); //returns the matching elements in an array
+
+        var _N = -1;
+        for (i = 0; i < x.length; i++) {
+            if($(x[i]).hasClass('active'))
+            {
+                _N = i + 1;
+                break;
+            }
+        }
+        if(_N>=0)
+            $(location).attr('href', $(x[_N]).attr('href'));
+    });
+
+    $('.userCpBtn').bind('click', function (e) {
+        userCPToggle();
+    });
+
+    $('#userCP>.overlay').bind('click', function (e) {
+        userCPToggle();
+    });
+
+});
+// scripts for show/hide user control panel
+function userCPToggle() {
+    if($('#userCP').css('display')==='none'){
+        $("body").css("overflow", "hidden");
+        $('#userCP').fadeIn();
+        $('.userCpBtn').text("Đóng");
+        $('.userCpBtn').attr('title', "Đóng");
+    }
+    else{
+        $("body").css("overflow", "auto");
+        $('#userCP').fadeOut();
+        $('.userCpBtn').text("Danh sách Anime đang theo dõi");
+        $('.userCpBtn').attr('title', "Danh sách Anime đang theo dõi");
+    }
+    $('html,body').animate({
+            scrollTop: $("#header").offset().top},
+        'fast');
+}
+/*** END USERCP scripts ***/

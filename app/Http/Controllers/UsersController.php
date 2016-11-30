@@ -13,6 +13,10 @@ use App\DBUsers;
 
 class UsersController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function Register(Request $request)
     {
         try
@@ -83,6 +87,10 @@ class UsersController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function LogIn(Request $request)
     {
         try
@@ -123,6 +131,10 @@ class UsersController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function LogOut(Request $request)
     {
         try
@@ -133,6 +145,56 @@ class UsersController extends Controller
             Session::forget('AdminSigned');
             return json_encode($result);
 
+        }
+        catch(\Exception $e)
+        {
+            $result = (object) array('completed' => false, 'error' => '');
+            $result->error = $e->getMessage();
+            return json_encode($result);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function FBLogIn(Request $request)
+    {
+        try
+        {
+            $result = (object) array('completed' => false, 'error' => '');
+            $id = Input::get('id');
+            $username = $id . '@facebook.com';
+
+            $user = DBUsers::where('fb_id', $id)
+                ->get()->first();
+
+            // Login success codes
+            $result->completed = true;
+
+            // add session
+            $loginHash = hash('sha256', 'Anime4A Login Successful');
+            Session::put('loginHash', $loginHash);
+            Session::put('username', $username);
+
+            if(!is_null($user))
+            {
+                // update user data
+                $user->fb_id = $id;
+                $user->password = hash('sha256', $id);
+                $user->save();
+                return json_encode($result);
+            }
+            else
+            {
+                $user = new DBUsers();
+                $user->fb_id = $id;
+                $user->username = $username;
+                $user->password = hash('sha256', $id);
+                $user->save();
+            }
+
+            return json_encode($result);
         }
         catch(\Exception $e)
         {

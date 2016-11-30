@@ -21,4 +21,23 @@ class DBAnimes extends Model
         'updated_at',
         'release_date'
     ];
+
+    /**
+     * @param $id
+     * @return string
+     */
+    public static function GetName($id)
+    {
+        try
+        {
+            $obj = DBAnimes::find($id);
+            if(!is_null($obj))
+                return $obj->name;
+            return '';
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
 }

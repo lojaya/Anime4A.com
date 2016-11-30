@@ -231,35 +231,10 @@ $MyFunc = new App\Library\MyFunction;
                     </div>
                 </div>
             </div>
-            <div id="userCP" style="display: none">
-                <div style="width: 980px;">
-                    <div class="bookmarks" tabindex="170">
-                        <span>Danh sách Anime đang theo dõi:</span>
-                        <ul id="userCPBookmarks">
-                            @include('templates.BookmarkItem')
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <script>
-                $('.userCpBtn').bind('click', function (e) {
-                    if($('#userCP').css('display')==='none'){
-                        $("body").css("overflow", "hidden");
-                        $('#userCP').fadeIn();
-                        $('.userCpBtn').text("Đóng");
-                        $('.userCpBtn').attr('title', "Đóng");
-                    }
-                    else{
-                        $("body").css("overflow", "auto");
-                        $('#userCP').fadeOut();
-                        $('.userCpBtn').text("Danh sách Anime đang theo dõi");
-                        $('.userCpBtn').attr('title', "Danh sách Anime đang theo dõi");
-                    }
-                    $('html,body').animate({
-                                scrollTop: $("#header").offset().top},
-                            'fast');
-                });
-            </script>
+
+            // USER BOX
+            @include('templates.UserBox')
+
         @else
             <!--
             <div class="video_control_region">

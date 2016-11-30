@@ -13,6 +13,7 @@
         </div>
     @else
         <div id="userBox" style="display: none;">
+            <div class="overlay"></div>
             <div class="closeBtn">CLOSE</div>
             <div class="displayArea">
                 <script>
@@ -47,7 +48,49 @@
 
                             return false;
                         });
-                    })
+                    });
+
+                    function fb_login(){
+                        FB.login(function(response) {
+                            if (response.authResponse) {
+                                FB.api('/me', {fields: 'id,name,email'}, function(response) {
+                                    var requestUrl = $('#MainUrl').attr('href') + '/login-with-facebook';
+
+                                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                                    $.ajax({
+                                        url: requestUrl,
+                                        type: 'post',
+                                        data: {'id': response.id, 'username': response.email, _token: CSRF_TOKEN},
+                                        async: false,
+                                        success: function(data){
+                                            var temp = $.parseJSON(data);
+                                            var completed = temp.completed;
+
+                                            if(completed)
+                                            {
+                                                location.href = $('#MainUrl').attr('href');
+                                            }
+                                            else {
+                                                var error = temp.error;
+                                                thisForm.find('.row>.error>span').html(error);
+                                            }
+                                        }
+                                    });
+                                });
+                            }
+                            else if (response.status === 'not_authorized') {
+                            }
+                            else {
+                            }
+                        }, {
+                            scope: 'email'
+                        });
+                    }
+                    function fb_logout(){
+                        FB.logout(function(response) {
+                            //
+                        });
+                    }
                 </script>
                 <form action="{{Request::root()}}/register" method="post" enctype="multipart/form-data" id="RegisterForm" class="userForm" tabindex='1'>
                     <div class="row">
@@ -122,6 +165,17 @@
                             <input type="submit" class="submitBtn" value="Đăng Nhập">
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col1">
+                            <span>&nbsp</span>
+                        </div>
+                        <div class="col2">
+                            <img src="/images/facebook-Icon.png" id="FbLoginBtn" style="width: 30px;" onclick="fb_login()">
+                            <img src="/images/Google-plus-icon.png" id="GGLoginBtn" style="width: 30px;" onclick="gg_login()">
+                        </div>
+                    </div>
+
                 </form>
             </div>
         </div>

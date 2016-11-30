@@ -136,16 +136,23 @@ class ACPAnimePagesController extends Controller
 
     public function AnimeDelete(Request $request)
     {
-        // Delete code
-        if(Input::has('id'))
+        try
         {
-            $ids = Input::get('id');
-            foreach ($ids as $i){
-                DBAnimes::destroy($i);
-            }
+            // Delete code
+            if(Input::has('id'))
+            {
+                $ids = Input::get('id');
+                foreach ($ids as $i){
+                    DBAnimes::destroy($i);
+                }
 
-            $items = DBAnimes::all();
-            return View::make('admincp.ACPAnimeListView', array('items' => $items))->render();
+                $items = DBAnimes::all();
+                return View::make('admincp.ACPAnimeListView', array('items' => $items))->render();
+            }
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
         }
     }
 }

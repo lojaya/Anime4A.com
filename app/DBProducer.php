@@ -19,4 +19,23 @@ class DBProducer extends Model
         'created_at',
         'updated_at'
     ];
+
+    /**
+     * @param $id
+     * @return string
+     */
+    public static function GetName($id)
+    {
+        try
+        {
+            $obj = DBAnimes::find($id);
+            if(!is_null($obj))
+                return $obj->name;
+            return '';
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
 }

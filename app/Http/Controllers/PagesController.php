@@ -20,7 +20,7 @@ class PagesController extends Controller
      * @param Request $request
      * @return string
      */
-    public function showHomePage(Request $request)
+    public function showHomePage(Request $request, $type = null, $id = null)
     {
         try
         {
@@ -59,11 +59,6 @@ class PagesController extends Controller
                     App::setLocale('en');
             }
 
-            // session(['lang' => 'en']); // GLOBAL
-            // Via a request instance...
-            // $request->session()->put('lang', 'value');
-
-
             // Check user login
             $userSigned = PagesController::CheckUserLogin();
 
@@ -74,10 +69,12 @@ class PagesController extends Controller
             // Data for header
             $category_list = App\DBCategory::select('id', 'name')->get();
             $country_list = App\DBCountry::select('id', 'name')->get();
+            $years = App\DBAnimes::distinct()->select(DB::raw('YEAR(release_date) year'))->get();
 
+            // Seach for homepage
             $breadcrumb = (object) array(
-                'key' => 'Thể Loại',
-                'value' => 'Hành Động',
+                'key' => '...',
+                'value' => '...',
             );
 
             $films = App\DBAnimes::orderBy('updated_at', 'desc')
@@ -92,6 +89,53 @@ class PagesController extends Controller
             $seaching = false;
 
 
+            $seachFilms = null;
+            switch ($type)
+            {
+                case 'the-loai':
+                    $seaching = true;
+                    $breadcrumb->key = 'Thể Loại';
+
+                    $category = App\DBCategory::find($id);
+                    $breadcrumb->value = $category->name;
+
+                    // search codes
+                    $seachFilms = App\DBAnimes::where('category', 'LIKE', '%'.$id.'%')
+                        ->orderBy('updated_at', 'desc')
+                        ->paginate(env('PAGE_SPLIT_SMALL'), ['*'], 'page', 1);
+                    $seachFilms->setPath('search/category/'.$id);
+                    break;
+                case 'quoc-gia':
+                    $seaching = true;
+                    $breadcrumb->key = 'Quốc Gia';
+
+                    $country = App\DBCountry::find($id);
+                    $breadcrumb->value = $country->name;
+
+                    // search codes
+                    $seachFilms = App\DBAnimes::where('country', '=', $id)
+                        ->orderBy('updated_at', 'desc')
+                        ->paginate(env('PAGE_SPLIT_SMALL'), ['*'], 'page', 1);
+                    $seachFilms->setPath('search/country/'.$id);
+                    break;
+                case 'nam-san-xuat':
+                    $seaching = true;
+                    $breadcrumb->key = 'Năm';
+
+                    $breadcrumb->value = $id;
+
+                    // paging
+                    $page = Input::get('page');
+
+                    // search codes
+                    $seachFilms = App\DBAnimes::whereYear('release_date', $id)
+                        ->orderBy('updated_at', 'desc')
+                        ->paginate(env('PAGE_SPLIT_SMALL'), ['*'], 'page', 1);
+                    $seachFilms->setPath('search/year/'.$id);
+                    break;
+            }
+
+            // Get Bookmarks
             $bookmarks = $this::GetBookmarks($userSigned->username);
 
             return View::make('index')->with([
@@ -101,319 +145,10 @@ class PagesController extends Controller
                 'bookmarks' => $bookmarks,
                 'films' => $films,
                 'hotFilms' => $hotFilms,
-                'category_list' => $category_list,
-                'country_list' => $country_list,
-                'headerItems' => $filmsRandom,
-                'homepageSelected' => 'M',
-                'newestFilmSelected' => 'S',
-                'mostViewSelected' => 'W'
-            ]);
-        }
-        catch(\Exception $e)
-        {
-            return $e->getMessage();
-        }
-    }
-
-    /**
-     * @param Request $request
-     * @param $id
-     * @return string
-     */
-    public function showFilmByCategory(Request $request, $id)
-    {
-        try
-        {
-            // Set Localization
-            // Checking & create session data
-            $lang = session('lang');
-            if(strlen($lang) <= 0){
-                // Checking IP Location
-                $ip = $_SERVER['REMOTE_ADDR'];
-                //$details = json_decode(file_get_contents("http://freegeoip.net/json/{$ip}"));
-                $country = 'vn';//$details->country_code;
-                switch(strtolower($country)){
-                    case 'en':
-                        session(['lang' => 'en']);
-                        $lang = 'en';
-                        break;
-                    case 'vn':
-                        session(['lang' => 'vn']);
-                        $lang = 'vn';
-                        break;
-                    default:
-                        session(['lang' => 'en']);
-                        $lang = 'en';
-                        break;
-                }
-            }
-
-            switch ($lang){
-                case 'en':
-                    App::setLocale('en');
-                    break;
-                case 'vn':
-                    App::setLocale('vn');
-                    break;
-                default:
-                    App::setLocale('en');
-            }
-
-            // session(['lang' => 'en']); // GLOBAL
-            // Via a request instance...
-            // $request->session()->put('lang', 'value');
-
-
-            // Check user login
-            $userSigned = PagesController::CheckUserLogin();
-
-            // Khởi tạo dữ liệu của trang
-
-            $filmsRandom = App\DBAnimes::inRandomOrder()->take(25)->get();
-
-            // Data for header
-            $category_list = App\DBCategory::select('id', 'name')->get();
-            $country_list = App\DBCountry::select('id', 'name')->get();
-
-            $breadcrumb = (object) array(
-                'key' => '',
-                'value' => '',
-            );
-
-            $films = App\DBAnimes::orderBy('updated_at', 'desc')
-                ->paginate(env('PAGE_SPLIT_BIG'), ['*'], 'page', 1);
-
-            Session::put('type', 'A');
-            $films->setPath('get-list-newUpdated');
-
-            $seaching = true;
-            $breadcrumb->key = 'Thể Loại';
-
-            $category = App\DBCategory::find($id);
-            $breadcrumb->value = $category->name;
-
-            // search codes
-            $seachFilms = App\DBAnimes::where('category', 'LIKE', '%'.$id.'%')
-                ->orderBy('updated_at', 'desc')
-                ->paginate(env('PAGE_SPLIT_SMALL'), ['*'], 'page', 1);
-            $seachFilms->setPath('search/category/'.$id);
-
-            return View::make('index')->with([
-                'userSigned' => $userSigned,
-                'breadcrumb' => $breadcrumb,
-                'seaching' => $seaching,
-                'films' => $films,
                 'seachFilms' => $seachFilms,
                 'category_list' => $category_list,
                 'country_list' => $country_list,
-                'headerItems' => $filmsRandom,
-                'homepageSelected' => 'M',
-                'newestFilmSelected' => 'S',
-                'mostViewSelected' => 'W'
-            ]);
-        }
-        catch(\Exception $e)
-        {
-            return $e->getMessage();
-        }
-    }
-
-    /**
-     * @param Request $request
-     * @param $id
-     * @return string
-     */
-    public function showFilmByCountry(Request $request, $id)
-    {
-        try
-        {
-            // Set Localization
-            // Checking & create session data
-            $lang = session('lang');
-            if(strlen($lang) <= 0){
-                // Checking IP Location
-                $ip = $_SERVER['REMOTE_ADDR'];
-                //$details = json_decode(file_get_contents("http://freegeoip.net/json/{$ip}"));
-                $country = 'vn';//$details->country_code;
-                switch(strtolower($country)){
-                    case 'en':
-                        session(['lang' => 'en']);
-                        $lang = 'en';
-                        break;
-                    case 'vn':
-                        session(['lang' => 'vn']);
-                        $lang = 'vn';
-                        break;
-                    default:
-                        session(['lang' => 'en']);
-                        $lang = 'en';
-                        break;
-                }
-            }
-
-            switch ($lang){
-                case 'en':
-                    App::setLocale('en');
-                    break;
-                case 'vn':
-                    App::setLocale('vn');
-                    break;
-                default:
-                    App::setLocale('en');
-            }
-
-            // session(['lang' => 'en']); // GLOBAL
-            // Via a request instance...
-            // $request->session()->put('lang', 'value');
-
-
-            // Check user login
-            $userSigned = PagesController::CheckUserLogin();
-
-            // Khởi tạo dữ liệu của trang
-
-            $filmsRandom = App\DBAnimes::inRandomOrder()->take(25)->get();
-
-            // Data for header
-            $category_list = App\DBCategory::select('id', 'name')->get();
-            $country_list = App\DBCountry::select('id', 'name')->get();
-
-            $breadcrumb = (object) array(
-                'key' => '',
-                'value' => '',
-            );
-
-            $films = App\DBAnimes::orderBy('updated_at', 'desc')
-                ->paginate(env('PAGE_SPLIT_BIG'), ['*'], 'page', 1);
-
-            Session::put('type', 'A');
-            $films->setPath('get-list-newUpdated');
-
-            $seaching = true;
-            $breadcrumb->key = 'Quốc Gia';
-
-            $country = App\DBCountry::find($id);
-            $breadcrumb->value = $country->name;
-
-            // search codes
-            $seachFilms = App\DBAnimes::where('country', '=', $id)
-                ->orderBy('updated_at', 'desc')
-                ->paginate(env('PAGE_SPLIT_SMALL'), ['*'], 'page', 1);
-            $seachFilms->setPath('search/country/'.$id);
-
-            return View::make('index')->with([
-                'userSigned' => $userSigned,
-                'breadcrumb' => $breadcrumb,
-                'seaching' => $seaching,
-                'films' => $films,
-                'seachFilms' => $seachFilms,
-                'category_list' => $category_list,
-                'country_list' => $country_list,
-                'headerItems' => $filmsRandom,
-                'homepageSelected' => 'M',
-                'newestFilmSelected' => 'S',
-                'mostViewSelected' => 'W'
-            ]);
-        }
-        catch(\Exception $e)
-        {
-            return $e->getMessage();
-        }
-    }
-
-    /**
-     * @param Request $request
-     * @param $id
-     * @return string
-     */
-    public function showFilmByYear(Request $request, $year)
-    {
-        try
-        {
-            // Set Localization
-            // Checking & create session data
-            $lang = session('lang');
-            if(strlen($lang) <= 0){
-                // Checking IP Location
-                $ip = $_SERVER['REMOTE_ADDR'];
-                //$details = json_decode(file_get_contents("http://freegeoip.net/json/{$ip}"));
-                $country = 'vn';//$details->country_code;
-                switch(strtolower($country)){
-                    case 'en':
-                        session(['lang' => 'en']);
-                        $lang = 'en';
-                        break;
-                    case 'vn':
-                        session(['lang' => 'vn']);
-                        $lang = 'vn';
-                        break;
-                    default:
-                        session(['lang' => 'en']);
-                        $lang = 'en';
-                        break;
-                }
-            }
-
-            switch ($lang){
-                case 'en':
-                    App::setLocale('en');
-                    break;
-                case 'vn':
-                    App::setLocale('vn');
-                    break;
-                default:
-                    App::setLocale('en');
-            }
-
-            // session(['lang' => 'en']); // GLOBAL
-            // Via a request instance...
-            // $request->session()->put('lang', 'value');
-
-
-            // Check user login
-            $userSigned = PagesController::CheckUserLogin();
-
-            // Khởi tạo dữ liệu của trang
-
-            $filmsRandom = App\DBAnimes::inRandomOrder()->take(25)->get();
-
-            // Data for header
-            $category_list = App\DBCategory::select('id', 'name')->get();
-            $country_list = App\DBCountry::select('id', 'name')->get();
-
-            $breadcrumb = (object) array(
-                'key' => '',
-                'value' => '',
-            );
-
-            $films = App\DBAnimes::orderBy('updated_at', 'desc')
-                ->paginate(env('PAGE_SPLIT_BIG'), ['*'], 'page', 1);
-
-            Session::put('type', 'A');
-            $films->setPath('get-list-newUpdated');
-
-            $seaching = true;
-            $breadcrumb->key = 'Năm';
-
-            $breadcrumb->value = $year;
-
-            // paging
-            $page = Input::get('page');
-
-            // search codes
-            $seachFilms = App\DBAnimes::whereYear('release_date', $year)
-                ->orderBy('updated_at', 'desc')
-                ->paginate(env('PAGE_SPLIT_SMALL'), ['*'], 'page', 1);
-            $seachFilms->setPath('search/year/'.$year);
-
-            return View::make('index')->with([
-                'userSigned' => $userSigned,
-                'breadcrumb' => $breadcrumb,
-                'seaching' => $seaching,
-                'films' => $films,
-                'seachFilms' => $seachFilms,
-                'category_list' => $category_list,
-                'country_list' => $country_list,
+                'years' => $years,
                 'headerItems' => $filmsRandom,
                 'homepageSelected' => 'M',
                 'newestFilmSelected' => 'S',
@@ -570,6 +305,8 @@ class PagesController extends Controller
             $anime = App\DBAnimes::find($anime_id);
 
             $bookmarks = $this::GetBookmarks($userSigned->username);
+
+            $years = App\DBAnimes::distinct()->select(DB::raw('YEAR(release_date) year'))->get();
 
             return view('VideoViewPage')->with([
                 'userSigned' => $userSigned,

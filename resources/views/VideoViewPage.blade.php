@@ -161,6 +161,19 @@ $MyFunc = new App\Library\MyFunction;
                 @endforeach
             @endif
         </div>
+
+        <!-- START FACEBOOK COMMENT BOX -->
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=289914814743628";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-comments" data-href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}.html" data-width="680" data-numposts="5"></div>
+        <!-- END FACEBOOK COMMENT BOX -->
+
         <div class="video_page_advertise">
 
         </div>
@@ -179,92 +192,13 @@ $MyFunc = new App\Library\MyFunction;
                     <div class="item"><a class="download abutton" title="Download" href="@if(isSet($video)&&!is_null($video)){{ PhpAdfLy::ShortenUrl($video->url_download) }}@endif" target="_blank">Download</a></div>
                     <div class="item"><a class="nextEpBtn abutton" title="Tập Sau">Tập Sau</a></div>
                     <div class="item"><a class="bookmarkBtn abutton" title="Đánh Dấu">Đánh Dấu</a></div>
-                    <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh Sách</a></div>
+                    <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh sách Anime đang theo dõi</a></div>
                 </div>
             </div>
-            <div id="userCP" style="display: none">
-                <div style="width: 980px;">
-                    <div class="bookmarks">
-                        <span>Danh sách Anime đang theo dõi:</span>
-                        <ul id="userCPBookmarks">
-                            @include('templates.BookmarkItem')
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <script>
-                // scripts for show user control panel
-                $('.userCpBtn').bind('click', function (e) {
-                    if($('#userCP').css('display')==='none'){
-                        $("body").css("overflow", "hidden");
-                        $('#userCP').fadeIn();
-                        $('.userCpBtn').text("Đóng");
-                        $('.userCpBtn').attr('title', "Đóng");
-                    }
-                    else{
-                        $("body").css("overflow", "auto");
-                        $('#userCP').fadeOut();
-                        $('.userCpBtn').text("Danh Sách");
-                        $('.userCpBtn').attr('title', "Danh Sách");
-                    }
-                    $('html,body').animate({
-                                scrollTop: $("#header").offset().top},
-                            'fast');
-                });
-                $('#userCP').bind('click', function (e) {
-                    if (!$(e.target).is(".bookmarks>span, .bookmarks>ul>li>a, .bookmarks>ul>li>hr")) {
-                        $('#userCP').fadeOut();
-                        $('.userCpBtn').text("Danh sách Anime đang theo dõi");
-                        $('.userCpBtn').attr('title', "Danh sách Anime đang theo dõi");
-                    }
-                });
 
-                // scripts for save a bookmark
-                $('.bookmarkBtn').bind('click', function (e) {
-                    var _url = window.location.href;
-                    var _id = _url.substring(_url.indexOf('xem-phim/'));
-                    _id = _id.substring(_id.indexOf('/')+1);
-                    _id = _id.substring(_id.indexOf('/')+1);
-                    if(_id.indexOf('/')>0)
-                        _id = _id.substring(0, _id.indexOf('/'));
-                    if(_id.indexOf('.')>0)
-                        _id = _id.substring(0, _id.indexOf('.'));
+            // USER BOX
+            @include('templates.UserBox')
 
-
-                    var requestUrl = $('#MainUrl').attr('href') + '/bookmark';
-                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                    $.ajax({ // Do an AJAX call
-                        url: requestUrl,
-                        type: "post",
-                        data: {'id': _id, _token: CSRF_TOKEN},
-                        async: false,
-                        success: function(data){
-                            if(data){
-                                alert('Lưu thành công.');
-                            }
-                            else{
-                                alert('Lưu thất bại hoặc đã lưu.');
-                            }
-                        }
-                    });
-                });
-
-                // scripts for redirect to next episode
-                $('.nextEpBtn').bind('click', function (e) {
-                    var x = $('.epN'); //returns the matching elements in an array
-
-                    var _N = -1;
-                    for (i = 0; i < x.length; i++) {
-                        if($(x[i]).hasClass('active'))
-                        {
-                            _N = i + 1;
-                            break;
-                        }
-                    }
-                    if(_N>=0)
-                        $(location).attr('href', $(x[_N]).attr('href'));
-                });
-            </script>
         @else
             <div class="video_control_region">
                 <div class="video_control">
@@ -274,20 +208,9 @@ $MyFunc = new App\Library\MyFunction;
                     <div class="item"><a class="download abutton" title="Download" href="@if(isSet($video)&&!is_null($video)){{ PhpAdfLy::ShortenUrl($video->url_download) }}@endif" target="_blank">Download</a></div>
                     <div class="item"><a class="nextEpBtn abutton" title="Tập Sau">Tập Sau</a></div>
                     <div class="item"><a class="bookmarkBtn abutton" title="Đánh Dấu">Đánh Dấu</a></div>
-                    <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh Sách</a></div>
+                    <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh sách Anime đang theo dõi</a></div>
                 </div>
             </div>
-            <script>
-                // scripts for show user control panel
-                $('.userCpBtn').bind('click', function (e) {
-                    $('#userBox').fadeIn();
-                });
-
-                // scripts for save a bookmark
-                $('.bookmarkBtn').bind('click', function (e) {
-                    $('#userBox').fadeIn();
-                });
-            </script>
         @endif
     @else
         <div class="video_control_region">
@@ -298,20 +221,9 @@ $MyFunc = new App\Library\MyFunction;
                 <div class="item"><a class="download abutton" title="Download" href="@if(isSet($video)&&!is_null($video)){{ PhpAdfLy::ShortenUrl($video->url_download) }}@endif" target="_blank">Download</a></div>
                 <div class="item"><a class="nextEpBtn abutton" title="Tập Sau">Tập Sau</a></div>
                 <div class="item"><a class="bookmarkBtn abutton" title="Đánh Dấu">Đánh Dấu</a></div>
-                <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh Sách</a></div>
+                <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh sách Anime đang theo dõi</a></div>
             </div>
         </div>
-        <script>
-            // scripts for show user control panel
-            $('.userCpBtn').bind('click', function (e) {
-                $('#userBox').fadeIn();
-            });
-
-            // scripts for save a bookmark
-            $('.bookmarkBtn').bind('click', function (e) {
-                $('#userBox').fadeIn();
-            });
-        </script>
     @endif
 @stop
 

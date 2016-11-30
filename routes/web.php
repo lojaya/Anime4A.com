@@ -18,6 +18,7 @@ Route::get('/', 'PagesController@showHomePage')->name('Index');
 Route::post('/register', 'UsersController@Register');
 Route::post('/login', 'UsersController@LogIn');
 Route::post('/logout', 'UsersController@LogOut');
+Route::post('/login-with-facebook', 'UsersController@FBLogIn');
 
 // Trang danh sách tất cả anime
 Route::get('/list-anime.html', 'PagesController@listPage');
@@ -27,9 +28,7 @@ Route::get('/advanced-search.html', 'PagesController@searchPage');
 Route::post('/search', 'SearchController@Find');
 Route::post('/adv-search', 'SearchController@Find');
 
-Route::get('/the-loai/{id?}.anime4a', 'PagesController@showFilmByCategory');
-Route::get('/quoc-gia/{id?}.anime4a', 'PagesController@showFilmByCountry');
-Route::get('/nam-san-xuat/{year?}.anime4a', 'PagesController@showFilmByYear');
+Route::get('/{type?}/{id?}.anime4a', 'PagesController@showHomePage');
 Route::post('/search/category/{id?}', 'SearchController@SearchFilmByCategory');
 
 // Xem thông tin bộ phim

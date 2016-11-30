@@ -28,7 +28,15 @@
                     @yield('header-menu-country')
                 </ul>
             </li>
-            <li class="toproot"><a><span>Năm Sản Xuất</span></a></li>
+            <li class="toproot"><a><span>Năm Sản Xuất</span></a>
+                <ul>
+                    @if(isSet($years))
+                        @foreach($years as $i)
+                            <li><a href='{{ Request::root() }}/nam-san-xuat/{{ $i->year }}.anime4a'>{{ $i->year }}</a></li>
+                        @endforeach
+                    @endif
+                </ul>
+            </li>
             <!--<li class="topmenu"><a href="">Tìm Kiếm Nâng Cao</a></li>-->
         </ul>
         <div id="utilitiesRegion">
@@ -56,6 +64,10 @@
                                 var logoutButton = $('#btnLogout');
                                 logoutButton.on('click', function (e){
                                     e.preventDefault();
+                                    //logout facebook, google, twitter
+                                    fb_logout();
+
+                                    //logout this website
                                     var _url = $(this).attr('href');
                                     var requestUrl = $('#MainUrl').attr('href');
                                     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
@@ -81,6 +93,7 @@
 
                                 });
                             });
+
                         </script>
                     @else
                         <a id="btnLogin">Tài Khoản</a>

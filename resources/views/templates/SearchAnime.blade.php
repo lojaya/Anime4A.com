@@ -3,7 +3,7 @@
 <?php
 $MyFunc = new App\Library\MyFunction;
 ?>
-@if(isSet($seachFilms))
+@if(isSet($seachFilms)&&!is_null($seachFilms))
     <script>
         $(document).ready(function(){
             $('[data-toggle^="popover-toggle"]').popover({
