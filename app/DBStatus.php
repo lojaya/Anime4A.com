@@ -28,7 +28,7 @@ class DBStatus extends Model
     {
         try
         {
-            $obj = DBAnimes::find($id);
+            $obj = DBStatus::find($id);
             if(!is_null($obj))
                 return $obj->name;
             return '';

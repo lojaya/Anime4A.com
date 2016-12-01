@@ -28,7 +28,7 @@ class DBCategory extends Model
     {
         try
         {
-            $obj = DBAnimes::find($id);
+            $obj = DBCategory::find($id);
             if(!is_null($obj))
                 return $obj->name;
             return '';

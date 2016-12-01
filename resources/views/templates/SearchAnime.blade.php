@@ -6,7 +6,7 @@ $MyFunc = new App\Library\MyFunction;
 @if(isSet($seachFilms)&&!is_null($seachFilms))
     <script>
         $(document).ready(function(){
-            $('[data-toggle^="popover-toggle"]').popover({
+            $('[data-toggle^="popover-s-toggle-"]').popover({
                 trigger: "hover",
                 html: true,
                 placement: 'auto right',
@@ -23,7 +23,7 @@ $MyFunc = new App\Library\MyFunction;
         <?php
         $tenphim = $MyFunc->nameFormat($i->name);
         ?>
-        <div class="item" data-toggle="popover-toggle-{{ $i->id }}" data-container="body">
+        <div class="item" data-toggle="popover-s-toggle-{{ $i->id }}" data-container="body">
             <a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.html" class="info">
                 <span class="play">►</span>
                 <div class="overlay">
@@ -38,7 +38,7 @@ $MyFunc = new App\Library\MyFunction;
                 </a>
             </div>
         </div>
-        <div id="popover-toggle-{{ $i->id }}" style="display: none">
+        <div id="popover-s-toggle-{{ $i->id }}" style="display: none">
             <div class="popoverTitle">{{ $i->name }}</div>
             <div class="popoverContent">
                 <div>Số tập: {{ $i->episode_new }}/{{ $i->episode_total}}</div>

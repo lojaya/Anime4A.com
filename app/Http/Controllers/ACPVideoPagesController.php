@@ -50,7 +50,7 @@ class ACPVideoPagesController extends Controller
 
                 $episodeList = App\DBEpisodes::select('id', 'episode')
                     ->where('anime_id', $anime_id)
-                    ->get();
+                    ->orderByRaw(\DB::raw('episode + 0'))->get(); // natural order
 
                 return View::make('admincp.ACPVideoEditor',[
                     'video' => $video,
@@ -103,6 +103,8 @@ class ACPVideoPagesController extends Controller
 
                 $url_source = Input::get('url_source');
                 $video->url_source = $url_source;
+                $url_download = Input::get('url_download');
+                $video->url_download = $url_download;
 
                 $video->save();
 
@@ -150,6 +152,7 @@ class ACPVideoPagesController extends Controller
             $anime_id = Input::get('id');
             $ep = App\DBEpisodes::select('id', 'episode')
                 ->where('anime_id', $anime_id)
+                ->orderBy(\DB::raw('episode + 0'))
                 ->get();
             return json_encode($ep);
         }

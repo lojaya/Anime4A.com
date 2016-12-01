@@ -28,7 +28,7 @@ class DBType extends Model
     {
         try
         {
-            $obj = DBAnimes::find($id);
+            $obj = DBType::find($id);
             if(!is_null($obj))
                 return $obj->name;
             return '';

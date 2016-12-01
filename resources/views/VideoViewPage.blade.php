@@ -4,6 +4,9 @@
 
 use App\Library\PhpAdfLy;
 use App\Library\MyFunction;
+use App\DBAnimes;
+use App\DBType;
+use App\DBCategory;
 
 $MyFunc = new App\Library\MyFunction;
 ?>
@@ -15,6 +18,7 @@ $MyFunc = new App\Library\MyFunction;
     <script type="text/javascript" src="{{Request::root()}}/js/jquery-3.1.0.min.js"></script>
     <script type="text/javascript" src="{{Request::root()}}/js/jquery-color.js"></script>
     <script type="text/javascript" src="{{Request::root()}}/js/jssor.slider-21.1.6.mini.js" charset="utf-8"></script>
+    <script type="text/javascript" src="{{Request::root()}}/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{{Request::root()}}/js/anime4a.js" charset="utf-8"></script>
     <script type="text/javascript" src="{{Request::root()}}/js/searchBox.js" charset="utf-8"></script>
 @stop
@@ -72,31 +76,34 @@ $MyFunc = new App\Library\MyFunction;
 
         </script>
     </div>
+    @if(isSet($anime))
     <div class="video_detail" style="display: none">
         <div class="video_img">
             <img src="{{ $anime->img }}" style="width: 150px; height: 200px">
         </div>
-        <div class="video_description">
-            <div class="">
+        <div class="video_info">
+            <div class="video_name">
                 <span>{{ $anime->name }}</span>
             </div>
-            <div>
-                <span>Type: {{ $anime->status }}</span>
+            <div class="video_category">
+                <?php $cat = explode(',', $anime->category);?>
+                <span>Type: @foreach($cat as $i)<a>{{ DBCategory::GetName($i).',' }}</a>@endforeach</span>
             </div>
-            <div>
+            <div class="video_ep">
                 <span>Số tập: {{ $anime->episode_new }}/{{ $anime->episode_total }}</span>
             </div>
-            <div>
-                <span>Năm sản xuất: {{ $anime->release_date }}</span>
+            <div class="video_release">
+                <span>Năm sản xuất: {{ date_format($anime->release_date,"Y") }}</span>
             </div>
-            <div>
-                <span>Thể loại: x</span>
+            <div class="video_type">
+                <span>Thể loại: <a>{{ DBType::GetName($anime->type) }}</a></span>
             </div>
-            <div>
+            <div class="video_description">
                 <span>{{ $anime->description }}</span>
             </div>
         </div>
     </div>
+    @endif
     <div class="video_selection">
         <script>
             $(document).ready(function (){
@@ -171,7 +178,7 @@ $MyFunc = new App\Library\MyFunction;
                 js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=289914814743628";
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));</script>
-        <div class="fb-comments" data-href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}.html" data-width="680" data-numposts="5"></div>
+        <div class="fb-comments" data-href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}.html" data-width="680" data-colorscheme="dark" data-numposts="5"></div>
         <!-- END FACEBOOK COMMENT BOX -->
 
         <div class="video_page_advertise">
@@ -196,7 +203,7 @@ $MyFunc = new App\Library\MyFunction;
                 </div>
             </div>
 
-            // USER BOX
+            <!-- USER BOX -->
             @include('templates.UserBox')
 
         @else
@@ -211,6 +218,14 @@ $MyFunc = new App\Library\MyFunction;
                     <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh sách Anime đang theo dõi</a></div>
                 </div>
             </div>
+            <script>
+                $('.bookmarkBtn').bind('click', function (e) {
+                    $('#userBox').fadeIn();
+                });
+                $('.userCpBtn').bind('click', function (e) {
+                    $('#userBox').fadeIn();
+                });
+            </script>
         @endif
     @else
         <div class="video_control_region">
@@ -224,6 +239,14 @@ $MyFunc = new App\Library\MyFunction;
                 <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh sách Anime đang theo dõi</a></div>
             </div>
         </div>
+        <script>
+            $('.bookmarkBtn').bind('click', function (e) {
+                $('#userBox').fadeIn();
+            });
+            $('.userCpBtn').bind('click', function (e) {
+                $('#userBox').fadeIn();
+            });
+        </script>
     @endif
 @stop
 

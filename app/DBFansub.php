@@ -28,7 +28,7 @@ class DBFansub extends Model
     {
         try
         {
-            $obj = DBAnimes::find($id);
+            $obj = DBFansub::find($id);
             if(!is_null($obj))
                 return $obj->name;
             return '';

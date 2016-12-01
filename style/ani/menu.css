@@ -1,7 +1,7 @@
 ul#cssmenu,ul#cssmenu ul{
 	margin:0;list-style:none;padding:0;/*background-color:rgba(0,50,50,0.85);*/}
 ul#cssmenu ul{
-	display:none;position:absolute;left:0;top:100%;background-color:rgba(0,50,50,0.9);padding:0 0 4px;}
+	display:none;position:absolute;left:0;top:100%;background-color:rgba(50,50,50,0.9);padding:0 0 4px;}
 ul#cssmenu li:hover>*{
 	display:block;}
 ul#cssmenu li{
@@ -41,10 +41,15 @@ ul#cssmenu > li.switch:hover:before{
 	background:#FFFFFF;-moz-box-shadow:0 8px #FFFFFF, 0 16px #FFFFFF;-webkit-box-shadow:0 8px #FFFFFF, 0 16px #FFFFFF;box-shadow:0 8px #FFFFFF, 0 16px #FFFFFF;}
 .c3m-switch-input{
 	display:none;}
+ul#cssmenu .topmenu:hover>a,ul#cssmenu li > a.pressed{
+	background: rgba(0,0,0,0) !important;;
+	border-style:none;color:#FFFFFF;text-decoration:none;}
 ul#cssmenu li:hover>a,ul#cssmenu li > a.pressed{
-	background-color:rgba(0,100,150,0.40);border-style:none;color:#FFFFFF;text-decoration:none;}
+	background: rgba(50,50,50,1);
+	border-style:none;color:#FFFFFF;text-decoration:none;}
 ul#cssmenu ul li:hover>a,ul#cssmenu ul li > a.pressed{
-	background-color:rgba(0,100,150,0.40);border-style:solid;border-color:#616D8E;color:#FFFFFF;text-decoration:none;}
+	background: rgba(0,20,20,0.8);
+	border-style:solid;border-color:#616D8E;color:#FFFFFF;text-decoration:none;}
 ul#cssmenu>li>a{
 	padding:0px 10px;}
 ul#cssmenu li.topmenu>a{

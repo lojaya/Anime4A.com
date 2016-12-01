@@ -232,7 +232,7 @@ $MyFunc = new App\Library\MyFunction;
                 </div>
             </div>
 
-            // USER BOX
+            <!-- USER BOX -->
             @include('templates.UserBox')
 
         @else

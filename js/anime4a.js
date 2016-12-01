@@ -193,30 +193,35 @@ $(document).ready(function () {
     });
 });
 
-// Script Zoom or Light Off Player
+// Script Zoom, Light On/Off or View Video Info Player
 var playerZoom = false;
 $(document).ready(function () {
     $(".videozoom").on( "click", function() {
-        playerZoom = !playerZoom;
-        if(playerZoom) {
-            $(this).text("Thu Nhỏ");
-            $(this).attr('title', "Thu Nhỏ");
-            $("#player").attr('width', 980);
-            $("#player").attr('height', 572);
-            $("#sidebar").css("margin-top", "0");
-            $(".shadow").css("height", $(document).height());
+        if($('.video_player').css('display')==='none')
+        {
+            alert('Hãy trở lại trang xem phim');
+        }else {
+            playerZoom = !playerZoom;
+            if(playerZoom) {
+                $(this).text("Thu Nhỏ");
+                $(this).attr('title', "Thu Nhỏ");
+                $("#player").attr('width', 980);
+                $("#player").attr('height', 572);
+                $("#sidebar").css("margin-top", "0");
+                $(".shadow").css("height", $(document).height());
+            }
+            else {
+                $(this).text("Phóng To");
+                $(this).attr('title', "Phóng To");
+                $("#player").attr('width', 680);
+                $("#player").attr('height', 480);
+                $("#sidebar").css("margin-top", "-480px");
+                $(".shadow").css("height", $(document).height());
+            }
+            $('html,body').animate({
+                    scrollTop: $("#player").offset().top - 40},
+                'slow');
         }
-        else {
-            $(this).text("Phóng To");
-            $(this).attr('title', "Phóng To");
-            $("#player").attr('width', 680);
-            $("#player").attr('height', 480);
-            $("#sidebar").css("margin-top", "-480px");
-            $(".shadow").css("height", $(document).height());
-        }
-        $('html,body').animate({
-                scrollTop: $("#player").offset().top - 40},
-            'slow');
     });
 
     $(".lightoff").on( "click", function() {
@@ -236,17 +241,17 @@ $(document).ready(function () {
     $('.video_control>.item>.video_info').on( "click", function(e) {
         if($('.video_detail').css('display')==='none')
         {
-            $('.video_player').fadeOut();
+            $('#sidebar').css('margin-top', '-' + $('.video_detail').outerHeight() + 'px');
+            $('.video_player').css('display', 'none');
             $('.video_detail').fadeIn();
-            $('#sidebar').css('margin-top', '-' + $('.video_detail').height() + 'px');
             $(this).text('Xem Phim');
             $(this).attr('title', "Xem Phim");
         }
         else
         {
-            $('.video_player').fadeIn();
-            $('.video_detail').fadeOut();
             $('#sidebar').css('margin-top', '-' + $('.video_player').height() + 'px');
+            $('.video_player').fadeIn();
+            $('.video_detail').css('display', 'none');
             $(this).text('Thông Tin');
             $(this).attr('title', "Thông Tin");
         }

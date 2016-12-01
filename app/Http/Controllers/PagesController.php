@@ -218,6 +218,7 @@ class PagesController extends Controller
             // Data for header
             $category_list = App\DBCategory::select('id', 'name')->get();
             $country_list = App\DBCountry::select('id', 'name')->get();
+            $years = App\DBAnimes::distinct()->select(DB::raw('YEAR(release_date) year'))->get();
 
             // Khởi tạo dữ liệu của trang
             $episode_list = array();
@@ -229,7 +230,7 @@ class PagesController extends Controller
                 // GET EPISODE LIST
                 $episode_list = App\DBEpisodes::select('id', 'episode')
                     ->where('anime_id', $anime_id)
-                    ->orderBy('episode')->get();
+                    ->orderBy(DB::raw('episode + 0'))->get(); // natural order
 
                 // Có chọn tập phim để xem
                 if($episode_id&&strlen($episode_id))
@@ -322,6 +323,7 @@ class PagesController extends Controller
                 'server_id' => $server_id,
                 'category_list' => $category_list,
                 'country_list' => $country_list,
+                'years' => $years,
                 'homepageSelected' => 'M',
                 'newestFilmSelected' => 'S',
                 'mostViewSelected' => 'W'

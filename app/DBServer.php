@@ -28,7 +28,7 @@ class DBServer extends Model
     {
         try
         {
-            $obj = DBAnimes::find($id);
+            $obj = DBServer::find($id);
             if(!is_null($obj))
                 return $obj->name;
             return '';

@@ -110,9 +110,19 @@ class ACPAnimePagesController extends Controller
 
             // upload image
             $imgFileName = '';
+            // check input valid
             if (Input::hasFile('img')) {
-                $imgFile = Input::file('img');
+                $imgFile = Input::file('img'); // get file
+                // is file
                 if ($imgFile->isValid()) {
+                    // have old file
+                    if(strlen($anime->img))
+                    {
+                        // delete old file
+                        $oldFilePath = env('APP_HOME') . substr($anime->img,strrpos($anime->img, '/img/'));
+                        if(is_file($oldFilePath))
+                            unlink($oldFilePath);
+                    }
                     $destinationPath = 'img'; // upload path
                     $name = $imgFile->getClientOriginalName(); // getting image name
                     $extension = $imgFile->getClientOriginalExtension(); // getting image extension
@@ -120,22 +130,30 @@ class ACPAnimePagesController extends Controller
                     $imgFile->move($destinationPath, $imgFileName); // uploading file to given path
                 }
             }
-            $anime->img = Request::root() . '/img/' . $imgFileName;
+            if(strlen($imgFileName))
+                $anime->img = Request::root() . '/img/' . $imgFileName;
 
             $bannerFileName = '';
             if (Input::hasFile('banner'))
             {
                 $bannerFile = Input::file('banner');
                 if ($bannerFile->isValid()) {
+                    if(strlen($anime->banner))
+                    {
+                        // delete old file
+                        $oldFilePath = env('APP_HOME') . substr($anime->banner,strrpos($anime->banner, '/banner/'));
+                        if(is_file($oldFilePath))
+                            unlink($oldFilePath);
+                    }
                     $destinationPath = 'banner';
-                    $name = $imgFile->getClientOriginalName();
+                    $name = $bannerFile->getClientOriginalName();
                     $extension = $bannerFile->getClientOriginalExtension();
                     $bannerFileName = $name . '-' . rand(11111,99999).'.'.$extension;
                     $bannerFile->move($destinationPath, $bannerFileName);
                 }
             }
-
-            $anime->banner = Request::root() . '/banner/' . $bannerFileName;
+            if(strlen($bannerFileName))
+                $anime->banner = Request::root() . '/banner/' . $bannerFileName;
 
             $anime->status = Input::get('status');
             $anime->trailer = Input::get('trailer');

@@ -28,7 +28,7 @@ class DBDirector extends Model
     {
         try
         {
-            $obj = DBAnimes::find($id);
+            $obj = DBDirector::find($id);
             if(!is_null($obj))
                 return $obj->name;
             return '';

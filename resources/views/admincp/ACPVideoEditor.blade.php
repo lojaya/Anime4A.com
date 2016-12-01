@@ -56,6 +56,10 @@ $myFunc = new MyFunction();
         <div class="title">Video url source: </div>
         <input type="text" name="url_source" style="width: 500px;" value="@if(isSet($video)){{ $video->url_source }}@endif">
     </div>
+    <div class="input_box">
+        <div class="title">Video url download: </div>
+        <input type="text" name="url_download" style="width: 500px;" value="@if(isSet($video)){{ $video->url_download }}@endif">
+    </div>
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <input type="submit" class="submit">
 </form>
