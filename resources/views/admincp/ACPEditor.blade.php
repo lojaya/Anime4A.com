@@ -10,7 +10,7 @@
 use App\Library\MyFunction;
 $myFunc = new MyFunction();
 ?>
-<form action="@if(isSet($url)){{ $url.'/save' }}@endif" method="post" enctype="multipart/form-data" id="inputArea">
+<form action="@if(isSet($url)){{ $url.'/save' }}@endif" method="post" enctype="multipart/form-data" class="inputArea" id="InputForm">
     <div class="input_box">
         <div class="title">Name: </div>
         <input type="text" name="name" style="width: 500px;" value="@if(isSet($data)){{ $data->name }}@endif">
@@ -25,7 +25,7 @@ $myFunc = new MyFunction();
 
 <script>
     $(document).ready(function () {
-        $('#inputArea').submit(function(e) {
+        $('#InputForm').submit(function(e) {
             e.preventDefault();
             var _url = $(this).attr('action');
             var fData = new FormData($(this)[0]);

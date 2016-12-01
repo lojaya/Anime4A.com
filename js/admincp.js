@@ -32,8 +32,8 @@ $(document).ready(function () {
     $('#sideBar').css('height', _hListView + 'px');
 
     // Khởi tạo trang xem đầu tiên
-    var path = $('#path>input').val();
-    var data = getList($('#MainUrl').attr('href') + '/admincp/' + path);
+    var DefaultPath = $('#DefaultPath').attr('href');
+    var data = getList(DefaultPath);
     $('#listView').html(data);
 
     $('.btn').bind('click', function (e) {
@@ -49,9 +49,6 @@ $(document).ready(function () {
 function getList(url) {
     var list = null;
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-    $.ajaxSetup({
-        headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
-    });
     $.ajax({
         url: url,
         type: "get",

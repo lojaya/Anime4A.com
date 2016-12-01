@@ -252,15 +252,18 @@ class PagesController extends Controller
                         ->distinct('fansub_id')
                         ->where('episode_id',$episode_id)->get();
 
-                    // GET SERVER LIST
-                    $server_list = App\DBVideos::select('server_id')
-                        ->distinct('server_id')
-                        ->where('episode_id',$episode_id)->get();
                 }
 
                 // Có chọn fansub  để xem
                 if($fansub_id&&strlen($fansub_id))
                 {
+                    // GET SERVER LIST
+                    $server_list = App\DBVideos::select('server_id')
+                        ->distinct('server_id')
+                        ->where([
+                            ['episode_id', '=', $episode_id],
+                            ['fansub_id', '=', $fansub_id],
+                        ])->get();
                 }
                 // Chưa chọn fansub để xem -> mặc định xem fansub đầu
                 else{
@@ -268,7 +271,16 @@ class PagesController extends Controller
                     {
                         $f = $fansub_list->first();
                         if(!is_null($f))
+                        {
                             $fansub_id = $f->fansub_id;
+                            // GET SERVER LIST
+                            $server_list = App\DBVideos::select('server_id')
+                                ->distinct('server_id')
+                                ->where([
+                                    ['episode_id', '=', $episode_id],
+                                    ['fansub_id', '=', $fansub_id],
+                                ])->get();
+                        }
                     }
                 }
 
@@ -303,7 +315,10 @@ class PagesController extends Controller
             }else
                 $video = null;
 
+            // update view count
             $anime = App\DBAnimes::find($anime_id);
+            $anime->view_count += 1;
+            $anime->save();
 
             $bookmarks = $this::GetBookmarks($userSigned->username);
 

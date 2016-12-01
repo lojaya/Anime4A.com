@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Input;
 use App\Library\MyFunction;
 use App\DBVideos;
 
-class ACPVideoPagesController extends Controller
+class ACPVideoController extends Controller
 {
     /**
      * @param Request $request
@@ -27,9 +27,23 @@ class ACPVideoPagesController extends Controller
     public function VideoList(Request $request)
     {
         try {
-            $items = DBVideos::all();
+            $anime_id = Session::get('anime_id');
+            $ep = Input::get('ep');
+            Session::put('ep', $ep);
 
-            return View::make('admincp.ACPVideoListView', array('items' => $items))->render();
+            $episode = App\DBEpisodes::where([
+                ['anime_id', '=', $anime_id],
+                ['episode', '=', $ep],
+            ])->get()->first();
+
+            if(!is_null($episode)){
+                $episode_id = $episode->id;
+                $items = DBVideos::where('episode_id', $episode_id)->get();
+
+                Session::forget('video_id');
+                return View::make('admincp.templates.VideoList', array('items' => $items))->render();
+            }
+
         } catch (\Exception $e) {
             return '<div class="report">Lỗi!' . $e->getMessage() . '</div>';
         } finally {
@@ -40,51 +54,28 @@ class ACPVideoPagesController extends Controller
      * @param Request $request
      * @return string
      */
-    public function VideoEditor(Request $request)
+    public function VideoEdit(Request $request)
     {
         try
         {
             $fansubList = App\DBFansub::all();
             $serverList = App\DBServer::all();
 
-            $anime_id = Session::get('edit_id');
-
-            $epValue = Input::get('ep');
-            $epObj = App\DBEpisodes::where('anime_id', $anime_id)
-                ->where('episode', $epValue)
-                ->get()->first();
-            $epId = $epObj->id;
-
-            $videos = DBVideos::where('episode_id', $epId)->get();
-
-
             if(Input::has('id')){
                 $id = Input::get('id');
                 $video = DBVideos::find($id);
-                Session::put('edit_id', $id);
+                Session::put('video_id', $id);
 
                 $episode_id = $video->episode_id;
                 $anime_id = App\DBEpisodes::find($episode_id)->anime_id;
-
-                $episodeList = App\DBEpisodes::select('id', 'episode')
-                    ->where('anime_id', $anime_id)
-                    ->orderByRaw(\DB::raw('episode + 0'))->get(); // natural order
 
                 return View::make('admincp.ACPVideoEditor',[
                     'video' => $video,
                     'fansubList' => $fansubList,
                     'serverList' => $serverList,
                     'anime_id' => $anime_id,
-                    'url_source' => $video->url_source,
                     'episode_id' => $episode_id,
-                    'episodeList' => $episodeList
-                ])->render();
-            }
-            else{
-                Session::forget('edit_id');
-                return View::make('admincp.ACPVideoEditor',[
-                    'fansubList' => $fansubList,
-                    'serverList' => $serverList
+                    'url_source' => $video->url_source
                 ])->render();
             }
         } catch (\Exception $e) {
@@ -103,8 +94,8 @@ class ACPVideoPagesController extends Controller
             $episode_id = Input::get('episode_id');
             if(strlen($episode_id))
             {
-                if (Session::has('edit_id')) {
-                    $id = Session::get('edit_id');
+                if (Session::has('video_id')) {
+                    $id = Session::get('video_id');
                     $video = DBVideos::find($id);
                 } else {
                     $video = new DBVideos();
@@ -129,7 +120,7 @@ class ACPVideoPagesController extends Controller
                 $video->save();
 
                 // remove edit id session
-                Session::forget('edit_id');
+                Session::forget('video_id');
 
                 return '<div class="report">Lưu thành công!</div>';
             }else
@@ -143,6 +134,39 @@ class ACPVideoPagesController extends Controller
             }
             return '<div class="report">Lỗi!</div>';
         } finally {
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function VideoAdd(Request $request)
+    {
+        try {
+            $fansubList = App\DBFansub::all();
+            $serverList = App\DBServer::all();
+
+            $anime_id = Session::get('anime_id');
+            $ep = Session::get('ep');
+            $episode = App\DBEpisodes::where([
+                ['anime_id', '=', $anime_id],
+                ['episode', '=', $ep],
+            ])->get()->first();
+
+            if(!is_null($episode)) {
+                $episode_id = $episode->id;
+                Session::forget('video_id');
+                return View::make('admincp.ACPVideoEditor', [
+                    'episode_id' => $episode_id,
+                    'fansubList' => $fansubList,
+                    'serverList' => $serverList
+                ])->render();
+            }
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
         }
     }
 
@@ -166,23 +190,6 @@ class ACPVideoPagesController extends Controller
         } catch (\Exception $e) {
             return '<div class="report">Lỗi!' . $e->getMessage() . '</div>';
         } finally {
-        }
-    }
-
-    /**
-     * @param Request $request
-     * @return string
-     */
-    public function GetEpisode(Request $request)
-    {
-        if(Input::has('id'))
-        {
-            $anime_id = Input::get('id');
-            $ep = App\DBEpisodes::select('id', 'episode')
-                ->where('anime_id', $anime_id)
-                ->orderBy(\DB::raw('episode + 0'))
-                ->get();
-            return json_encode($ep);
         }
     }
 }

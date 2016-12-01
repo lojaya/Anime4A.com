@@ -62,11 +62,17 @@ Route::post('/admincp/anime/del', 'ACPAnimePagesController@AnimeDelete');
 Route::post('/admincp/anime/edit', 'ACPAnimePagesController@AnimeEditor');
 Route::post('/admincp/anime/save', 'ACPAnimePagesController@AnimeSave');
 
-Route::get('/admincp/episode', 'ACPEpisodePagesController@EpisodeList');
+Route::get('/admincp/episode', 'ACPEpisodePagesController@AnimeList');
+Route::post('/admincp/episode2', 'ACPEpisodePagesController@EpisodeList');
+Route::post('/admincp/add-episode', 'ACPEpisodePagesController@EpisodeAdd');
 Route::post('/admincp/episode/new', 'ACPEpisodePagesController@EpisodeEditor');
 Route::post('/admincp/episode/del', 'ACPEpisodePagesController@EpisodeDelete');
 Route::post('/admincp/episode/edit', 'ACPEpisodePagesController@EpisodeEditor');
 Route::post('/admincp/episode/save', 'ACPEpisodePagesController@EpisodeSave');
+Route::post('/admincp/get-video', 'ACPVideoController@VideoList');
+Route::post('/admincp/edit-video', 'ACPVideoController@VideoEdit');
+Route::post('/admincp/save-video', 'ACPVideoController@VideoSave');
+Route::post('/admincp/add-video', 'ACPVideoController@VideoAdd');
 
 Route::get('/admincp/video', 'ACPVideoPagesController@VideoList');
 Route::post('/admincp/video/new', 'ACPVideoPagesController@VideoEditor');

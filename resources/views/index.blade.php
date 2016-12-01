@@ -65,7 +65,7 @@ $MyFunc = new App\Library\MyFunction;
                 $('[data-toggle^="popover-header-toggle"]').popover({
                     trigger: "hover",
                     html: true,
-                    placement: 'auto bottom',
+                    placement: 'bottom',
                     content: function() {
                         return $('#'+$(this).attr('data-toggle')).html();
                     }

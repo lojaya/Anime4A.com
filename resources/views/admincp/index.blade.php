@@ -26,9 +26,7 @@ $MyFunc = new App\Library\MyFunction;
 @stop
 
 @section('path')
-    <div id="path" style="display: none">
-        <input type="text" value="@if(isSet($path)){{ $path }}@endif">
-    </div>
+    <a href="{{ Request::root() }}@if(isSet($path)){{ $path }}@endif" style="display: none" id="DefaultPath"></a>
 @stop
 
 @section('sideBarView')

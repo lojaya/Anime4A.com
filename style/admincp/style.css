@@ -358,27 +358,27 @@ th {
     overflow: scroll;
     overflow-x: hidden;
 }
-#inputArea {
+.inputArea {
 
 }
-#inputArea input, #inputArea select {
+.inputArea input, .inputArea select {
     width: 120px;
     color: #000;
     border: 0;
 }
-#inputArea textarea {
+.inputArea textarea {
     width: 700px;
     height: 120px;
     color: #000;
 }
-#inputArea .submit {
+.inputArea .submit {
     padding: 5px;
     margin: 5px;
 }
-#inputArea .input_box {
+.inputArea .input_box {
     padding: 5px;
 }
-#inputArea .button_add {
+.inputArea .button_add {
     width: 40px;
 }
 #img, #banner {
@@ -410,6 +410,57 @@ div[class^='cat_']>input {
     font-size: 12pt;
     color: #f88;
     font-weight: 800;
+}
+
+#episode_add {
+    width: 50px !important;
+}
+#episode_list {
+    padding: 5px 0px;
+}
+#episode_list>.items {
+
+}
+#episode_list>.items>div[class^='ep-'] {
+    display: inline-block;
+    border: solid #0ff thin;
+    margin: 2px 0px;
+}
+#episode_list>.items>.active {
+    border: solid #fff thin !important;
+    background: #fff;
+    color: #000;
+}
+#episode_list>.items>div[class^='ep-']:hover {
+    display: inline-block;
+    border: solid #fff thin;
+}
+#episode_list>.items>div[class^='ep-']>a {
+    padding: 0px 10px;
+}
+
+#video_list {
+    padding: 5px 0px;
+}
+#video_list>.items {
+
+}
+#video_list>.items>div[class^='vid-'] {
+    display: inline-block;
+    border: solid #0ff thin;
+    margin: 2px 0px;
+}
+#video_list>.items>.active {
+    border: solid #fff thin !important;
+    background: #fff;
+    color: #000;
+}
+#video_list>.items>div[class^='vid-']:hover {
+    display: inline-block;
+    border: solid #fff thin;
+}
+#video_list>.items>div[class^='vid-']>a {
+    padding: 0px 10px;
 }
 /***********************
  START FOOTER CSS

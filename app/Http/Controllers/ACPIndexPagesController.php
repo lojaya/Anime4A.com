@@ -23,7 +23,7 @@ class ACPIndexPagesController extends Controller
     public function index(Request $request)
     {
         $adminHash = hash('sha256', 'Anime4A.com Admin Signed');
-        $path = 'anime';
+        $path = '/admincp/anime';
         if(Input::has('path'))
             $path = Input::get('path');
 

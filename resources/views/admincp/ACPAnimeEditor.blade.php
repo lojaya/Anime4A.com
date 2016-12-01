@@ -10,7 +10,7 @@
 use App\Library\MyFunction;
 $myFunc = new MyFunction();
 ?>
-<form action="{{Request::root()}}/admincp/anime/save" method="post" enctype="multipart/form-data" id="inputArea">
+<form action="{{Request::root()}}/admincp/anime/save" method="post" enctype="multipart/form-data" class="inputArea" id="InputForm">
     <div class="input_box" style="float: left">
         <div class="title">Anime Name: </div>
         <input type="text" name="name" value="@if(isset($anime)){{ $anime->name }}@endif">
@@ -154,7 +154,7 @@ $myFunc = new MyFunction();
 
 <script>
     $(document).ready(function () {
-        $('#inputArea').submit(function(e) {
+        $('#InputForm').submit(function(e) {
             e.preventDefault();
             var _url = $(this).attr('action');
             var fData = new FormData($(this)[0]);

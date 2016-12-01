@@ -10,28 +10,8 @@
 use App\Library\MyFunction;
 $myFunc = new MyFunction();
 ?>
-<form action="{{Request::root()}}/admincp/video/save" method="post" enctype="multipart/form-data" id="inputArea">
-    <div class="input_box" style="float: left">
-        <div class="title">Anime Name - ID: </div>
-        <select class="category_value" name="anime_id" id="anime_id" style="width: 500px">
-            <option value=""></option>
-            @if(isSet($animeList))
-                @foreach($animeList as $i)
-                    <option value="{{ $i->id }}" @if(isSet($video)) @if($i->id==$anime_id){{'selected'}}@endif @endif>{{ $i->name.' - '.$i->id }}</option>
-                @endforeach
-            @endif
-        </select>
-    </div>
-    <div class="input_box">
-        <div class="title">Episode: </div>
-        <select class="episode_select" name="episode_id" id="episode">
-            @if(isSet($episodeList))
-                @foreach($episodeList as $i)
-                    <option value="{{ $i->id }}" @if(isSet($video)) @if($i->id==$episode_id){{'selected'}}@endif @endif>{{ $i->episode }}</option>
-                @endforeach
-            @endif
-        </select>
-    </div>
+<form action="{{Request::root()}}/admincp/save-video" method="post" enctype="multipart/form-data" class="inputArea" id="InputForm">
+    <input type="hidden" name="episode_id" value="@if(isSet($episode_id)){{ $episode_id }}@endif">
     <div class="input_box">
         <div class="title">Fansub Name - ID: </div>
         <select class="category_value" name="fansub_id" style="width: 500px">
@@ -66,7 +46,7 @@ $myFunc = new MyFunction();
 
 <script>
     $(document).ready(function () {
-        $('#inputArea').submit(function(e) {
+        $('#InputForm').submit(function(e) {
             e.preventDefault();
             var _url = $(this).attr('action');
             var fData = new FormData($(this)[0]);
@@ -79,7 +59,7 @@ $myFunc = new MyFunction();
                 contentType: false,
                 async: false,
                 success: function(data){
-                    $('#editorView').html(data);
+                    $('#editorArea').html(data);
                     refresh();
                 }
             });

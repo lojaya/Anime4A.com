@@ -1,4 +1,4 @@
-@charset "utf-8";
+﻿@charset "utf-8";
 @media screen and (max-width: 1590px) {
     body {
         background: #222222;
@@ -518,6 +518,7 @@
         padding: 0px 10px;
         float: left;
         width: 520px;
+        min-height: 200px;
     }
     .video_detail>.video_info>.video_name {
         color: #f80;
