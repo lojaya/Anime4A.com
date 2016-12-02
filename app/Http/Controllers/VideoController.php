@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+require_once "kGoogle.class.php";
+
 use App;
 use App\Providers\AppServiceProvider;
 use Illuminate\Support\Facades\Request;
@@ -26,7 +28,13 @@ class VideoController extends Controller
             $video = App\DBVideos::find($id);
             if(!is_null($video)&&strlen($video->url_source))
             {
-                return redirect($video->url_source);
+                $j2t = new \J2T();
+                $j2t->setLink = $video->url_source;
+                $j2t->setFormat = isset($_GET['format']) ? $_GET['format'] : false;
+                $data = $j2t->run();
+                $data = str_replace('\\','', $data);
+
+                return $data;//redirect($video->url_source);
             }
             else
                 return '<span style="color: white; font-size: 18pt">Video không tồn tại hoặc xảy ra sự cố ngoài ý muốn!!!</span>';
@@ -36,33 +44,109 @@ class VideoController extends Controller
             return '<span style="color: white; font-size: 18pt">Video không tồn tại hoặc xảy ra sự cố ngoài ý muốn!!!</span>';
         }
     }
-    // Get File Url Temp
+
     // HOST: Google
-    public function getGoogle()
+    public static function getGoogle($url)
     {
         try
         {
-            return "Ab";
+            $source = VideoController::GetSource($url);
+
+            $_pattern = array(
+                'valid_link' => array(
+                    '/[0-9]{2}\/[0-9]{3,4}x[0-9]{3,4}\",\"url.*\]/',
+                    '/\"url.*\"/'
+                ),
+                'quality' => array(
+                    '/https.*720/',
+                    '/https.*medium/',
+                    '/https.*small/'
+                ),
+                'json' => array(
+                    '/(.*?)&itag=[0-9]{2}&type=(.*?);\+codecs.*&quality=(.*)/'
+                )
+            );
+            $cP = preg_match($_pattern['valid_link'][0], $source, $matches);
+            $pattern = $matches[0];
+            preg_match($_pattern['valid_link'][1], $pattern, $matches);
+            $mediaArr = explode(',url', $matches[0]);
+
+            $data = array();
+            foreach($mediaArr as $i =>$value) {
+                $value = str_replace('\u003d', '=', $value);
+                $value = str_replace('\u0026', '&', $value);
+                $value = str_replace('%3A', ':', $value);
+                $value = str_replace('%3B', ';', $value);
+                $value = str_replace('%3D', '=', $value);
+                $value = str_replace('%2F', '/', $value);
+                $value = str_replace('%2C', ',', $value);
+                $value = str_replace('%22', '"', $value);
+                if(preg_match($_pattern['quality'][0], $value, $m))
+                {
+                    preg_match($_pattern['json'][0],$m[0], $s);
+                    $data['content'][] = array(
+                        'url' => $s[1],
+                        'quality' => $s[3],
+                        'type' => $s[2]
+                    );
+                    unset($mediaArr[$i],$s);
+                }
+                if(preg_match($_pattern['quality'][1], $value, $m))
+                {
+                    preg_match($_pattern['json'][0],$m[0], $s);
+                    $data['content'][] = array(
+                        'url' => $s[1],
+                        'quality' => $s[3],
+                        'type' => $s[2]
+                    );
+                    unset($mediaArr[$i],$s);
+                }
+                if(preg_match($_pattern['quality'][2], $value, $m))
+                {
+                    preg_match($_pattern['json'][0],$m[0], $s);
+                    $data['content'][] = array(
+                        'url' => $s[1],
+                        'quality' => $s[3],
+                        'type' => $s[2]
+                    );
+                    unset($mediaArr[$i],$s);
+                }
+            }
+            return $data;
         }
         catch(\Exception $e)
         {
             return $e->getMessage();
         }
     }
+
+    public static function GetSource($url)
+    {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST,'GET');
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible;)");
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return $response;
+    }
     // HOST: OpenLoad
-    public function GetOpenLoad($url)
+    public static function GetOpenLoad($url)
     {
         try
         {
             $client = Client::getInstance();
             $client->getEngine()->setPath('D:\Project\www\Anime4A\bin\phantomjs.exe');
+
             $client->isLazy();
 
-            $request  = $client->getMessageFactory()->createRequest();
-            $request->setMethod('GET');
-            $request->setUrl('http://onecloud.media/embed/ZXlETGxxMkNYMTc1NDE');
-            $request->addSetting('userAgent', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.120 Safari/537.36');
-
+            $request = $client->getMessageFactory()->createRequest($url, 'GET');
+            $request->addSetting('userAgent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7)');
             $response = $client->getMessageFactory()->createResponse();
 
             // Send the request
@@ -71,7 +155,6 @@ class VideoController extends Controller
             if ($response->getStatus() === 200) {
                 // Dump the requested page content
                 $data = $response->getContent();
-                return $data;
                 $jsonURL = explode('video class="jw-video jw-reset"', $data);
                 $jsonURL = explode('src="', $jsonURL[1]);
                 $jsonURL = explode('"', $jsonURL[1]);

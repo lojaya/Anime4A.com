@@ -205,17 +205,17 @@ $(document).ready(function () {
             if(playerZoom) {
                 $(this).text("Thu Nhỏ");
                 $(this).attr('title', "Thu Nhỏ");
-                $("#player").attr('width', 980);
-                $("#player").attr('height', 572);
+                $("#player").css('width', '980px');
+                $("#player").css('height', '572px');
                 $("#sidebar").css("margin-top", "0");
                 $(".shadow").css("height", $(document).height());
             }
             else {
                 $(this).text("Phóng To");
                 $(this).attr('title', "Phóng To");
-                $("#player").attr('width', 680);
-                $("#player").attr('height', 480);
-                $("#sidebar").css("margin-top", "-480px");
+                $("#player").css('width', '680px');
+                $("#player").css('height', '420px');
+                $("#sidebar").css("margin-top", "-420px");
                 $(".shadow").css("height", $(document).height());
             }
             $('html,body').animate({

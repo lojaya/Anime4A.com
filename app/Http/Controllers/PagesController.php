@@ -307,11 +307,18 @@ class PagesController extends Controller
                 ->where('fansub_id', '=', $fansub_id)
                 ->where('server_id', '=', $server_id)
                 ->get();
+            $data = array();
             if(!is_null($video->first()))
             {
                 $video_id = $video->first()->id;
                 Session::put('video_id', $video_id);
                 $video = $video->first();
+
+                $j2t = new \J2T();
+                $j2t->setLink = $video->url_source;
+                $j2t->setFormat = isset($_GET['format']) ? $_GET['format'] : false;
+                $data = $j2t->run();
+                $data = str_replace('\\','', $data);
             }else
                 $video = null;
 
@@ -332,6 +339,7 @@ class PagesController extends Controller
                 'bookmarks' => $bookmarks,
                 'anime' => $anime,
                 'video' => $video,
+                'data' => $data,
                 'anime_id' => $anime_id,
                 'episode_id' => $episode_id,
                 'fansub_id' => $fansub_id,

@@ -49,11 +49,27 @@ $MyFunc = new App\Library\MyFunction;
     <div class="breadcrumb"></div>
     <!-- Video View Region -->
     <div class="video_player">
-        <iframe name='player' id="player" src='{{ Request::root() }}/get-video-@if(isSet($video)&&!is_null($video)){{ $video->id }}@else{{ '0' }}@endif' width='680' height='480' frameborder='0' allowfullscreen></iframe>
+        <div id="player"></div>
+        <script src="/js/jwplayer-7.8.1/jwplayer.js"></script>
+        <script>jwplayer.key="1La4Kp4v+HhGBiJ+p5dWO6sb/AyCdbqtYQKR7w==";</script>
         <script type='text/javascript'>
-            $(document).ready(function () {
-                $('#sidebar').css('margin-top','-480px');
+            jwplayer("player").setup({
+                playlist: [{
+                    sources: <?php if(isSet($data)) echo $data; ?>
+                }],
+                modes: [{
+                    type: "html5"
+                },{
+                    type: "flash",
+                    src: "jwplayer-7.8.1/jwplayer.flash.swf"
+                }],
+                primary: "html5",
+                provider: "jwplayer-7.8.1/PauMediaProvider.swf",
+                width: 680,
+                height: 420,
+                aspectratio: "16:9"
             });
+
             // Get video file for play
             function getVideoData(_id) {
                 var video_url_temp = null;
@@ -252,7 +268,7 @@ $MyFunc = new App\Library\MyFunction;
 
 @section('sidebar')
     <!-- SideBar Region -->
-    <div id="sidebar">
+    <div id="sidebar" style="margin-top: -420px;">
         <div class="most_view">
             <div class="titleBar">
                 <span>Anime Xem Nhiều</span>

@@ -5,101 +5,58 @@
  * Date: 10/14/2016
  * Time: 10:59 PM
  */
-$fb = new Facebook\Facebook ([
-    'app_id' => '289914814743628',
-    'app_secret' => '243d9877164820481824c13b10891c76',
-    'default_graph_version' => 'v2.2',
-]);
-/*
-$helper = $fb->getRedirectLoginHelper();
+require_once "/kGoogle.class.php";
+$url = 'https://photos.google.com/share/AF1QipP6izSAXi-mqKh9ZVCC_zQhqkY76q4oeN_2HuBk7PenoOTmdUqwIFOj_PqXOT4HIQ/photo/AF1QipO3nyIExX19hkWBQyZIbXoJhOAQ8iU69mO_6Dex?key=a2FneDh4QWlheUh3WWRNSEZzX0JTYy1EbXF4TjNB';
+$j2t = new J2T();
+$j2t->setLink = $url;
+$j2t->setFormat = isset($_GET['format']) ? $_GET['format'] : false;
+$data = $j2t->run();
+$data = str_replace('\\','', $data);
 
-try {
-    $accessToken = $helper->getAccessToken();
-} catch(Facebook\Exceptions\FacebookResponseException $e) {
-    // When Graph returns an error
-    echo 'Graph returned an error: ' . $e->getMessage();
-    exit;
-} catch(Facebook\Exceptions\FacebookSDKException $e) {
-    // When validation fails or other local issues
-    echo 'Facebook SDK returned an error: ' . $e->getMessage();
-    exit;
-}
-
-if (! isset($accessToken)) {
-    $permissions = array('public_profile','email'); // Optional permissions
-    $loginUrl = $helper->getLoginUrl('http://anime4a.com/login-with-facebook/', $permissions);
-    header("Location: ".$loginUrl);
-    exit;
-}
-
-try {
-    // Returns a `Facebook\FacebookResponse` object
-    $fields = array('id', 'name', 'email');
-    $response = $fb->get('/me?fields='.implode(',', $fields).'', $accessToken);
-} catch(Facebook\Exceptions\FacebookResponseException $e) {
-    echo 'Graph returned an error: ' . $e->getMessage();
-    exit;
-} catch(Facebook\Exceptions\FacebookSDKException $e) {
-    echo 'Facebook SDK returned an error: ' . $e->getMessage();
-    exit;
-}
-
-$user = $response->getGraphUser();
-
-echo 'Faceook ID: ' . $user['id'];
-echo '<br />Faceook Name: ' . $user['name'];
-echo '<br />Faceook Email: ' . $user['email'];
-*/
 ?>
+
 <html>
 <head>
-    <title>Facebook Login JavaScript Example</title>
-    <meta charset="UTF-8">
+    <script type="text/javascript" src="/js/jquery-3.1.0.min.js"></script>
+    <meta name="csrf-token" content="<?php echo csrf_token(); ?>" />
 </head>
 <body>
+<?php var_dump($data);?>
+<script src="/js/jwplayer-7.8.1/jwplayer.js"></script>
+<script>jwplayer.key="1La4Kp4v+HhGBiJ+p5dWO6sb/AyCdbqtYQKR7w==";</script>
+<input type="button" id="test" value="test" style="width: 300px; height: 200px;">
+<div id="player"></div>
 <script>
-    window.fbAsyncInit = function() {
-        FB.init({
-            appId      : '289914814743628',
-            xfbml      : true,
-            version    : 'v2.8'
+    $('#test').bind('click', function (e) {
+        var _url = 'http://localhost/test-gg';
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            url: _url,
+            type: "post",
+            data: {_token: CSRF_TOKEN},
+            async: false,
+            success: function(data){
+                alert(data);
+            }
         });
-    };
-    // Load the SDK asynchronously
-    (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
+    });
 
-    function fb_login(){
-        FB.login(function(response) {
-            if (response.authResponse) {
-                FB.api('/me', {fields: 'id,name,email'}, function(response) {
-                    // request login to server
-                    alert("Name: "+ response.name + "\nEmail: "+ response.email + "ID: "+response.id);
-                });
-            }
-            else if (response.status === 'not_authorized') {
-            }
-            else {
-            }
-        }, {
-            scope: 'email'
-        });
-    }
-
-    function fb_logout(){
-        FB.logout(function(response) {
-            //
-        });
-    }
+    jwplayer("player").setup({
+        playlist: [{
+            sources: <?php echo $data;?>
+        }],
+        modes: [{
+            type: "html5"
+        },{
+            type: "flash",
+            src: "jwplayer-7.8.1/jwplayer.flash.swf"
+        }],
+        primary: "html5",
+        provider: "jwplayer-7.8.1/PauMediaProvider.swf",
+        width: 720,
+        height: 420,
+        aspectratio: "16:9"
+    });
 </script>
-
-<img src="myimage.png" style="width: 300px; height: 200px;" onclick="fb_login()"/>
-<img src="myimage.png" style="width: 300px; height: 200px;" onclick="fb_logout()"/>
-
 </body>
 </html>
