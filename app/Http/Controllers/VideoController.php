@@ -28,13 +28,7 @@ class VideoController extends Controller
             $video = App\DBVideos::find($id);
             if(!is_null($video)&&strlen($video->url_source))
             {
-                $j2t = new \J2T();
-                $j2t->setLink = $video->url_source;
-                $j2t->setFormat = isset($_GET['format']) ? $_GET['format'] : false;
-                $data = $j2t->run();
-                $data = str_replace('\\','', $data);
-
-                return $data;//redirect($video->url_source);
+                return redirect($video->url_source);
             }
             else
                 return '<span style="color: white; font-size: 18pt">Video không tồn tại hoặc xảy ra sự cố ngoài ý muốn!!!</span>';

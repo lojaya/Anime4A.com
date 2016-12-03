@@ -14,7 +14,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 }
 
 body {
-    background: url(http://localhost/images/bg4.jpg) fixed no-repeat;
+    background: url(http://anime4a.com/images/bg4.jpg) fixed no-repeat;
     background-size: 100% auto;
     color: #BFBFBF;
     font-family: Tahoma, sans-serif;
@@ -33,7 +33,7 @@ a:hover,
 button:hover {
     text-decoration: none;
     background-position: bottom;
-    cursor: url("http://localhost/cursors/Link.cur"), progress
+    cursor: url("http://anime4a.com/cursors/Link.cur"), progress
 }
 
 article,
@@ -298,7 +298,7 @@ th {
     background-image: -ms-linear-gradient(top, #6fa7e7, #6ca7b7, #8fa7b7);
     background-image: -o-linear-gradient(top, #6fa7e7, #6ca7b7, #8fa7b7);
     background-image: linear-gradient(to bottom, #6fa7e7, #6ca7b7, #8fa7b7);
-    cursor: url("http://localhost/cursors/Link.cur"), progress
+    cursor: url("http://anime4a.com/cursors/Link.cur"), progress
 }
 #sideBar>.btn>a{
     -webkit-border-radius: 0;
@@ -336,7 +336,7 @@ th {
 }
 #listView .item:hover {
     background-color: rgba(0,0,0,0.9);
-    cursor: url("http://localhost/cursors/Link.cur"), progress
+    cursor: url("http://anime4a.com/cursors/Link.cur"), progress
 }
 #listView input {
     margin-top: 10px;

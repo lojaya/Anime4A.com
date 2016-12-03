@@ -19,4 +19,23 @@ class DBEpisodes extends Model
         'created_at',
         'updated_at'
     ];
+
+    /**
+     * @param $id
+     * @return string
+     */
+    public static function GetEpisode($id)
+    {
+        try
+        {
+            $obj = DBEpisodes::find($id);
+            if(!is_null($obj))
+                return $obj->episode;
+            return '';
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
 }

@@ -12,6 +12,17 @@ use Illuminate\Support\Facades\DB;
 
 class MyFunction {
     // Format video name
+    public static function GetFormatedName($name)
+    {
+        $string = strtolower($name);
+        $pattern = '([^a-zA-Z0-9]) ';
+        $replacement = '${1}-';
+        $string =  preg_replace($pattern, $replacement, $string);
+        $pattern = '[--+]';
+        $replacement = '-';
+        return preg_replace($pattern, $replacement, $string);
+    }
+
     function nameFormat($name)
     {
         $string = strtolower($name);

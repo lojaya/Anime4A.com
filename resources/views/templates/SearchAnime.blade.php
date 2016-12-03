@@ -24,7 +24,7 @@ $MyFunc = new App\Library\MyFunction;
         $tenphim = $MyFunc->nameFormat($i->name);
         ?>
         <div class="item" data-toggle="popover-s-toggle-{{ $i->id }}" data-container="body">
-            <a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.html" class="info">
+            <a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a" class="info">
                 <span class="play">►</span>
                 <div class="overlay">
                 </div>
@@ -33,7 +33,7 @@ $MyFunc = new App\Library\MyFunction;
                 <span class="episode" title="Số tập anime ">{{ $i->episode_new }}/{{ $i->episode_total}}</span>
             </a>
             <div class="item_name">
-                <a href="{{Request::root()}}xem-phim/{{ $tenphim }}/{{ $i->id }}.html" title="a" rel="bookmark" class="grid-title">
+                <a href="{{Request::root()}}xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a" title="a" rel="bookmark" class="grid-title">
                     <h2>{{ $i->name }}</h2>
                 </a>
             </div>

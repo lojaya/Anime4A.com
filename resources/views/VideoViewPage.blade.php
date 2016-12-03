@@ -11,6 +11,10 @@ use App\DBCategory;
 $MyFunc = new App\Library\MyFunction;
 ?>
 
+@section('Title')
+    @if(isSet($anime)){{ $anime->name }}@endif @if(isSet($episode_id)){{ '- Tập '. \App\DBEpisodes::GetEpisode($episode_id) }}@endif
+@stop
+
 @section('stylesheet')
     <link rel="stylesheet" href="{{Request::root()}}/style/ani/style.css" type="text/css" />
     <link rel="stylesheet" href="{{Request::root()}}/style/ani/menu.css" type="text/css" />
@@ -49,64 +53,77 @@ $MyFunc = new App\Library\MyFunction;
     <div class="breadcrumb"></div>
     <!-- Video View Region -->
     <div class="video_player">
-        <div id="player"></div>
-        <script src="/js/jwplayer-7.8.1/jwplayer.js"></script>
-        <script>jwplayer.key="1La4Kp4v+HhGBiJ+p5dWO6sb/AyCdbqtYQKR7w==";</script>
-        <script type='text/javascript'>
-            jwplayer("player").setup({
-                playlist: [{
-                    sources: <?php if(isSet($data)) echo $data; ?>
-                }],
-                modes: [{
-                    type: "html5"
-                },{
-                    type: "flash",
-                    src: "jwplayer-7.8.1/jwplayer.flash.swf"
-                }],
-                primary: "html5",
-                provider: "jwplayer-7.8.1/PauMediaProvider.swf",
-                width: 680,
-                height: 420,
-                aspectratio: "16:9"
-            });
+        @if(isSet($video_type))
+            @if(isSet($video)&&!is_null($video))
+                @if($video_type=='google')
+                    <div id="player"></div>
+                    <script src="{{ Request::root() }}/js/jwplayer-7.8.1/jwplayer.js"></script>
+                    <script>jwplayer.key="1La4Kp4v+HhGBiJ+p5dWO6sb/AyCdbqtYQKR7w==";</script>
+                    <script type='text/javascript'>
+                        jwplayer("player").setup({
+                            playlist: [{
+                                sources: <?php if(isSet($data)) echo $data; ?>
+                            }],
+                            modes: [{
+                                type: "html5"
+                            },{
+                                type: "flash",
+                                src: "<?php echo Request::root();?>/js/jwplayer-7.8.1/jwplayer.flash.swf"
+                            }],
+                            primary: "html5",
+                            provider: "<?php echo Request::root();?>/js/jwplayer-7.8.1/PauMediaProvider.swf",
+                            width: 680,
+                            height: 420,
+                            aspectratio: "16:9"
+                        });
 
-            // Get video file for play
-            function getVideoData(_id) {
-                var video_url_temp = null;
-                var requestUrl = $('#MainUrl').attr('href');
+                        // Get video file for play
+                        function getVideoData(_id) {
+                            var video_url_temp = null;
+                            var requestUrl = $('#MainUrl').attr('href');
 
-                $.ajax({
-                    url: requestUrl + '/get-video-' + _id,
-                    type: 'get',
-                    data: {},
-                    async: false,
-                    success: function(data, status) {
-                        video_url_temp = data;
-                    },
-                    error: function(xhr, desc, err) {
-                        ;
-                    }
-                });
-                return video_url_temp;
-            }
+                            $.ajax({
+                                url: requestUrl + '/get-video-' + _id,
+                                type: 'get',
+                                data: {},
+                                async: false,
+                                success: function(data, status) {
+                                    video_url_temp = data;
+                                },
+                                error: function(xhr, desc, err) {
+                                    ;
+                                }
+                            });
+                            return video_url_temp;
+                        }
 
-        </script>
+                    </script>
+                @else
+                    <iframe id="player" src="/get-video-{{ $video->id }}" width="680" height="420"></iframe>
+                @endif
+            @else
+                <div style="color: white;font-size: 18pt;width: 680px;height: 420px;">Video không tồn tại hoặc xảy ra sự cố ngoài ý muốn!!!</div>
+            @endif
+        @endif
     </div>
     @if(isSet($anime))
-    <div class="video_detail" style="display: none">
+    <div class="video_detail" style="display: none" itemscope itemtype="http://schema.org/TVEpisode">
+        <div style="display: none;">
+            <a itemprop="url" href="{{ Request::root() }}/xem-phim/{{ \App\Library\MyFunction::GetFormatedName($anime->name) }}/{{ $anime->id }}.a4a"></a>
+        </div>
         <div class="video_img">
-            <img src="{{ $anime->img }}" style="width: 150px; height: 200px">
+            <img itemprop="image" src="{{ $anime->img }}" style="width: 150px; height: 200px">
         </div>
         <div class="video_info">
             <div class="video_name">
-                <span>{{ $anime->name }}</span>
+                <span itemprop="name">{{ $anime->name }}</span>
             </div>
             <div class="video_category">
                 <?php $cat = explode(',', $anime->category);?>
                 <span>Type: @foreach($cat as $i)<a>{{ DBCategory::GetName($i).',' }}</a>@endforeach</span>
             </div>
             <div class="video_ep">
-                <span>Số tập: {{ $anime->episode_new }}/{{ $anime->episode_total }}</span>
+                <span>Số tập: {{ $anime->episode_new }}/<span itemprop="episodeNumber">{{ $anime->episode_total }}</span></span>
             </div>
             <div class="video_release">
                 <span>Năm sản xuất: {{ date_format($anime->release_date,"Y") }}</span>
@@ -114,8 +131,9 @@ $MyFunc = new App\Library\MyFunction;
             <div class="video_type">
                 <span>Thể loại: <a>{{ DBType::GetName($anime->type) }}</a></span>
             </div>
-            <div class="video_description">
-                <span>{{ $anime->description }}</span>
+            <div class="video_description" itemprop="review" itemscope itemtype="http://schema.org/Review">
+                <span itemprop="reviewBody">{{ $anime->description }}</span>
+                <span itemprop="author" style="display: none;">{{ Request::root() }}</span>
             </div>
         </div>
     </div>
@@ -140,10 +158,10 @@ $MyFunc = new App\Library\MyFunction;
                         @if($i->id==$episode_id)
                             <div class="item"><a class="epN active" >{{ $i->episode }}</a></div>
                         @else
-                            <div class="item"><a class="epN" href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}/{{ $i->id }}.html">{{ $i->episode }}</a></div>
+                            <div class="item"><a class="epN" href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}/{{ $i->id }}.a4a">{{ $i->episode }}</a></div>
                         @endif
                     @else
-                        <div class="item"><a class="epN" href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}/{{ $i->id }}.html">{{ $i->episode }}</a></div>
+                        <div class="item"><a class="epN" href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}/{{ $i->id }}.a4a">{{ $i->episode }}</a></div>
                     @endif
                 @endforeach
             @endif
@@ -158,10 +176,10 @@ $MyFunc = new App\Library\MyFunction;
                         @if($i->fansub_id==$fansub_id)
                             <div class="item"><b><a class="active" >{{ $MyFunc->getFansubName($i->fansub_id) }}</a></b></div>
                         @else
-                            <div class="item"><b><a href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}/{{ $episode_id }}/{{ $i->fansub_id }}.html">{{ $MyFunc->getFansubName($i->fansub_id) }}</a></b></div>
+                            <div class="item"><b><a href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}/{{ $episode_id }}/{{ $i->fansub_id }}.a4a">{{ $MyFunc->getFansubName($i->fansub_id) }}</a></b></div>
                         @endif
                     @else
-                        <div class="item"><b><a href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}/{{ $episode_id }}/{{ $i->fansub_id }}.html">{{ $MyFunc->getFansubName($i->fansub_id) }}</a></b></div>
+                        <div class="item"><b><a href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}/{{ $episode_id }}/{{ $i->fansub_id }}.a4a">{{ $MyFunc->getFansubName($i->fansub_id) }}</a></b></div>
                     @endif
                 @endforeach
             @endif
@@ -194,7 +212,7 @@ $MyFunc = new App\Library\MyFunction;
                 js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=289914814743628";
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));</script>
-        <div class="fb-comments" data-href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}.html" data-width="680" data-colorscheme="dark" data-numposts="5"></div>
+        <div class="fb-comments" data-href="{{Request::root()}}/xem-phim/{{ $MyFunc->nameFormat($MyFunc->getAnimeName($anime_id)) }}/{{ $anime_id }}.a4a" data-width="680" data-colorscheme="dark" data-numposts="5"></div>
         <!-- END FACEBOOK COMMENT BOX -->
 
         <div class="video_page_advertise">

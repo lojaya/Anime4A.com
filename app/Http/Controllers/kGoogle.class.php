@@ -980,8 +980,10 @@ class J2T_Plugin_Google_Photos extends J2T_Plugin_Abstract {
             $content = $media_content['content'];
             foreach($content as $key => $value){
                 $quality = $value['quality'];
-                $default = ($quality == 'small') ? true : false;
+                $default = ($quality == 'hd720') ? true : false;
                 $url = $value['url'];
+				$type = $value['type'];
+				
                 $data[] = array(
                     'type'      => 'mp4',
                     'label'     => $quality,
@@ -1007,8 +1009,7 @@ class J2T_Plugin_Google_Photos extends J2T_Plugin_Abstract {
             ),
             'quality' => array(
                 '/https.*720/',
-                '/https.*medium/',
-                '/https.*small/'
+                '/https.*medium/'
             ),
             'json' => array(
                 '/(.*?)&itag=[0-9]{2}&type=(.*?);\+codecs.*&quality=(.*)/'
@@ -1040,16 +1041,6 @@ class J2T_Plugin_Google_Photos extends J2T_Plugin_Abstract {
                 unset($mediaArr[$i],$s);
             }
             if(preg_match($_pattern['quality'][1], $value, $m))
-            {
-                preg_match($_pattern['json'][0],$m[0], $s);
-                $data['content'][] = array(
-                    'url' => $s[1],
-                    'quality' => $s[3],
-                    'type' => $s[2]
-                );
-                unset($mediaArr[$i],$s);
-            }
-            if(preg_match($_pattern['quality'][2], $value, $m))
             {
                 preg_match($_pattern['json'][0],$m[0], $s);
                 $data['content'][] = array(

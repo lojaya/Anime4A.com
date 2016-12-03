@@ -23,7 +23,7 @@ $MyFunc = new App\Library\MyFunction;
                         $tenphim = $MyFunc->nameFormat($MyFunc->getAnimeName($i->anime_id));
                         ?>
                         <hr>
-                        <li><a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->anime_id }}.html">{{ $MyFunc->getAnimeName($i->anime_id) }}</a><a class="delBtn" href="{{Request::root()}}/bookmark-delete-{{ $i->id }}">Xóa</a></li>
+                        <li><a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->anime_id }}.a4a">{{ $MyFunc->getAnimeName($i->anime_id) }}</a><a class="delBtn" href="{{Request::root()}}/bookmark-delete-{{ $i->id }}">Xóa</a></li>
                     @endforeach
                 @endif
             </ul>

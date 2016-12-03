@@ -22,7 +22,7 @@ $MyFunc = new App\Library\MyFunction;
         $tenphim = $MyFunc->nameFormat($i->name);
         ?>
         <li class="item" data-toggle="popover-sidebar-{{ $i->id }}" data-container="body">
-            <a class="item_link" href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.html">
+            <a class="item_link" href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a">
                 <img src="{{ $i->img }}" class="item_thumb" onerror="this.onerror=null;this.src='http://localhost/images/noimg.jpg';" >
                 <span class="name">{{ $i->name }}</span>
                 <span class="view">Lượt xem: {{ $i->view_count }}</span>

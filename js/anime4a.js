@@ -207,6 +207,8 @@ $(document).ready(function () {
                 $(this).attr('title', "Thu Nhỏ");
                 $("#player").css('width', '980px');
                 $("#player").css('height', '572px');
+                $("#player").attr('width', '980px');
+                $("#player").attr('height', '572px');
                 $("#sidebar").css("margin-top", "0");
                 $(".shadow").css("height", $(document).height());
             }
@@ -215,6 +217,8 @@ $(document).ready(function () {
                 $(this).attr('title', "Phóng To");
                 $("#player").css('width', '680px');
                 $("#player").css('height', '420px');
+                $("#player").attr('width', '680px');
+                $("#player").attr('height', '420px');
                 $("#sidebar").css("margin-top", "-420px");
                 $(".shadow").css("height", $(document).height());
             }

@@ -4,6 +4,10 @@
 $MyFunc = new App\Library\MyFunction;
 ?>
 
+@section('Title')
+    {{ 'Anime Subbed Online' }}
+@stop
+
 @section('stylesheet')
     <link rel="stylesheet" href="{{Request::root()}}/style/ani/style.css" type="text/css" />
     <link rel="stylesheet" href="{{Request::root()}}/style/ani/menu.css" type="text/css" />

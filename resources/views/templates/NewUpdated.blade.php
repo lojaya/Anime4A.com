@@ -22,18 +22,18 @@ $MyFunc = new App\Library\MyFunction;
     <?php
     $tenphim = $MyFunc->nameFormat($i->name);
     ?>
-    <div class="item" data-toggle="popover-n-toggle-{{ $i->id }}" data-container="body">
-        <a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.html" class="info">
+    <div class="item" data-toggle="popover-n-toggle-{{ $i->id }}" data-container="body" itemscope itemtype="http://schema.org/TVEpisode">
+        <a itemprop="url" href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a" class="info">
             <span class="play">►</span>
             <div class="overlay">
             </div>
-            <img class="thumb" src="{{ $i->img }}" alt="{{ $i->name }}" title="{{ $i->name }}" onerror="this.onerror=null;this.src='http://localhost/images/noimg.jpg';" style="display: block;">
+            <img itemprop="image" class="thumb" src="{{ $i->img }}" alt="{{ $i->name }}" title="{{ $i->name }}" onerror="this.onerror=null;this.src='http://localhost/images/noimg.jpg';" style="display: block;">
             <p class="luotxem">{{ $i->view_count }}</p>
-            <span class="episode" title="Số tập anime ">{{ $i->episode_new }}/{{ $i->episode_total}}</span>
+            <span class="episode" title="Số tập anime ">{{ $i->episode_new }}/<span itemprop="episodeNumber">{{ $i->episode_total}}</span></span>
         </a>
         <div class="item_name">
-            <a href="{{Request::root()}}xem-phim/{{ $tenphim }}/{{ $i->id }}.html" title="a" rel="bookmark" class="grid-title">
-                <h2>{{ $i->name }}</h2>
+            <a href="{{Request::root()}}xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a" title="a" rel="bookmark" class="grid-title">
+                <h2 itemprop="name">{{ $i->name }}</h2>
             </a>
         </div>
     </div>

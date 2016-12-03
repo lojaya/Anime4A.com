@@ -308,17 +308,34 @@ class PagesController extends Controller
                 ->where('server_id', '=', $server_id)
                 ->get();
             $data = array();
+            $video_type = '';
             if(!is_null($video->first()))
             {
                 $video_id = $video->first()->id;
                 Session::put('video_id', $video_id);
                 $video = $video->first();
 
-                $j2t = new \J2T();
-                $j2t->setLink = $video->url_source;
-                $j2t->setFormat = isset($_GET['format']) ? $_GET['format'] : false;
-                $data = $j2t->run();
-                $data = str_replace('\\','', $data);
+                if(strrpos($video->url_source, 'google')){
+                    $j2t = new \J2T();
+                    $j2t->setLink = $video->url_source;
+                    $j2t->setFormat = isset($_GET['format']) ? $_GET['format'] : false;
+                    $data = $j2t->run();
+                    //$data = str_replace('\\','', $data);
+                    if(!count($data))
+                    {
+                        $data[] = array(
+                            'type'      => 'mp4',
+                            'label'     => 'HD',
+                            'file'      => 'http://thenewcode.com/assets/videos/polina.mp4',
+                            'default'   => true
+                        );
+                        $data = json_encode($data);
+                    }
+                    $video_type = 'google';
+                }else
+                {
+                    $video_type = 'onecloud';
+                }
             }else
                 $video = null;
 
@@ -339,6 +356,7 @@ class PagesController extends Controller
                 'bookmarks' => $bookmarks,
                 'anime' => $anime,
                 'video' => $video,
+                'video_type' => $video_type,
                 'data' => $data,
                 'anime_id' => $anime_id,
                 'episode_id' => $episode_id,

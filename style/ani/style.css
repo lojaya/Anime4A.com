@@ -11,7 +11,7 @@
 }
 @media screen and (max-width: 1600px) {
     body {
-        background: url(http://localhost/images/bg4.jpg) fixed no-repeat;
+        background: url(/images/bg4.jpg) fixed no-repeat;
 		background-size: 100% auto;
         color: #BFBFBF;
         font-family: Tahoma, sans-serif;
@@ -30,7 +30,7 @@
     button:hover {
         text-decoration: none;
         background-position: bottom;
-        cursor: url("http://localhost/cursors/Link.cur"), progress
+        cursor: url("/cursors/Link.cur"), progress
     }
     .abutton:hover {
         color: #44ffff;
@@ -86,7 +86,7 @@
         height: 40px;
     }
     #container {
-        /*background: #000000 url(http://localhost/images/dark_brick_wall.png) repeat;*/
+        /*background: #000000 url(/images/dark_brick_wall.png) repeat;*/
         margin: 0 auto;
         padding: 0px 0px;
         width: 980px;
@@ -517,7 +517,7 @@
         top: 0;
         padding: 0px 10px;
         float: left;
-        width: 520px;
+        width: 510px;
         min-height: 200px;
     }
     .video_detail>.video_info>.video_name {
@@ -587,7 +587,7 @@
         color: #FFF;
         border-color: rgba(50,250,150,0.9);
         background-color: rgba(50,250,50,0.9);
-        cursor: url("http://localhost/cursors/Link.cur"), progress
+        cursor: url("/cursors/Link.cur"), progress
     }
     .video_selection .video_page_advertise {
 
@@ -680,7 +680,7 @@
     #userBox>.closeBtn:hover {
         color: #F00;
         font-weight: bold;
-        cursor: url("http://localhost/cursors/Link.cur"), progress
+        cursor: url("/cursors/Link.cur"), progress
     }
     #userBox>.displayArea>#RegisterForm {
         width: 320px;
@@ -1088,7 +1088,7 @@
         font-size: 10pt;
         display: block;
         float: right;
-        /*background: #000000 url(http://localhost/images/subtle_carbon.png) repeat;*/
+        /*background: #000000 url(/images/subtle_carbon.png) repeat;*/
     }
 }
 /*

@@ -32,13 +32,13 @@ Route::get('/{type?}/{id?}.anime4a', 'PagesController@showHomePage');
 Route::post('/search/category/{id?}', 'SearchController@SearchFilmByCategory');
 
 // Xem thông tin bộ phim
-Route::get('/xem-thong-tin/{name?}/{id?}.html', 'PagesController@showFilmInfoPage');
+Route::get('/xem-thong-tin/{name?}/{id?}.a4a', 'PagesController@showFilmInfoPage');
 
 // Xem phim
-Route::get('/xem-phim/{name?}/{anime_id?}.html', 'PagesController@showVideoViewPage');
-Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}.html', 'PagesController@showVideoViewPage');
-Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}/{fansub_id?}.html', 'PagesController@showVideoViewPage');
-Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}/{fansub_id?}/{server_id?}.html', 'PagesController@showVideoViewPage');
+Route::get('/xem-phim/{name?}/{anime_id?}.a4a', 'PagesController@showVideoViewPage');
+Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}.a4a', 'PagesController@showVideoViewPage');
+Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}/{fansub_id?}.a4a', 'PagesController@showVideoViewPage');
+Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}/{fansub_id?}/{server_id?}.a4a', 'PagesController@showVideoViewPage');
 
 // Video Data
 Route::get('/get-video-{id?}', 'VideoController@GetVideo'); // unUseable
