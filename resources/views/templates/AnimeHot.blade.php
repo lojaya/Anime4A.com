@@ -1,8 +1,12 @@
-
-
 <?php
-$MyFunc = new App\Library\MyFunction;
+/**
+ * Created by PhpStorm.
+ * User: Azure Cloud
+ * Date: 10/8/2016
+ * Time: 2:20 AM
+ */
 ?>
+
 <script>
     $(document).ready(function(){
         $('[data-toggle^="popover-h-toggle"]').popover({
@@ -18,7 +22,7 @@ $MyFunc = new App\Library\MyFunction;
 @if(isSet($hotFilms))
     @foreach ($hotFilms as $i)
         <?php
-        $tenphim = $MyFunc->nameFormat($i->name);
+        $tenphim = \App\Library\MyFunction::GetFormatedName($i->name);
         ?>
         <div class="item" data-toggle="popover-h-toggle-{{ $i->id }}" data-container="body">
             <a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a" class="info">

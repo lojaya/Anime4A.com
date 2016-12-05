@@ -1,0 +1,84 @@
+ul#cssmenu,ul#cssmenu ul{
+	margin:0;list-style:none;padding:0;/*background-color:rgba(0,50,50,0.85);*/}
+ul#cssmenu ul{
+	display:none;position:absolute;left:0;top:100%;background-color:rgba(50,50,50,0.9);padding:0 0 4px;}
+ul#cssmenu li:hover>*{
+	display:block;}
+ul#cssmenu li{
+	position:relative;display:block;white-space:nowrap;font-size:0;float:left;}
+ul#cssmenu li:hover{
+	z-index: 201;}
+ul#cssmenu{
+	font-size:0;float:left;padding-left: 0px;z-index:201;position:relative;display:inline-block;zoom:1;border-radius:0px;-moz-border-radius:0px;-webkit-border-radius:0px;
+	*display:inline;}
+* html ul#cssmenu li a{
+	display:inline-block;}
+ul#cssmenu>li{
+	margin:0 auto;}
+ul#cssmenu ul>li{
+	margin:0 auto;}
+ul#cssmenu a:active, ul#cssmenu a:focus{
+	outline-style:none;}
+ul#cssmenu a{
+	display:block;vertical-align:middle;text-align:left;text-decoration:none;font:13px Arial,sans-serif;color:#FFF;cursor:default;height:40px;line-height:40px;}
+ul#cssmenu ul li{
+	float:left;margin:0;}
+ul#cssmenu ul a{
+	text-align:left;padding:4px;background-color:rgba(0,0,0,0.10);border-width:0 0 1px 0;border-style:solid;border-color:#3B444C;border-radius:0px;-moz-border-radius:0px;-webkit-border-radius:0px;color:#CBCFDB;text-decoration:none;}
+ul#cssmenu li:hover>a,ul#cssmenu li a.pressed{
+	background-color:#47515B;border-style:none;color:#FFFFFF;cursor: url("http://localhost/cursors/Link.cur"), progress}
+ul#cssmenu img{
+	border:none;vertical-align:middle;margin-right:3px;left: 13px;top: 3px;padding-right: 20px;height: 100pt;position: relative;float: left;}
+ul#cssmenu span{
+	display:block;overflow:visible;background-image:url("../../images/menuitems/arrowmain0.gif");background-position:right center;background-repeat:no-repeat;padding-right:17px;}
+ul#cssmenu li:hover>a>span{
+	background-image:url("../../images/menuitems/arrowmain1.gif");}
+ul#cssmenu > li.switch{
+	display:none;cursor:pointer;width:25px;height:40px;padding:3px 10px;}
+ul#cssmenu > li.switch:before{
+	content:"";position:absolute;display:block;height:4px;width:25px;border-radius:4px;background:#CBCFDB;-moz-box-shadow:0 8px #CBCFDB, 0 16px #CBCFDB;-webkit-box-shadow:0 8px #CBCFDB, 0 16px #CBCFDB;box-shadow:0 8px #CBCFDB, 0 16px #CBCFDB;}
+ul#cssmenu > li.switch:hover:before{
+	background:#FFFFFF;-moz-box-shadow:0 8px #FFFFFF, 0 16px #FFFFFF;-webkit-box-shadow:0 8px #FFFFFF, 0 16px #FFFFFF;box-shadow:0 8px #FFFFFF, 0 16px #FFFFFF;}
+.c3m-switch-input{
+	display:none;}
+ul#cssmenu .topmenu:hover>a,ul#cssmenu li > a.pressed{
+	background: rgba(0,0,0,0) !important;;
+	border-style:none;color:#FFFFFF;text-decoration:none;}
+ul#cssmenu li:hover>a,ul#cssmenu li > a.pressed{
+	background: rgba(50,50,50,1);
+	border-style:none;color:#FFFFFF;text-decoration:none;}
+ul#cssmenu ul li:hover>a,ul#cssmenu ul li > a.pressed{
+	background: rgba(0,20,20,0.8);
+	border-style:solid;border-color:#616D8E;color:#FFFFFF;text-decoration:none;}
+ul#cssmenu>li>a{
+	padding:0px 10px;}
+ul#cssmenu li.topmenu>a{
+	border-width:0 0 3px 0;border-style:none;border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:0px;padding:0px 10px;}
+ul#cssmenu li.topmenu:hover>a,ul#cssmenu li.topmenu > a.pressed{
+	border-style:none;}
+ul#cssmenu li.toproot>ul{
+	width: 550px;left: -54px;}
+ul#cssmenu li.toproot>ul>li{
+	width: 110px;overflow: hidden;}
+ul#cssmenu li.toproot>ul>li>a{
+	text-align: center;}
+ul#cssmenu li.toproot>a{
+	border-width:0 0 2px 0;border-style:none;border-color:#47515B;border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:0px;padding:0px 10px;}
+ul#cssmenu li.toproot:hover>a,ul#cssmenu li.toproot > a.pressed{
+	border-style:none;border-color:#47515B;border-radius:10px 10px 0 0;-moz-border-radius:10px 10px 0 0;-webkit-border-radius:0px;-webkit-border-bottom-right-radius:0;-webkit-border-bottom-left-radius:0;}
+@media screen and (max-width: 768px) {
+	ul#cssmenu > li {
+		position: initial;}
+	ul#cssmenu ul .submenu,ul#cssmenu li > ul {
+		left: 0; right:auto; top: 100%;}
+	ul#cssmenu .submenu,ul#cssmenu ul,ul#cssmenu .column {
+		-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;padding-right: 0;width: 100% !important;}
+}
+@media screen and (max-width: 305px) {
+	ul#cssmenu {
+		width: 100%;}
+	ul#cssmenu > li {
+		display: none;		position: relative;		width: 100% !important;}
+	ul#cssmenu > li.switch,.c3m-switch-input:checked + ul#cssmenu > li + li {
+		display: block;}
+	ul#cssmenu > li.switch > label {		position: absolute;cursor: pointer;top: 0;left: 0;right: 0;bottom: 0;}}

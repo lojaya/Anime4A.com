@@ -39,131 +39,10 @@ class VideoController extends Controller
         }
     }
 
-    // HOST: Google
-    public static function getGoogle($url)
-    {
-        try
-        {
-            $source = VideoController::GetSource($url);
-
-            $_pattern = array(
-                'valid_link' => array(
-                    '/[0-9]{2}\/[0-9]{3,4}x[0-9]{3,4}\",\"url.*\]/',
-                    '/\"url.*\"/'
-                ),
-                'quality' => array(
-                    '/https.*720/',
-                    '/https.*medium/',
-                    '/https.*small/'
-                ),
-                'json' => array(
-                    '/(.*?)&itag=[0-9]{2}&type=(.*?);\+codecs.*&quality=(.*)/'
-                )
-            );
-            $cP = preg_match($_pattern['valid_link'][0], $source, $matches);
-            $pattern = $matches[0];
-            preg_match($_pattern['valid_link'][1], $pattern, $matches);
-            $mediaArr = explode(',url', $matches[0]);
-
-            $data = array();
-            foreach($mediaArr as $i =>$value) {
-                $value = str_replace('\u003d', '=', $value);
-                $value = str_replace('\u0026', '&', $value);
-                $value = str_replace('%3A', ':', $value);
-                $value = str_replace('%3B', ';', $value);
-                $value = str_replace('%3D', '=', $value);
-                $value = str_replace('%2F', '/', $value);
-                $value = str_replace('%2C', ',', $value);
-                $value = str_replace('%22', '"', $value);
-                if(preg_match($_pattern['quality'][0], $value, $m))
-                {
-                    preg_match($_pattern['json'][0],$m[0], $s);
-                    $data['content'][] = array(
-                        'url' => $s[1],
-                        'quality' => $s[3],
-                        'type' => $s[2]
-                    );
-                    unset($mediaArr[$i],$s);
-                }
-                if(preg_match($_pattern['quality'][1], $value, $m))
-                {
-                    preg_match($_pattern['json'][0],$m[0], $s);
-                    $data['content'][] = array(
-                        'url' => $s[1],
-                        'quality' => $s[3],
-                        'type' => $s[2]
-                    );
-                    unset($mediaArr[$i],$s);
-                }
-                if(preg_match($_pattern['quality'][2], $value, $m))
-                {
-                    preg_match($_pattern['json'][0],$m[0], $s);
-                    $data['content'][] = array(
-                        'url' => $s[1],
-                        'quality' => $s[3],
-                        'type' => $s[2]
-                    );
-                    unset($mediaArr[$i],$s);
-                }
-            }
-            return $data;
-        }
-        catch(\Exception $e)
-        {
-            return $e->getMessage();
-        }
-    }
-
-    public static function GetSource($url)
-    {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST,'GET');
-        curl_setopt($ch, CURLOPT_VERBOSE, 1);
-        curl_setopt($ch, CURLOPT_HTTPGET, true);
-        curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
-        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible;)");
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        return $response;
-    }
-    // HOST: OpenLoad
-    public static function GetOpenLoad($url)
-    {
-        try
-        {
-            $client = Client::getInstance();
-            $client->getEngine()->setPath('D:\Project\www\Anime4A\bin\phantomjs.exe');
-
-            $client->isLazy();
-
-            $request = $client->getMessageFactory()->createRequest($url, 'GET');
-            $request->addSetting('userAgent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7)');
-            $response = $client->getMessageFactory()->createResponse();
-
-            // Send the request
-            $client->send($request, $response);
-
-            if ($response->getStatus() === 200) {
-                // Dump the requested page content
-                $data = $response->getContent();
-                $jsonURL = explode('video class="jw-video jw-reset"', $data);
-                $jsonURL = explode('src="', $jsonURL[1]);
-                $jsonURL = explode('"', $jsonURL[1]);
-                $source = $jsonURL[0];
-                return VideoController::getDirectLink($source);
-            }
-
-            return false;
-        }
-        catch(\Exception $e)
-        {
-            return $e->getMessage();
-        }
-    }
     // Lấy link file video để xem
+    /**
+     * @return bool|string
+     */
     public function getVideoFileUrlTemp()
     {
         try
@@ -215,6 +94,10 @@ class VideoController extends Controller
     }
 
     // Get Direct Link
+    /**
+     * @param $url
+     * @return string
+     */
     public function getDirectLink($url)
     {
         try
@@ -231,6 +114,11 @@ class VideoController extends Controller
         }
     }
 
+    // Check Link
+    /**
+     * @param $url
+     * @return bool|string
+     */
     public function ValidVideoFileUrl($url)
     {
         try

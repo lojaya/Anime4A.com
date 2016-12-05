@@ -21,14 +21,13 @@ class TestController extends Controller
     {
         try
         {
-            $url = 'https://photos.google.com/share/AF1QipP_VE9kOHCeLa-M2ERShiEmyw51CzbRgcwoisXYdwTst_KzOETupg_FYPw_mz71-A/photo/AF1QipOpj0iNAEPx3vBIPNrTL3w6AWeXKhGcnb12C01G?key=bjRkQjU3U25qVTdiMlpkTS02cHp4bW4xZjNuRzJR';
+            $url = 'https://photos.google.com/share/AF1QipOoiChNROdigG_PJZAAhZEReQww5_S5hWEO7Tp0n9BiGMkRpfO15ebKcmgUZwpMhA/photo/AF1QipPevyvHNBciwxka7y3f6FfW8EAXoibWm89gXDR5?key=VFF4LV83VVhHYU0zUGY0TVJ5MENSQWtFUEVkRW5n';
             $j2t = new \J2T();
             $j2t->setLink = $url;
             $j2t->setFormat = isset($_GET['format']) ? $_GET['format'] : false;
             $data = $j2t->run();
 
             $data = $j2t->getSource();
-
             $_pattern = array(
                 'valid_link' => array(
                     '/[0-9]{2}\/[0-9]{3,4}x[0-9]{3,4}\",\"url.*\]/',
@@ -44,6 +43,7 @@ class TestController extends Controller
                 )
             );
             $cP = preg_match($_pattern['valid_link'][0], $data, $matches);
+            return var_dump($matches);
             $pattern = $matches[0];
             preg_match($_pattern['valid_link'][1], $pattern, $matches);
             $mediaArr = explode(',url', $matches[0]);

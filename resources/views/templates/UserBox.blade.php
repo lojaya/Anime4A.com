@@ -7,10 +7,6 @@
  */
 ?>
 
-<?php
-$MyFunc = new App\Library\MyFunction;
-?>
-
 <div id="userCP" style="display: none">
     <div class="overlay"></div>
     <div class="displayArea">
@@ -20,10 +16,10 @@ $MyFunc = new App\Library\MyFunction;
                 @if(isSet($bookmarks)&&!is_null($bookmarks))
                     @foreach($bookmarks as $i)
                         <?php
-                        $tenphim = $MyFunc->nameFormat($MyFunc->getAnimeName($i->anime_id));
+                        $tenphim = \App\Library\MyFunction::GetFormatedName(\App\DBAnimes::GetName($i->anime_id));
                         ?>
                         <hr>
-                        <li><a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->anime_id }}.a4a">{{ $MyFunc->getAnimeName($i->anime_id) }}</a><a class="delBtn" href="{{Request::root()}}/bookmark-delete-{{ $i->id }}">Xóa</a></li>
+                        <li><a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->anime_id }}.a4a">{{ \App\DBAnimes::GetName($i->anime_id) }}</a><a class="delBtn" href="{{Request::root()}}/bookmark-delete-{{ $i->id }}">Xóa</a></li>
                     @endforeach
                 @endif
             </ul>

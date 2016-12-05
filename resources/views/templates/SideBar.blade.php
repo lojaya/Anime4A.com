@@ -1,7 +1,10 @@
-
-
 <?php
-$MyFunc = new App\Library\MyFunction;
+/**
+ * Created by PhpStorm.
+ * User: Azure Cloud
+ * Date: 10/8/2016
+ * Time: 2:20 AM
+ */
 ?>
 
 <script>
@@ -19,7 +22,7 @@ $MyFunc = new App\Library\MyFunction;
 @if(isSet($films))
     @foreach ($films as $i)
         <?php
-        $tenphim = $MyFunc->nameFormat($i->name);
+        $tenphim = \App\Library\MyFunction::GetFormatedName($i->name);
         ?>
         <li class="item" data-toggle="popover-sidebar-{{ $i->id }}" data-container="body">
             <a class="item_link" href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a">

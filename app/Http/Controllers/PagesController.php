@@ -62,14 +62,17 @@ class PagesController extends Controller
             // Check user login
             $userSigned = PagesController::CheckUserLogin();
 
-            // Khởi tạo dữ liệu của trang
-
-            $filmsRandom = App\DBAnimes::inRandomOrder()->take(25)->get();
-
             // Data for header
             $category_list = App\DBCategory::select('id', 'name')->get();
             $country_list = App\DBCountry::select('id', 'name')->get();
             $years = App\DBAnimes::distinct()->select(DB::raw('YEAR(release_date) year'))->get();
+
+            // Films new updated
+            $films = App\DBAnimes::orderBy('updated_at', 'desc')
+                ->paginate(env('PAGE_SPLIT_BIG'), ['*'], 'page', 0);
+
+            Session::put('type', 'A');
+            $films->setPath('get-list-newUpdated');
 
             // Seach for homepage
             $breadcrumb = (object) array(
@@ -77,18 +80,10 @@ class PagesController extends Controller
                 'value' => '...',
             );
 
-            $films = App\DBAnimes::orderBy('updated_at', 'desc')
-                ->paginate(env('PAGE_SPLIT_BIG'), ['*'], 'page', 0);
-
-            Session::put('type', 'A');
-            $films->setPath('get-list-newUpdated');
-
             $hotFilms = App\DBAnimes::orderBy('updated_at', 'desc')
                 ->take(env('PAGE_SPLIT_SMALL'))->get();
 
             $seaching = false;
-
-
             $seachFilms = null;
             switch ($type)
             {
@@ -138,61 +133,53 @@ class PagesController extends Controller
             // Get Bookmarks
             $bookmarks = $this::GetBookmarks($userSigned->username);
 
-            return View::make('index')->with([
-                'userSigned' => $userSigned,
-                'breadcrumb' => $breadcrumb,
-                'seaching' => $seaching,
-                'bookmarks' => $bookmarks,
-                'films' => $films,
-                'hotFilms' => $hotFilms,
-                'seachFilms' => $seachFilms,
-                'category_list' => $category_list,
-                'country_list' => $country_list,
-                'years' => $years,
-                'headerItems' => $filmsRandom,
-                'homepageSelected' => 'M',
-                'newestFilmSelected' => 'S',
-                'mostViewSelected' => 'W'
-            ]);
+            // Check user device
+            $mDetector = new App\Mobile_Detect();
+            if($mDetector->isMobile()||$mDetector->isTablet())
+            {
+                return View::make('mobile.index')->with([
+                    'userSigned' => $userSigned,
+                    'breadcrumb' => $breadcrumb,
+                    'seaching' => $seaching,
+                    'bookmarks' => $bookmarks,
+                    'films' => $films,
+                    'hotFilms' => $hotFilms,
+                    'seachFilms' => $seachFilms,
+                    'category_list' => $category_list,
+                    'country_list' => $country_list,
+                    'years' => $years,
+                    'homepageSelected' => 'M',
+                    'newestFilmSelected' => 'S',
+                    'mostViewSelected' => 'W'
+                ]);
+            }
+            else
+            {
+                // Random films for slider
+                $filmsRandom = App\DBAnimes::inRandomOrder()->take(25)->get();
+
+                return View::make('index')->with([
+                    'userSigned' => $userSigned,
+                    'breadcrumb' => $breadcrumb,
+                    'seaching' => $seaching,
+                    'bookmarks' => $bookmarks,
+                    'films' => $films,
+                    'hotFilms' => $hotFilms,
+                    'seachFilms' => $seachFilms,
+                    'category_list' => $category_list,
+                    'country_list' => $country_list,
+                    'years' => $years,
+                    'headerItems' => $filmsRandom,
+                    'homepageSelected' => 'M',
+                    'newestFilmSelected' => 'S',
+                    'mostViewSelected' => 'W'
+                ]);
+            }
         }
         catch(\Exception $e)
         {
             return $e->getMessage();
         }
-    }
-
-    // Hiện trang thông tin phim
-    /**
-     * @param Request $request
-     * @param $name
-     * @param $id
-     * @return mixed
-     */
-    public function showFilmInfoPage(Request $request, $name, $id)
-    {
-        // Khởi tạo dữ liệu của trang
-        $signed = session('signed');
-        $viewmode = "filmInfo";
-
-        $filmInfo = DB::table('anime4a_animes')->where('id', $id)->take(1)->get();
-        $filmInfo = $filmInfo[0];
-
-        // Data for header
-        $category_list = DB::table('anime4a_category')->select('name')->get();
-        $country_list = DB::table('anime4a_country')->select('name')->get();
-
-        // Data for sidebar
-        $top5_new = DB::table('anime4a_animes')->select('id','name','img','episode_new','episode_total','view_count','description')->orderBy('update_time')->take(5)->get();
-        $top5_view = DB::table('anime4a_animes')->select('id','name','img','episode_new','episode_total','view_count','description')->orderBy('view_count')->take(5)->get();
-        return view('filmInfo')->with([
-            'signed' => $signed,
-            'viewmode' => $viewmode,
-            'category_list' => $category_list,
-            'country_list' => $country_list,
-            'filmInfo' => $filmInfo,
-            'top5_new' => $top5_new,
-            'top5_view' => $top5_view
-        ]);
     }
 
     // Hiện trang xem phim
@@ -320,7 +307,7 @@ class PagesController extends Controller
                     $j2t->setLink = $video->url_source;
                     $j2t->setFormat = isset($_GET['format']) ? $_GET['format'] : false;
                     $data = $j2t->run();
-                    //$data = str_replace('\\','', $data);
+                    $data = str_replace('\\','', $data);
                     if(!count($data))
                     {
                         $data[] = array(
@@ -348,27 +335,37 @@ class PagesController extends Controller
 
             $years = App\DBAnimes::distinct()->select(DB::raw('YEAR(release_date) year'))->get();
 
-            return view('VideoViewPage')->with([
-                'userSigned' => $userSigned,
-                'episode_list' => $episode_list,
-                'fansub_list' => $fansub_list,
-                'server_list' => $server_list,
-                'bookmarks' => $bookmarks,
-                'anime' => $anime,
-                'video' => $video,
-                'video_type' => $video_type,
-                'data' => $data,
-                'anime_id' => $anime_id,
-                'episode_id' => $episode_id,
-                'fansub_id' => $fansub_id,
-                'server_id' => $server_id,
-                'category_list' => $category_list,
-                'country_list' => $country_list,
-                'years' => $years,
-                'homepageSelected' => 'M',
-                'newestFilmSelected' => 'S',
-                'mostViewSelected' => 'W'
-            ]);
+
+            // Check user device
+            $mDetector = new App\Mobile_Detect();
+            if($mDetector->isMobile()||$mDetector->isTablet())
+            {
+                return '<p style="font-size: 120pt;">Mobile</p>';
+            }
+            else
+            {
+                return view('VideoViewPage')->with([
+                    'userSigned' => $userSigned,
+                    'episode_list' => $episode_list,
+                    'fansub_list' => $fansub_list,
+                    'server_list' => $server_list,
+                    'bookmarks' => $bookmarks,
+                    'anime' => $anime,
+                    'video' => $video,
+                    'video_type' => $video_type,
+                    'data' => $data,
+                    'anime_id' => $anime_id,
+                    'episode_id' => $episode_id,
+                    'fansub_id' => $fansub_id,
+                    'server_id' => $server_id,
+                    'category_list' => $category_list,
+                    'country_list' => $country_list,
+                    'years' => $years,
+                    'homepageSelected' => 'M',
+                    'newestFilmSelected' => 'S',
+                    'mostViewSelected' => 'W'
+                ]);
+            }
         }
         catch(\Exception $e)
         {

@@ -1008,6 +1008,7 @@ class J2T_Plugin_Google_Photos extends J2T_Plugin_Abstract {
                 '/\"url.*\"/'
             ),
             'quality' => array(
+                '/https.*1080/',
                 '/https.*720/',
                 '/https.*medium/'
             ),
@@ -1016,11 +1017,12 @@ class J2T_Plugin_Google_Photos extends J2T_Plugin_Abstract {
             )
         );
         $cP = preg_match($_pattern['valid_link'][0], $source, $matches);
+        $data = array();
+		if($cP){
         $pattern = $matches[0];
         preg_match($_pattern['valid_link'][1], $pattern, $matches);
         $mediaArr = explode(',url', $matches[0]);
 
-        $data = array();
         foreach($mediaArr as $i =>$value) {
             $value = str_replace('\u003d', '=', $value);
             $value = str_replace('\u0026', '&', $value);
@@ -1051,6 +1053,7 @@ class J2T_Plugin_Google_Photos extends J2T_Plugin_Abstract {
                 unset($mediaArr[$i],$s);
             }
         }
+		}
         return $data;
 	}
 

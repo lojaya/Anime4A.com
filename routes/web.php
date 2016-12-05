@@ -41,7 +41,7 @@ Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}/{fansub_id?}.a4a', 'Page
 Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}/{fansub_id?}/{server_id?}.a4a', 'PagesController@showVideoViewPage');
 
 // Video Data
-Route::get('/get-video-{id?}', 'VideoController@GetVideo'); // unUseable
+Route::get('/get-video-{id?}', 'VideoController@GetVideo');
 
 // Filter Animes Data
 Route::post('/get-list-newUpdated', 'AnimesController@newUpdated');

@@ -6,6 +6,7 @@
  * Time: 2:20 AM
  */
 ?>
+
 @if(isSet($userSigned))
     @if($userSigned->loginHash==hash('sha256', 'Anime4A Login Successful'))
         <div id="userBox" style="display: none;">

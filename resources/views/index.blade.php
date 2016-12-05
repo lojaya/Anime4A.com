@@ -1,9 +1,5 @@
 @extends('templates.master')
 
-<?php
-$MyFunc = new App\Library\MyFunction;
-?>
-
 @section('Title')
     {{ 'Anime Subbed Online' }}
 @stop
@@ -238,24 +234,11 @@ $MyFunc = new App\Library\MyFunction;
 
             <!-- USER BOX -->
             @include('templates.UserBox')
+            <!-- END USER BOX -->
 
         @else
-            <!--
-            <div class="video_control_region">
-                <div class="video_control">
-                    <div class="item" style="width: 100%"><b><a class="abutton">Đăng Nhập Để Sử Dụng.</a></b></div>
-                </div>
-            </div>
-            -->
         @endif
     @else
-        <!--
-            <div class="video_control_region">
-                <div class="video_control">
-                    <div class="item" style="width: 100%"><b><a class="abutton">Đăng Nhập Để Sử Dụng.</a></b></div>
-                </div>
-            </div>
-            -->
     @endif
 @stop
 

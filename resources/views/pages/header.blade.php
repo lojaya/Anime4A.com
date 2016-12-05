@@ -7,7 +7,7 @@
  */
 ?>
 
-@include('pages.userBox')
+@include('pages.userLoginBox')
 
 <div id="header">
     <div id="top_menu">

@@ -5,26 +5,6 @@
 /*** START HOMEPAGE scripts ***/
 $(document).ready(function () {
     // Login actions
-    var loginButton = $('#btnLogin');
-    var closeButton = $('#userBox>.closeBtn');
-
-    loginButton.on('click', function (){
-        $('#userBox').fadeIn();
-    });
-    closeButton.on( "click", function (){
-        $('#userBox').fadeOut();
-    });
-    $('#userBox>.overlay').on( "click", function (){
-        $('#userBox').fadeOut();
-    });
-
-    // Khởi tạo vị trí menu, searchBox, loginBox và background overlay
-    var headerBarOffsetRight = ($(window).width() - ($("#container").offset().left + $("#container").outerWidth()));
-    var headerBarOffsetLeft = $("#container").offset().left;
-
-    $('#cssmenu').css("margin-left", headerBarOffsetLeft - $(".topmenu>a").outerWidth());
-    var loginButtonWidth = $(".login_region").outerWidth();
-    $("#utilitiesRegion").css("padding-right", headerBarOffsetRight - loginButtonWidth);
 
     // START LOAD ANIMES DATA
     // Ajax load animes data
@@ -35,7 +15,6 @@ $(document).ready(function () {
     films_data = getAnimesList($('#sidebar>.most_view>.titleBar>div>.buttonM'), 'MostViewList', 'M');
     $('#sidebar>.most_view>.sidebar_items').html(films_data);
     // END LOAD ANIMES DATA
-
 });
 
 /*** END HOMEPAGE scripts ***/
@@ -66,52 +45,6 @@ $(document).ready(function () {
     $('#homepage>.titleBar>div>.buttonA').on( "click", function(e) {
         var films_data = getAnimesList($(this), 'NewUpdated', 'A');
         $('#homepage>.list_movies>.items').html(films_data);
-    });
-
-    // Danh sách anime mới nhất
-    //
-    $('#sidebar>.newest_film>.titleBar>div>.buttonD').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'NewestList', 'D');
-        $('#sidebar>.newest_film>.sidebar_items').html(films_data);
-    });
-    $('#sidebar>.newest_film>.titleBar>div>.buttonW').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'NewestList', 'W');
-        $('#sidebar>.newest_film>.sidebar_items').html(films_data);
-    });
-    $('#sidebar>.newest_film>.titleBar>div>.buttonM').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'NewestList', 'M');
-        $('#sidebar>.newest_film>.sidebar_items').html(films_data);
-    });
-    $('#sidebar>.newest_film>.titleBar>div>.buttonS').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'NewestList', 'S');
-        $('#sidebar>.newest_film>.sidebar_items').html(films_data);
-    });
-    $('#sidebar>.newest_film>.titleBar>div>.buttonY').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'NewestList', 'Y');
-        $('#sidebar>.newest_film>.sidebar_items').html(films_data);
-    });
-
-    // Danh sách anime xem nhiều
-    //
-    $('#sidebar>.most_view>.titleBar>div>.buttonD').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'MostViewList', 'D');
-        $('#sidebar>.most_view>.sidebar_items').html(films_data);
-    });
-    $('#sidebar>.most_view>.titleBar>div>.buttonW').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'MostViewList', 'W');
-        $('#sidebar>.most_view>.sidebar_items').html(films_data);
-    });
-    $('#sidebar>.most_view>.titleBar>div>.buttonM').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'MostViewList', 'M');
-        $('#sidebar>.most_view>.sidebar_items').html(films_data);
-    });
-    $('#sidebar>.most_view>.titleBar>div>.buttonS').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'MostViewList', 'S');
-        $('#sidebar>.most_view>.sidebar_items').html(films_data);
-    });
-    $('#sidebar>.most_view>.titleBar>div>.buttonY').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'MostViewList', 'Y');
-        $('#sidebar>.most_view>.sidebar_items').html(films_data);
     });
 });
 

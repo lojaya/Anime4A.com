@@ -1,12 +1,15 @@
-
-
 <?php
-$MyFunc = new App\Library\MyFunction;
+/**
+ * Created by PhpStorm.
+ * User: Azure Cloud
+ * Date: 10/8/2016
+ * Time: 2:20 AM
+ */
 ?>
 
 @foreach ($headerItems as $i)
     <?php
-    $tenphim = $MyFunc->nameFormat($i->name);
+    $tenphim = \App\Library\MyFunction::GetFormatedName($i->name);
     ?>
     <div>
         <a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a" data-toggle="popover-header-toggle-{{ $i->id }}" data-container="body">
