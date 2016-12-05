@@ -592,6 +592,7 @@ button:hover {
 }
 .video_selection>.group>.item {
     padding: 0px 3px;
+    margin: 0px 1px;
     float: left;
     border-style: ridge;
     border-width: thin;

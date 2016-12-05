@@ -5,6 +5,9 @@
 /*** START HOMEPAGE scripts ***/
 $(document).ready(function () {
     // Login actions
+    $('#userBox>.overlay').on( "click", function (){
+        $('#userBox').fadeOut();
+    });
 
     // START LOAD ANIMES DATA
     // Ajax load animes data
@@ -285,8 +288,8 @@ function userCPToggle() {
     else{
         $("body").css("overflow", "auto");
         $('#userCP').fadeOut();
-        $('.userCpBtn').text("Danh sách Anime đang theo dõi");
-        $('.userCpBtn').attr('title', "Danh sách Anime đang theo dõi");
+        $('.userCpBtn').text("Danh sách");
+        $('.userCpBtn').attr('title', "Danh sách");
     }
     $('html,body').animate({
             scrollTop: $("#header").offset().top},

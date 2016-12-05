@@ -64,6 +64,8 @@
         </div>
     </div>
 
+    @yield('controlBar')
+
     @include('mobile.pages.footer')
 
 </div>

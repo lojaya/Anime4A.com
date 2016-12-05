@@ -10,12 +10,10 @@
 @if(isSet($userSigned))
     @if($userSigned->loginHash==hash('sha256', 'Anime4A Login Successful'))
         <div id="userBox" style="display: none;">
-            <div class="closeBtn">CLOSE</div>
         </div>
     @else
         <div id="userBox" style="display: none;">
             <div class="overlay"></div>
-            <div class="closeBtn">CLOSE</div>
             <div class="displayArea">
                 <script>
                     $(document).ready(function () {
@@ -167,8 +165,8 @@
                             <span>&nbsp</span>
                         </div>
                         <div class="col2">
-                            <img src="/images/facebook-Icon.png" id="FbLoginBtn" style="width: 30px;" onclick="fb_login()">
-                            <img src="/images/Google-plus-icon.png" id="GGLoginBtn" style="width: 30px;" onclick="gg_login()">
+                            <img src="/images/facebook-Icon.png" id="FbLoginBtn" style="width: 30%;" onclick="fb_login()">
+                            <img src="/images/Google-plus-icon.png" id="GGLoginBtn" style="width: 30%;" onclick="gg_login()">
                         </div>
                     </div>
 

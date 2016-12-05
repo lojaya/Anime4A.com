@@ -329,6 +329,7 @@ class PagesController extends Controller
             // update view count
             $anime = App\DBAnimes::find($anime_id);
             $anime->view_count += 1;
+            $anime->timestamps = false; // no update time stamps
             $anime->save();
 
             $bookmarks = $this::GetBookmarks($userSigned->username);
@@ -340,7 +341,27 @@ class PagesController extends Controller
             $mDetector = new App\Mobile_Detect();
             if($mDetector->isMobile()||$mDetector->isTablet())
             {
-                return '<p style="font-size: 120pt;">Mobile</p>';
+                return view('mobile.VideoViewPage')->with([
+                    'userSigned' => $userSigned,
+                    'episode_list' => $episode_list,
+                    'fansub_list' => $fansub_list,
+                    'server_list' => $server_list,
+                    'bookmarks' => $bookmarks,
+                    'anime' => $anime,
+                    'video' => $video,
+                    'video_type' => $video_type,
+                    'data' => $data,
+                    'anime_id' => $anime_id,
+                    'episode_id' => $episode_id,
+                    'fansub_id' => $fansub_id,
+                    'server_id' => $server_id,
+                    'category_list' => $category_list,
+                    'country_list' => $country_list,
+                    'years' => $years,
+                    'homepageSelected' => 'M',
+                    'newestFilmSelected' => 'S',
+                    'mostViewSelected' => 'W'
+                ]);
             }
             else
             {

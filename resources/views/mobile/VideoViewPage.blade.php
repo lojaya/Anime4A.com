@@ -1,18 +1,18 @@
-@extends('templates.master')
+@extends('mobile.templates.master')
 
 @section('Title')
     @if(isSet($anime)){{ $anime->name }}@endif @if(isSet($episode_id)){{ '- Tập '. \App\DBEpisodes::GetEpisode($episode_id) }}@endif
 @stop
 
 @section('stylesheet')
-    <link rel="stylesheet" href="{{Request::root()}}/style/ani/style.css" type="text/css" />
-    <link rel="stylesheet" href="{{Request::root()}}/style/ani/menu.css" type="text/css" />
+    <link rel="stylesheet" href="{{Request::root()}}/style/mobile/style.css" type="text/css" />
+    <link rel="stylesheet" href="{{Request::root()}}/style/mobile/menu.css" type="text/css" />
     <link rel="stylesheet" href="{{Request::root()}}/style/ani/searchBox.css" type="text/css" />
     <script type="text/javascript" src="{{Request::root()}}/js/jquery-3.1.0.min.js"></script>
     <script type="text/javascript" src="{{Request::root()}}/js/jquery-color.js"></script>
     <script type="text/javascript" src="{{Request::root()}}/js/jssor.slider-21.1.6.mini.js" charset="utf-8"></script>
     <script type="text/javascript" src="{{Request::root()}}/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="{{Request::root()}}/js/anime4a.js" charset="utf-8"></script>
+    <script type="text/javascript" src="{{Request::root()}}/js/m.anime4a.js" charset="utf-8"></script>
     <script type="text/javascript" src="{{Request::root()}}/js/searchBox.js" charset="utf-8"></script>
 @stop
 
@@ -49,6 +49,7 @@
                     <script src="{{ Request::root() }}/js/jwplayer-7.8.1/jwplayer.js"></script>
                     <script>jwplayer.key="1La4Kp4v+HhGBiJ+p5dWO6sb/AyCdbqtYQKR7w==";</script>
                     <script type='text/javascript'>
+                        var w = 0;
                         jwplayer("player").setup({
                             playlist: [{
                                 sources: <?php if(isSet($data)) echo $data; ?>
@@ -64,13 +65,14 @@
 								},
                             primary: "html5",
                             provider: "<?php echo Request::root();?>/js/jwplayer-7.8.1/PauMediaProvider.swf",
-                            width: 680,
-                            height: 420,
+                            width: "100%",
                             aspectratio: "16:9"
                         });
                     </script>
                 @else
-                    <iframe id="player" src="/get-video-{{ $video->id }}" width="680" height="420" frameborder="0" allowfullscreen></iframe>
+                    <div id="player-container">
+                        <iframe id="player" src="/get-video-{{ $video->id }}" width="100%" frameborder="0" allowfullscreen></iframe>
+                    </div>
                 @endif
             @else
                 <div style="color: white;font-size: 18pt;width: 680px;height: 420px;">Video không tồn tại hoặc xảy ra sự cố ngoài ý muốn!!!</div>
@@ -88,7 +90,7 @@
                 <a itemprop="url" href="{{ Request::root() }}/xem-phim/{{ \App\Library\MyFunction::GetFormatedName($anime->name) }}/{{ $anime->id }}.a4a"></a>
             </div>
             <div class="video_img">
-                <img itemprop="image" src="{{ $anime->img }}" style="width: 150px; height: 200px">
+                <img itemprop="image" src="{{ $anime->img }}" style="width: 100%;">
             </div>
             <div class="video_info">
                 <div class="video_name">
@@ -188,7 +190,7 @@
                 js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=289914814743628";
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));</script>
-        <div class="fb-comments" data-href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $anime_id }}.a4a" data-width="680" data-colorscheme="dark" data-numposts="5"></div>
+        <div class="fb-comments" data-href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $anime_id }}.a4a" data-width="100%" data-colorscheme="dark" data-numposts="5" data-mobile="true"></div>
         <!-- END FACEBOOK COMMENT BOX -->
 
         <div class="video_page_advertise">
@@ -204,12 +206,10 @@
             <div class="video_control_region">
                 <div class="video_control">
                     <div class="item"><a class="video_info abutton" title="Thông Tin">Thông Tin</a></div>
-                    <div class="item"><a class="videozoom abutton" title="Phóng To">Phóng To</a></div>
-                    <div class="item"><a class="lightoff abutton" title="Tắt Đèn">Tắt Đèn</a></div>
                     <div class="item"><a class="download abutton" title="Download" href="@if(isSet($video)&&!is_null($video)){{ \App\Library\PhpAdfLy::ShortenUrl($video->url_download) }}@endif" target="_blank">Download</a></div>
                     <div class="item"><a class="nextEpBtn abutton" title="Tập Sau">Tập Sau</a></div>
                     <div class="item"><a class="bookmarkBtn abutton" title="Đánh Dấu">Đánh Dấu</a></div>
-                    <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh sách Anime đang theo dõi</a></div>
+                    <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh sách</a></div>
                 </div>
             </div>
 
@@ -220,12 +220,10 @@
             <div class="video_control_region">
                 <div class="video_control">
                     <div class="item"><a class="video_info abutton" title="Thông Tin">Thông Tin</a></div>
-                    <div class="item"><a class="videozoom abutton" title="Phóng To">Phóng To</a></div>
-                    <div class="item"><a class="lightoff abutton" title="Tắt Đèn">Tắt Đèn</a></div>
                     <div class="item"><a class="download abutton" title="Download" href="@if(isSet($video)&&!is_null($video)){{ \App\Library\PhpAdfLy::ShortenUrl($video->url_download) }}@endif" target="_blank">Download</a></div>
                     <div class="item"><a class="nextEpBtn abutton" title="Tập Sau">Tập Sau</a></div>
                     <div class="item"><a class="bookmarkBtn abutton" title="Đánh Dấu">Đánh Dấu</a></div>
-                    <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh sách Anime đang theo dõi</a></div>
+                    <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh sách</a></div>
                 </div>
             </div>
             <script>
@@ -241,12 +239,10 @@
         <div class="video_control_region">
             <div class="video_control">
                 <div class="item"><a class="video_info abutton" title="Thông Tin">Thông Tin</a></div>
-                <div class="item"><a class="videozoom abutton" title="Phóng To">Phóng To</a></div>
-                <div class="item"><a class="lightoff abutton" title="Tắt Đèn">Tắt Đèn</a></div>
                 <div class="item"><a class="download abutton" title="Download" href="@if(isSet($video)&&!is_null($video)){{ \App\Library\PhpAdfLy::ShortenUrl($video->url_download) }}@endif" target="_blank">Download</a></div>
                 <div class="item"><a class="nextEpBtn abutton" title="Tập Sau">Tập Sau</a></div>
                 <div class="item"><a class="bookmarkBtn abutton" title="Đánh Dấu">Đánh Dấu</a></div>
-                <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh sách Anime đang theo dõi</a></div>
+                <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh sách</a></div>
             </div>
         </div>
         <script>
@@ -258,29 +254,4 @@
             });
         </script>
     @endif
-@stop
-
-@section('sidebar')
-    <!-- SideBar Region -->
-    <div id="sidebar" style="margin-top: -420px;">
-        <div class="most_view">
-            <div class="titleBar">
-                <span>Anime Xem Nhiều</span>
-                <div class="findButtons">
-                    <a class="buttonD @if($mostViewSelected == 'D') selected @endif ">D</a>
-                    <span>-</span>
-                    <a class="buttonW @if($mostViewSelected == 'W') selected @endif ">W</a>
-                    <span>-</span>
-                    <a class="buttonM @if($mostViewSelected == 'M') selected @endif ">M</a>
-                    <span>-</span>
-                    <a class="buttonS @if($mostViewSelected == 'S') selected @endif ">S</a>
-                    <span>-</span>
-                    <a class="buttonY @if($mostViewSelected == 'Y') selected @endif ">Y</a>
-                </div>
-            </div>
-            <ul class="sidebar_items">
-            </ul>
-        </div>
-    </div>
-    <!-- END SideBar Region -->
 @stop

@@ -4,9 +4,10 @@ body,
 .search-button-vpt {
 
 }
+html, body {overflow-x: hidden;}
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
     border: 0;
-    font-size: 100%;
+    font-size: 25pt;
     margin: 0 auto;
     outline: 0;
     padding: 0;
@@ -14,13 +15,10 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 }
 
 body {
-    background: #000;
+    background: #333;
     color: #BFBFBF;
     font-family: Tahoma, sans-serif;
-    font-size: 100%;
-    line-height: 1.3;
     text-decoration: none;
-    width: auto;
     z-index: -2;
 }
 ul, li {
@@ -263,74 +261,85 @@ button:hover {
 }
 
 /* MEDIA PLAYER */
+#player-container {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+    /* 16x9 Aspect Ratio */
+    padding-bottom: 56.25%;
+}
+#player-container iframe {
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
 #player {
     z-index: 200;
 }
 .video_player {
-    width: 680px;
+    width: 100%;
     z-index: 200;
     margin: 0;
     position: relative;
 }
-.video_player .video_name{
-    font-family: Nobile, sans-serif;
-    font-size: 12pt;
-    height: 15px;
-    padding: 5px 10px;
-}
 .video_detail {
-    width: 680px;
+    width: 100%;
     margin: 0;
     position: relative;
 }
 .video_detail>.video_img {
     margin: 0;
     position: absolute;
-    right: 5px;
-    top: 10px;
+    right: 5pt;
+    top: 10pt;
+    width: 30%;
 }
 .video_detail>.video_info {
     position: relative;
     top: 0;
-    padding: 0px 10px;
+    padding: 0pt 10pt;
     float: left;
-    width: 510px;
-    min-height: 200px;
+    width: 70%;
+    min-height: 400pt;
 }
 .video_detail>.video_info>.video_name {
     color: #f80;
-    font-size: 18pt;
+}
+.video_detail>.video_info>.video_name>span {
+    font-size: 40pt !important;
 }
 .video_detail>.video_info>.video_category {
     color: #cf0;
-    font-size: 11pt;
+    font-size: 25pt;
 }
 .video_detail>.video_info>.video_category a{
     color: #0cc;
-    font-size: 11pt;
+    font-size: 25pt;
 }
 .video_detail>.video_info>.video_ep {
     color: #cf0;
-    font-size: 11pt;
+    font-size: 25pt;
 }
 .video_detail>.video_info>.video_release {
     color: #cf0;
-    font-size: 11pt;
+    font-size: 25pt;
 }
 .video_detail>.video_info>.video_type {
     color: #cf0;
-    font-size: 11pt;
+    font-size: 25pt;
 }
 .video_detail>.video_info>.video_type a{
     color: #0cc;
-    font-size: 11pt;
+    font-size: 25pt;
 }
 .video_detail>.video_info>.video_description {
     color: #fff;
-    font-size: 11pt;
+    font-size: 25pt;
 }
 .video_selection {
-    width: 680px;
+    width: 100%;
     float: left;
     position: relative;
     display: block;
@@ -344,8 +353,8 @@ button:hover {
     color: #FFF;
 }
 .video_selection>.group {
-    margin: 10px;
-    font-size: 10pt;
+    margin: 10pt;
+    font-size: 25pt;
     width: 100%;
     display: inline-block;
 }
@@ -353,9 +362,10 @@ button:hover {
     color: #00FF00;
 }
 .video_selection>.group>.item {
-    padding: 0px 3px;
+    padding: 5pt 15pt;
+    margin: 2pt 2pt;
     float: left;
-    border-style: ridge;
+    border-style: solid;
     border-width: thin;
     border-color: rgba(0,200,150,0.8);
     background-color: rgba(50,250,150,0.4);
@@ -372,27 +382,21 @@ button:hover {
 .video_control_region{
     width: 100%;
     z-index: 9999;
-    font-size: 10pt;
     position: fixed;
-    bottom: 0px;
-    background: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,50,50,1), rgba(0,50,50,1), rgba(0,0,0,0));
-    background: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,50,50,1), rgba(0,50,50,1), rgba(0,0,0,0));
-    background: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,50,50,1), rgba(0,50,50,1), rgba(0,0,0,0));
-    background: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,50,50,1), rgba(0,50,50,1), rgba(0,0,0,0));
-    background: linear-gradient(to left, rgba(0,0,0,0), rgba(0,50,50,1), rgba(0,50,50,1), rgba(0,0,0,0));
+    bottom: 0;
+    background: rgba(0,50,50,1);
 }
 .video_control {
     margin: 0 auto;
-    padding: 0px 0px;
-    width: 600px;
-    height: 38px;
+    width: 90%;
+    height: 60pt;
     position: relative;
 }
 .video_control>.item {
     color: #FFCC00;
-    padding: 8px 0px;
     float: left;
-    width: 80px;
+    padding-top: 10pt;
+    width: 30%;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
@@ -400,6 +404,8 @@ button:hover {
 }
 .video_control .item a {
     color: #FFFFFF;
+    padding: 10pt 20pt;
+    font-size: 30pt;
 }
 .video_control .item a:hover {
     color: #4488FF;
@@ -443,26 +449,13 @@ button:hover {
     background: rgba(0,0,0,0.9);
 }
 #userBox>.displayArea {
-    width: 730px;
+    width: 100%;
     position: relative;
-    top: 30%;
-}
-#userBox>.closeBtn {
-    position: relative;
-    width: 50px;
-    top: 30%;
-    color: #FF0;
-    font-weight: bold;
-}
-#userBox>.closeBtn:hover {
-    color: #F00;
-    font-weight: bold;
-    cursor: url("/cursors/Link.cur"), progress
+    top: 10%;
 }
 #userBox>.displayArea>#RegisterForm {
-    width: 320px;
-    top: 30%;
-    padding: 20px;
+    width: 100%;
+    padding: 10pt;
     position: relative;
     background: rgba(0,0,0,0.8);
     background: -webkit-linear-gradient(left, rgba(0,0,20,0.8), rgba(0,0,20,1), rgba(0,0,20,0.8));
@@ -474,9 +467,8 @@ button:hover {
     float: left;
 }
 #userBox>.displayArea>#LoginForm2 {
-    width: 320px;
-    top: 30%;
-    padding: 20px;
+    width: 100%;
+    padding: 10pt;
     position: relative;
     background: rgba(0,0,0,0.8);
     background: -webkit-linear-gradient(left, rgba(0,0,20,0.8), rgba(0,0,20,1), rgba(0,0,20,0.8));
@@ -493,34 +485,40 @@ button:hover {
 }
 #userBox>.displayArea  .row {
     width: 100%;
-    padding-top: 5px;
+    padding-top: 5pt;
+    position: relative;
+    height: 40pt;
 }
 #userBox>.displayArea  .row>.error {
     color: red;
-    font-size: 9pt;
+    font-size: 19pt;
 }
 #userBox>.displayArea  .row>.error>span {
     word-wrap: break-word;
 }
 #userBox>.displayArea  .row>.col1 {
-    width: 120px;
+    width: 40%;
     float: left;
+    height: 40pt;
 }
 #userBox>.displayArea  .row>.col1>span {
     float: right;
-    font-size: 10pt;
+    font-size: 25pt;
 }
 #userBox>.displayArea  .row>.col2 {
-    display: inline;
+    width: 40%;
+    float: left;
 }
 #userBox>.displayArea  .row>.col2>input {
-    width: 200px;
+    width: 100%;
     border: 0;
-    height: 20px;
+    height: 40pt;
+    font-size: 25pt;
 }
 #userBox>.displayArea  .row>.col2>.submitBtn {
-    width: 100px;
+    width: 50%;
     border: 0;
+    font-size: 25pt;
 }
 
 #AdvancedSearch {
@@ -632,18 +630,21 @@ button:hover {
     z-index: 2;
     position: relative;
 }
+#userCP .bookmarks{
+    overflow:auto;
+}
 #userCP .bookmarks>span{
     font-weight: 800;
-    font-size: 12pt;
+    font-size: 30pt;
     color: yellowgreen;
 }
 
 #userCP .bookmarks>ul>li{
-    font-size: 11pt;
     padding: 0px 50px;
 }
 
 #userCP .bookmarks>ul>li>a{
+    font-size: 30pt;
     color: white;
     text-decoration: none;
 }

@@ -6,6 +6,9 @@
  * Time: 2:20 AM
  */
 ?>
+
+@include('mobile.pages.userLoginBox')
+
 <div id="header">
     <div id="top_menu">
         <ul id="cssmenu" class="topmenu">

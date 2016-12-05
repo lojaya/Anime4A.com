@@ -124,3 +124,24 @@
     @endif
     <!-- END Home Region -->
 @stop
+
+@section('controlBar')
+    @if(isSet($userSigned))
+        @if($userSigned->loginHash==hash('sha256', 'Anime4A Login Successful'))
+            <div class="video_control_region">
+                <div class="video_control">
+                    <div class="item" style="width: 100%">
+                        <a class="userCpBtn abutton" title="Danh sách Anime đang theo dõi">Danh sách Anime Theo Dõi</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- USER BOX -->
+            @include('templates.UserBox')
+            <!-- END USER BOX -->
+
+        @else
+        @endif
+    @else
+    @endif
+@stop

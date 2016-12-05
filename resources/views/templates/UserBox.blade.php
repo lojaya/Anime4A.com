@@ -13,15 +13,7 @@
         <div class="bookmarks" tabindex="170">
             <span>Danh sách Anime đang theo dõi:</span>
             <ul id="userCPBookmarks">
-                @if(isSet($bookmarks)&&!is_null($bookmarks))
-                    @foreach($bookmarks as $i)
-                        <?php
-                        $tenphim = \App\Library\MyFunction::GetFormatedName(\App\DBAnimes::GetName($i->anime_id));
-                        ?>
-                        <hr>
-                        <li><a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->anime_id }}.a4a">{{ \App\DBAnimes::GetName($i->anime_id) }}</a><a class="delBtn" href="{{Request::root()}}/bookmark-delete-{{ $i->id }}">Xóa</a></li>
-                    @endforeach
-                @endif
+                @include('templates.BookmarkItem')
             </ul>
         </div>
     </div>
