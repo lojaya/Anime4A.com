@@ -8,7 +8,7 @@
 ?>
 <div class="items">
     @foreach($items as $i)
-        <div class="vid-{{ $i->id }}">
+        <div class="vid__{{ $i->id }}">
             <input type="hidden" name="fansub_id" value="{{ $i->fansub_id }}">
             <input type="hidden" name="server_id" value="{{ $i->server_id }}">
             <a class="text">
@@ -18,12 +18,12 @@
     @endforeach
 </div>
 <script>
-    $(document).on("click","div[class^='vid-']",function(e) {
+    $(document).on("click","div[class^='vid__']",function(e) {
         e.preventDefault();
 
         if(!$(this).hasClass('active')) {
             var _url = $('#MainUrl').attr('href') + '/admincp/edit-video';
-            var _id = $(this).attr('class').split('-')[1];
+            var _id = $(this).attr('class').split('__')[1];
 
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
             $.ajax({

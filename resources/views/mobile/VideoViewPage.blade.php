@@ -45,30 +45,9 @@
         @if(isSet($video_type))
             @if(isSet($video)&&!is_null($video))
                 @if($video_type=='google')
-                    <div id="player"></div>
-                    <script src="{{ Request::root() }}/js/jwplayer-7.8.1/jwplayer.js"></script>
-                    <script>jwplayer.key="1La4Kp4v+HhGBiJ+p5dWO6sb/AyCdbqtYQKR7w==";</script>
-                    <script type='text/javascript'>
-                        var w = 0;
-                        jwplayer("player").setup({
-                            playlist: [{
-                                sources: <?php if(isSet($data)) echo $data; ?>
-                            }],
-                            modes: [{
-                                type: "html5"
-                            },{
-                                type: "flash",
-                                src: "<?php echo Request::root();?>/js/jwplayer-7.8.1/jwplayer.flash.swf"
-                            }],
-							skin: {
-								name: "bekle"
-								},
-                            primary: "html5",
-                            provider: "<?php echo Request::root();?>/js/jwplayer-7.8.1/PauMediaProvider.swf",
-                            width: "100%",
-                            aspectratio: "16:9"
-                        });
-                    </script>
+                    <div id="player-container">
+                        <iframe id="player" src="/get-gg-video-{{ $video->id }}" width="100%" frameborder="0" allowfullscreen></iframe>
+                    </div>
                 @else
                     <div id="player-container">
                         <iframe id="player" src="/get-video-{{ $video->id }}" width="100%" frameborder="0" allowfullscreen></iframe>

@@ -42,6 +42,7 @@ Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}/{fansub_id?}/{server_id?
 
 // Video Data
 Route::get('/get-video-{id?}', 'VideoController@GetVideo');
+Route::get('/get-gg-video-{id?}', 'VideoController@GetGGVideo');
 
 // Filter Animes Data
 Route::post('/get-list-newUpdated', 'AnimesController@newUpdated');
@@ -152,5 +153,9 @@ Route::post('/admincp/tag/save', 'ACPTagPagesController@_Save');
 Route::get('/test', function () {
     return view('test');
 });
+Route::get('/test2', function () {
+    return view('test2');
+});
 Route::post('/test-gg', 'TestController@Test');
+Route::get('/test-redirect-gg', 'VideoController@RedirectGGVideo');
 

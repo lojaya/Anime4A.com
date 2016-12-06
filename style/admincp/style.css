@@ -421,7 +421,7 @@ div[class^='cat_']>input {
 #episode_list>.items {
 
 }
-#episode_list>.items>div[class^='ep-'] {
+#episode_list>.items>div[class^='ep__'] {
     display: inline-block;
     border: solid #0ff thin;
     margin: 2px 0px;
@@ -431,11 +431,11 @@ div[class^='cat_']>input {
     background: #fff;
     color: #000;
 }
-#episode_list>.items>div[class^='ep-']:hover {
+#episode_list>.items>div[class^='ep__']:hover {
     display: inline-block;
     border: solid #fff thin;
 }
-#episode_list>.items>div[class^='ep-']>a {
+#episode_list>.items>div[class^='ep__']>a {
     padding: 0px 10px;
 }
 
@@ -445,7 +445,7 @@ div[class^='cat_']>input {
 #video_list>.items {
 
 }
-#video_list>.items>div[class^='vid-'] {
+#video_list>.items>div[class^='vid__'] {
     display: inline-block;
     border: solid #0ff thin;
     margin: 2px 0px;
@@ -455,11 +455,11 @@ div[class^='cat_']>input {
     background: #fff;
     color: #000;
 }
-#video_list>.items>div[class^='vid-']:hover {
+#video_list>.items>div[class^='vid__']:hover {
     display: inline-block;
     border: solid #fff thin;
 }
-#video_list>.items>div[class^='vid-']>a {
+#video_list>.items>div[class^='vid__']>a {
     padding: 0px 10px;
 }
 /***********************

@@ -45,32 +45,13 @@
         @if(isSet($video_type))
             @if(isSet($video)&&!is_null($video))
                 @if($video_type=='google')
-                    <div id="player"></div>
-                    <script src="{{ Request::root() }}/js/jwplayer-7.8.1/jwplayer.js"></script>
-                    <script>jwplayer.key="1La4Kp4v+HhGBiJ+p5dWO6sb/AyCdbqtYQKR7w==";</script>
-                    <script type='text/javascript'>
-                        jwplayer("player").setup({
-                            playlist: [{
-                                sources: <?php if(isSet($data)) echo $data; ?>
-                            }],
-                            modes: [{
-                                type: "html5"
-                            },{
-                                type: "flash",
-                                src: "<?php echo Request::root();?>/js/jwplayer-7.8.1/jwplayer.flash.swf"
-                            }],
-							skin: {
-								name: "bekle"
-								},
-                            primary: "html5",
-                            provider: "<?php echo Request::root();?>/js/jwplayer-7.8.1/PauMediaProvider.swf",
-                            width: 680,
-                            height: 420,
-                            aspectratio: "16:9"
-                        });
-                    </script>
+                    <div id="player-container">
+                        <iframe id="player" src="/get-gg-video-{{ $video->id }}" width="100%" frameborder="0" allowfullscreen></iframe>
+                    </div>
                 @else
-                    <iframe id="player" src="/get-video-{{ $video->id }}" width="680" height="420" frameborder="0" allowfullscreen></iframe>
+                    <div id="player-container">
+                        <iframe id="player" src="/get-video-{{ $video->id }}" width="100%" frameborder="0" allowfullscreen></iframe>
+                    </div>
                 @endif
             @else
                 <div style="color: white;font-size: 18pt;width: 680px;height: 420px;">Video không tồn tại hoặc xảy ra sự cố ngoài ý muốn!!!</div>
@@ -263,6 +244,18 @@
 @section('sidebar')
     <!-- SideBar Region -->
     <div id="sidebar" style="margin-top: -420px;">
+<div style="width: 300px; height: 250px;">
+<script type="text/javascript">
+    google_ad_client = "ca-pub-7114750780411306";
+    google_ad_slot = "5442257676";
+    google_ad_width = 300;
+    google_ad_height = 250;
+</script>
+<!-- anime4a ads sidebar 2 -->
+<script type="text/javascript"
+src="//pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
         <div class="most_view">
             <div class="titleBar">
                 <span>Anime Xem Nhiều</span>

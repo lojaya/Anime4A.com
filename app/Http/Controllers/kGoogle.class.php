@@ -1052,6 +1052,16 @@ class J2T_Plugin_Google_Photos extends J2T_Plugin_Abstract {
                 );
                 unset($mediaArr[$i],$s);
             }
+            if(preg_match($_pattern['quality'][2], $value, $m))
+            {
+                preg_match($_pattern['json'][0],$m[0], $s);
+                $data['content'][] = array(
+                    'url' => $s[1],
+                    'quality' => $s[3],
+                    'type' => $s[2]
+                );
+                unset($mediaArr[$i],$s);
+            }
         }
 		}
         return $data;

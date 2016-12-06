@@ -8,7 +8,7 @@
 ?>
 <div class="items">
     @foreach($items as $i)
-        <div class="ep-{{ $i->episode }}">
+        <div class="ep__{{ $i->episode }}">
             <a class="text">
                 {{ $i->episode }}
             </a>
@@ -16,13 +16,13 @@
     @endforeach
 </div>
 <script>
-    $(document).on("click","div[class^='ep-']",function(e) {
+    $(document).on("click","div[class^='ep__']",function(e) {
         e.preventDefault();
 
         if(!$(this).hasClass('active')) {
 
             var _url = $('#MainUrl').attr('href') + '/admincp/get-video';
-            var _ep = $(this).attr('class').split('-')[1];
+            var _ep = $(this).attr('class').split('__')[1];
 
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
             $.ajax({

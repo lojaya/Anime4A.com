@@ -6,10 +6,7 @@
  * Time: 6:46 PM
  */
 ?>
-<?php
-use App\Library\MyFunction;
-$myFunc = new MyFunction();
-?>
+
 <form action="{{Request::root()}}/admincp/anime/save" method="post" enctype="multipart/form-data" class="inputArea" id="InputForm">
     <div class="input_box" style="float: left">
         <div class="title">Anime Name: </div>
@@ -43,7 +40,7 @@ $myFunc = new MyFunction();
             <?php $cat = array(); if(isSet($anime)) $cat = explode(',', $anime->category);?>
             @if(isSet($categoryList))
                 @foreach($categoryList as $i)
-                    @if($myFunc->checkCategory($i->id,$cat))
+                    @if(\App\Library\MyFunction::CheckCategory($i->id,$cat))
                         <option value="{{ $i->id }}">{{ $i->name }}</option>
                     @endif
                 @endforeach

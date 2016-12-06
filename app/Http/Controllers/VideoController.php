@@ -39,6 +39,61 @@ class VideoController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
+     */
+    public function GetGGVideo(Request $request, $id)
+    {
+        try
+        {
+            $video = App\DBVideos::find($id);
+            if(!is_null($video)&&strlen($video->url_source))
+            {
+                $j2t = new \J2T();
+                $j2t->setLink = $video->url_source;
+                $j2t->setFormat = isset($_GET['format']) ? $_GET['format'] : false;
+                $source = json_decode($j2t->run());
+
+                $data = array();
+                foreach ($source as $key => $value){
+                    $value->file = \App\Library\MyFunction::getDirectLink($value->file);
+
+                    $data[] = array(
+                        'type'      => $value->type,
+                        'label'     => $value->label,
+                        'file'      => $value->file,
+                        'default'   => $value->default
+                    );
+                }
+
+                if(!count($data))
+                {
+                    $data[] = array(
+                        'type'      => 'mp4',
+                        'label'     => 'HD',
+                        'file'      => 'http://thenewcode.com/assets/videos/polina.mp4',
+                        'default'   => true
+                    );
+                }
+                $data = json_encode($data);
+                $data = str_replace('\\','', $data);
+
+                return view('EmbedVideo')->with([
+                    'video' => $video,
+                    'data' => $data,
+                ]);
+            }
+            else
+                return '<span style="color: white; font-size: 18pt">Video không tồn tại hoặc xảy ra sự cố ngoài ý muốn!!!</span>';
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
+
     // Lấy link file video để xem
     /**
      * @return bool|string
