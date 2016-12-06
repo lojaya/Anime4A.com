@@ -19,6 +19,7 @@ Route::post('/register', 'UsersController@Register');
 Route::post('/login', 'UsersController@LogIn');
 Route::post('/logout', 'UsersController@LogOut');
 Route::post('/login-with-facebook', 'UsersController@FBLogIn');
+Route::post('/login-with-google', 'UsersController@GGLogIn');
 
 // Trang danh sách tất cả anime
 Route::get('/list-anime.html', 'PagesController@listPage');

@@ -76,8 +76,8 @@
                     <span itemprop="name">{{ $anime->name }}</span>
                 </div>
                 <div class="video_category">
-                    <?php $cat = explode(',', $anime->category);?>
-                    <span>Type: @foreach($cat as $i)<a>{{ \App\DBCategory::GetName($i).',' }}</a>@endforeach</span>
+                    <?php $catArr = \App\Library\MyFunction::GetCategoryNameArray($anime->category);?>
+                    <span>Thể loại: @foreach($catArr as $i)<a>{{ $i }}, </a>@endforeach</span>
                 </div>
                 <div class="video_ep">
                     <span>Số tập: {{ $anime->episode_new }}/<span itemprop="episodeNumber">{{ $anime->episode_total }}</span></span>
@@ -86,7 +86,7 @@
                     <span>Năm sản xuất: {{ date_format($anime->release_date,"Y") }}</span>
                 </div>
                 <div class="video_type">
-                    <span>Thể loại: <a>{{ \App\DBType::GetName($anime->type) }}</a></span>
+                    <span>Type: <a>{{ \App\DBType::GetName($anime->type) }}</a></span>
                 </div>
                 <div class="video_description" itemprop="review" itemscope itemtype="http://schema.org/Review">
                     <span itemprop="reviewBody">{{ $anime->description }}</span>

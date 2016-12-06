@@ -85,6 +85,33 @@
                             scope: 'email'
                         });
                     }
+
+                    function gg_login(googleUser)
+                    {
+                        var requestUrl = $('base').attr('href') + 'login-with-google';
+                        var _id = googleUser.getBasicProfile().getId();
+                        var _email = googleUser.getBasicProfile().getEmail();
+                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                        $.ajax({
+                            url: requestUrl,
+                            type: 'post',
+                            data: {'id': _id, 'username': _email, _token: CSRF_TOKEN},
+                            async: false,
+                            success: function(data){
+                                var temp = $.parseJSON(data);
+                                var completed = temp.completed;
+
+                                if(completed)
+                                {
+                                    location.href = $('#MainUrl').attr('href');
+                                }
+                                else {
+                                    var error = temp.error;
+                                    thisForm.find('.row>.error>span').html(error);
+                                }
+                            }
+                        });
+                    }
                 </script>
                 <form action="{{Request::root()}}/register" method="post" enctype="multipart/form-data" id="RegisterForm" class="userForm" tabindex='1'>
                     <div class="row">
@@ -166,7 +193,8 @@
                         </div>
                         <div class="col2">
                             <img src="/images/facebook-Icon.png" id="FbLoginBtn" style="width: 30%;" onclick="fb_login()">
-                            <img src="/images/Google-plus-icon.png" id="GGLoginBtn" style="width: 30%;" onclick="gg_login()">
+                            <img src="/images/Google-plus-icon.png" id="GGLoginBtn" style="width: 30%;">
+                            <script>startApp();</script>
                         </div>
                     </div>
 

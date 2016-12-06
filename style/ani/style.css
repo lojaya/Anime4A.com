@@ -927,7 +927,7 @@ button:hover {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1060;
+    z-index: 10600;
     display: none;
     max-width: 276px;
     padding: 1px;
@@ -1108,11 +1108,14 @@ button:hover {
 /* FOOTER */
 #footer {
     width: 100%;
-    height: 120px;
+    height: 220px;
     margin: 0 auto;
     padding: 0px 0px;
     font-size: 10pt;
     display: block;
     float: right;
     /*background: #000000 url(/images/subtle_carbon.png) repeat;*/
+}
+#footer>div {
+    padding-top: 140px !important;
 }

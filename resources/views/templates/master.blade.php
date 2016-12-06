@@ -23,10 +23,37 @@
     <meta property="og:url" content="{{ Request::root() }}" />
     <meta property="og:image" content="" />
     <base href="{{ Request::root() }}/" /><!--[if IE]></base><![endif]-->
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
-
     <link href="/favicons/anime4a.com.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="author" href="{{ Request::root() }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+    <script src="https://apis.google.com/js/api:client.js"></script>
+    <script>
+        var googleUser = {};
+        var startApp = function() {
+            gapi.load('auth2', function(){
+                // Retrieve the singleton for the GoogleAuth library and set up the client.
+                auth2 = gapi.auth2.init({
+                    client_id: '28215860207-380s5r214hqt9lgpa3eatpl14idpndjs.apps.googleusercontent.com',
+                    cookiepolicy: 'single_host_origin',
+                    // Request scopes in addition to 'profile' and 'email'
+                    scope: 'profile email'
+                });
+                attachSignin(document.getElementById('GGLoginBtn'));
+            });
+        };
+
+        function attachSignin(element) {
+            auth2.attachClickHandler(element, {},
+                    function(googleUser) {
+                        // login success
+                        gg_login(googleUser);
+                    }, function(error) {
+                        alert(JSON.stringify(error, undefined, 2));
+                    });
+        }
+    </script>
+
     @yield('stylesheet')
 	<!-- PopAds.net Popunder Code for anime4a.com | 2016-12-06,1634685,0,0 -->
 <script type="text/javascript" data-cfasync="false">

@@ -205,6 +205,56 @@ class UsersController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return string
+     */
+    public function GGLogIn(Request $request)
+    {
+        try
+        {
+            $result = (object) array('completed' => false, 'error' => '');
+            $id = Input::get('id');
+            $username = $id . '@google.com';
+
+            $user = DBUsers::where('google_id', $id)
+                ->get()->first();
+
+            // Login success codes
+            $result->completed = true;
+
+            // add session
+            $loginHash = hash('sha256', 'Anime4A Login Successful');
+            Session::put('loginHash', $loginHash);
+            Session::put('username', $username);
+
+            if(!is_null($user))
+            {
+                // update user data
+                $user->google_id = $id;
+                $user->password = hash('sha256', $id);
+                $user->save();
+                return json_encode($result);
+            }
+            else
+            {
+                $user = new DBUsers();
+                $user->google_id = $id;
+                $user->username = $username;
+                $user->password = hash('sha256', $id);
+                $user->save();
+            }
+
+            return json_encode($result);
+        }
+        catch(\Exception $e)
+        {
+            $result = (object) array('completed' => false, 'error' => '');
+            $result->error = $e->getMessage();
+            return json_encode($result);
+        }
+    }
+
+    /**
      * @return object
      */
     public static function CheckUserLogin()

@@ -8,6 +8,8 @@
 
 namespace App\Library;
 
+use App\DBCategory;
+
 class MyFunction {
     // Format video name
     public static function GetFormatedName($name)
@@ -50,6 +52,10 @@ class MyFunction {
         return $f;
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public static function getDirectLink($url) {
         $urlInfo = parse_url($url);
         $out  = "GET  {$url} HTTP/1.1\r\n";
@@ -70,5 +76,38 @@ class MyFunction {
         preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!", $data, $matches);
         $url = $matches[1];
         return trim($url);
+    }
+
+    /**
+     * @param $cat
+     * @return mixed
+     */
+    public static function GetCategoryNameString($cat)
+    {
+        $catArr = explode(',', $cat);
+        $result = $cat;
+        foreach($catArr as $i)
+        {
+            $name = DBCategory::GetName($i);
+            $result = str_replace($i, $name, $result);
+        }
+        return $result;
+    }
+
+    /**
+     * @param $cat
+     * @return array
+     */
+    public static function GetCategoryNameArray($cat)
+    {
+        $result = explode(',', $cat);
+        for($i = 0; $i<count($result); $i++){
+
+        }
+        foreach($result as $i => $value)
+        {
+            $result[$i] = DBCategory::GetName($value);
+        }
+        return $result;
     }
 }

@@ -8,7 +8,7 @@
 ?>
 
 <div id="footer">
-    <div align="center" style="padding-top: 40px">
+    <div align="center" style="padding-top: 140px">
         Copyright ©2016-2017 ANIME4A.COM. All Rights Reserved.
     </div>
 </div>

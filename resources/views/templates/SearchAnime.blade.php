@@ -45,7 +45,7 @@ $MyFunc = new App\Library\MyFunction;
                 <hr>
                 <div>{{ $i->description }}</div>
                 <hr>
-                <div>Thể loại: </div>
+                <div>Thể loại: {{ \App\Library\MyFunction::GetCategoryNameString($i->category) }}</div>
             </div>
         </div>
     @endforeach
