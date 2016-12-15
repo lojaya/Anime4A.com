@@ -148,6 +148,8 @@ class ACPVideoController extends Controller
             $fansubList = App\DBFansub::all();
             $serverList = App\DBServer::all();
 
+            $defaultFansub = Input::get('defaultFansub');
+
             $anime_id = Session::get('anime_id');
             $ep = Session::get('ep');
             $episode = App\DBEpisodes::where([
@@ -161,7 +163,8 @@ class ACPVideoController extends Controller
                 return View::make('admincp.ACPVideoEditor', [
                     'episode_id' => $episode_id,
                     'fansubList' => $fansubList,
-                    'serverList' => $serverList
+                    'serverList' => $serverList,
+                    'defaultFansub' => $defaultFansub
                 ])->render();
             }
         }

@@ -128,11 +128,12 @@ $myFunc = new MyFunction();
     function addNewVideo() {
         var _url = $('#MainUrl').attr('href') + '/admincp/add-video';
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        var defaultFansub = $("select[id='default_fansub_id'] :selected").val();
 
         $.ajax({
             url: _url,
             type: "post",
-            data: {_token: CSRF_TOKEN},
+            data: {'defaultFansub': defaultFansub,_token: CSRF_TOKEN},
             async: false,
             success: function(data){
                 $('#editorArea').html(data);
@@ -152,6 +153,16 @@ $myFunc = new MyFunction();
                         <option value="{{ $i->id }}">{{ $i->name.' - '.$i->id }}</option>
                     @endforeach
                 @endif
+            @endif
+        </select>
+    </div>
+    <div class="input_box">
+        <div class="title">Default Fansub: </div>
+        <select class="category_value" name="default_fansub_id" id="default_fansub_id" style="width: 200px">
+            @if(isSet($fansubDefaultList))
+                @foreach($fansubDefaultList as $i)
+                    <option value="{{ $i->id }}">{{ $i->name.' - '.$i->id }}</option>
+                @endforeach
             @endif
         </select>
     </div>

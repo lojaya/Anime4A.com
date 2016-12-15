@@ -69,7 +69,8 @@
                 <a itemprop="url" href="{{ Request::root() }}/xem-phim/{{ \App\Library\MyFunction::GetFormatedName($anime->name) }}/{{ $anime->id }}.a4a"></a>
             </div>
             <div class="video_img">
-                <img itemprop="image" src="{{ $anime->img }}" style="width: 150px; height: 200px">
+                <img itemprop="image" class="banner" src="{{ $anime->banner }}">
+                <img itemprop="image" class="img" src="{{ $anime->img }}">
             </div>
             <div class="video_info">
                 <div class="video_name">

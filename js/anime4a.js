@@ -239,9 +239,9 @@ $(document).ready(function () {
     $('.video_control>.item>.video_info').on( "click", function(e) {
         if($('.video_detail').css('display')==='none')
         {
-            $('#sidebar').css('margin-top', '-' + $('.video_detail').outerHeight() + 'px');
             $('.video_player').css('display', 'none');
             $('.video_detail').fadeIn();
+            $('#sidebar').css('margin-top', '-' + $('.video_detail>.video_info').height() + 'px');
             $(this).text('Xem Phim');
             $(this).attr('title', "Xem Phim");
         }

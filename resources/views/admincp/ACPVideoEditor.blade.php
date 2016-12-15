@@ -19,7 +19,7 @@ $myFunc = new MyFunction();
         <select class="category_value" name="fansub_id" style="width: 500px">
             @if(isSet($fansubList))
                 @foreach($fansubList as $i)
-                    <option value="{{ $i->id }}" @if(isSet($video)) @if($i->id==$video->fansub_id){{'selected'}}@endif @endif>{{ $i->name.' - '.$i->id }}</option>
+                    <option value="{{ $i->id }}" @if(isSet($video)) @if($i->id==$video->fansub_id){{'selected'}}@endif @else @if($i->id==$defaultFansub){{'selected'}}@endif @endif>{{ $i->name.' - '.$i->id }}</option>
                 @endforeach
             @endif
         </select>

@@ -65,6 +65,7 @@ class ACPEpisodePagesController extends Controller
     {
         try {
             $animeList = App\DBAnimes::all();
+            $fansubDefaultList = App\DBFansub::all();
 
             if (Input::has('id')) {
                 $id = Input::get('id');
@@ -73,12 +74,14 @@ class ACPEpisodePagesController extends Controller
 
                 return View::make('admincp.ACPEpisodeEditor', [
                     'anime_id' => $id,
-                    'animeList' => $animeList
+                    'animeList' => $animeList,
+                    'fansubDefaultList' => $fansubDefaultList
                 ])->render();
             } else {
                 Session::forget('anime_id');
                 return View::make('admincp.ACPEpisodeEditor', [
-                    'animeList' => $animeList
+                    'animeList' => $animeList,
+                    'fansubDefaultList' => $fansubDefaultList
                 ])->render();
             }
         } catch (\Exception $e) {
