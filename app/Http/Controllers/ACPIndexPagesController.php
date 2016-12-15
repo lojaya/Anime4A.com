@@ -33,8 +33,7 @@ class ACPIndexPagesController extends Controller
         }
         else
         {
-            $pageController = new PagesController();
-            $userSigned = $pageController->CheckUserLogin();
+            $userSigned = UsersController::CheckUserLogin();
 
             if($userSigned->signed) {
                 $user = App\DBUsers::where('username', $userSigned->username)

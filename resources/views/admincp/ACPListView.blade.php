@@ -21,7 +21,7 @@
     <div class="item" style="color: red; font-size: 9pt">
         <div style="padding: 0px; display: inline-block; width: 15px;"><b>CB</b></div>
         <div style="padding: 0px; display: inline-block; width: 220px; margin-left: 5px;"><b>Name</b></div>
-        <div style="padding: 0px; display: inline-block; width: 100px;"><b>Last Updated</b></div>
+        <div style="padding: 0px; display: inline-block; width: 100px;"><b>ID</b></div>
     </div>
     @if(isSet($items))
         @foreach($items as $i)
@@ -31,7 +31,8 @@
                     <a>{{ $i->name }}</a>
                 </div>
                 <div class="col2" style="width: 115px">
-                    <a>@if($i->updated_at){{ $i->updated_at->format('d/m/Y h:i') }}@endif</a>
+                    <a>{{ $i->id }}</a>
+                    <!--<a>@if($i->updated_at){{ $i->updated_at->format('d/m/Y h:i') }}@endif</a>-->
                 </div>
             </div>
         @endforeach

@@ -38,6 +38,12 @@
                 </ul>
             </li>
             <!--<li class="topmenu"><a href="">Tìm Kiếm Nâng Cao</a></li>-->
+
+            @if(isSet($userSigned))
+                @if($userSigned->loginHash==hash('sha256', 'Anime4A Login Successful')&&$userSigned->admin)
+                    <li class="topmenu"><a target="_blank" href="/admincp">Admincp</a></li>
+                @endif
+            @endif
         </ul>
         <div id="utilitiesRegion">
             <div class="search_region">

@@ -60,7 +60,7 @@ class PagesController extends Controller
             }
 
             // Check user login
-            $userSigned = PagesController::CheckUserLogin();
+            $userSigned = UsersController::CheckUserLogin();
 
             // Data for header
             $category_list = App\DBCategory::select('id', 'name')->get();
@@ -197,7 +197,7 @@ class PagesController extends Controller
         try
         {
             // Check user login
-            $userSigned = PagesController::CheckUserLogin();
+            $userSigned = UsersController::CheckUserLogin();
 
             // Remove video session
             Session::forget('video_id');
@@ -385,7 +385,7 @@ class PagesController extends Controller
         try
         {
             // Check user login
-            $userSigned = PagesController::CheckUserLogin();
+            $userSigned = UsersController::CheckUserLogin();
 
             // Data for header
             $category_list = App\DBCategory::select('name')->get();
@@ -415,7 +415,7 @@ class PagesController extends Controller
         try
         {
             // Check user login
-            $userSigned = PagesController::CheckUserLogin();
+            $userSigned = UsersController::CheckUserLogin();
 
             // Data for header
             $category_list = App\DBCategory::all();
@@ -437,23 +437,25 @@ class PagesController extends Controller
     }
 
     /**
-     * @return object
+     * @param Request $request
+     * @return string
      */
-    public function CheckUserLogin()
+    public function GetSources(Request $request)
     {
-        $user = (object) array('signed' => false, 'loginHash' => '', 'username' => '');
-        $loginHash = hash('sha256', 'Anime4A Login Successful');
-        if(Session::has('loginHash')&&Session::has('username'))
+        try
         {
-            if($loginHash==Session::get('loginHash')){
-                $user->signed = true;
-                $user->loginHash = $loginHash;
-                $user->username = Session::get('username');
-            }
-        }
-        return $user;
-    }
+            // Check user login
+            $userSigned = UsersController::CheckUserLogin();
 
+            return View::make('GetSources')->with([
+                'userSigned' => $userSigned
+            ]);
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
     /**
      * @param $user_name
      * @return null

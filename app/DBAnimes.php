@@ -40,4 +40,19 @@ class DBAnimes extends Model
             return $e->getMessage();
         }
     }
+
+    /**
+     * @return string
+     */
+    public static function GetCount()
+    {
+        try
+        {
+            return DBAnimes::count();
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
 }

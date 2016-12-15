@@ -130,26 +130,86 @@ class ACPEpisodePagesController extends Controller
 
     /**
      * @param Request $request
+     */
+    public function EpisodeAddList(Request $request)
+    {
+        try {
+            if (Input::has('e1')&&Input::has('e2')) {
+                $e1 = Input::get('e1');
+                $e2 = Input::get('e2');
+                $ep_arr = \App\Library\MyFunction::CreateEpisodeArray($e1, $e2);
+
+
+                foreach($ep_arr as $i){
+                    $ep = new DBEpisodes();
+                    $ep->episode = $i;
+                    if (Session::has('anime_id')) {
+
+                        $anime_id = Session::get('anime_id');
+                        $ep->anime_id = $anime_id;
+                        $ep->save();
+
+                        // update newest episode
+                        ACPEpisodePagesController::UpdateNewestEpisode($anime_id, $i);
+                    }else
+                    {
+                        $anime_id = Input::get('anime_id');
+                        Session::put('anime_id', $anime_id);
+                        $ep->anime_id = $anime_id;
+                        $ep->save();
+
+                        // update newest episode
+                        ACPEpisodePagesController::UpdateNewestEpisode($anime_id, $i);
+                    }
+                }
+                return 'Thành Công';
+            } else {
+                return 'Lỗi!';
+            }
+        } catch (\Exception $e) {
+            return '<div class="report">Lỗi!'.$e->getMessage().'</div>';
+        }
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function EpisodeSave(Request $request)
+    {
+        try {
+            if (Input::has('episode_id')&&Input::has('episode')) {
+                $episode_id = Input::get('episode_id');
+                $episode = Input::get('episode');
+
+                $ep = DBEpisodes::find($episode_id);
+                $ep->episode = $episode;
+                $ep->save();
+
+                return 'Thành Công';
+            } else {
+                return 'Lỗi!';
+            }
+        } catch (\Exception $e) {
+            return '<div class="report">Lỗi!'.$e->getMessage().'</div>';
+        }
+    }
+
+    /**
+     * @param Request $request
      * @return string
      */
     public function EpisodeDelete(Request $request)
     {
         try {
             // Delete code
-            if (Input::has('id')) {
-                $ids = Input::get('id');
-                foreach ($ids as $i) {
-                    DBEpisodes::destroy($i);
-                }
-
-                $items = DBEpisodes::all();
-                return View::make('admincp.ACPEpisodeListView', array('items' => $items))->render();
+            if (Input::has('episode_id')) {
+                $id = Input::get('episode_id');
+                DBEpisodes::destroy($id);
             }
+            return 'Thành Công';
         }
         catch (\Exception $e){
             return '<div class="report">Lỗi!'.$e->getMessage().'</div>';
-        }
-        finally {
         }
     }
 

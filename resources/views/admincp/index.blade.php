@@ -32,7 +32,7 @@ $MyFunc = new App\Library\MyFunction;
 @section('sideBarView')
     <div id="sideBar">
             <div class="btn">
-                <a href="{{Request::root()}}/admincp/anime" title="Anime" class="info">Anime</a>
+                <a href="{{Request::root()}}/admincp/anime" title="Anime" class="info">Anime ({{ \App\DBAnimes::GetCount() }})</a>
             </div>
             <div class="btn">
                 <a href="{{Request::root()}}/admincp/episode" title="Episode" class="info">Episode</a>

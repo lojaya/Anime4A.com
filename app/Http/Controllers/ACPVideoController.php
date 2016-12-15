@@ -38,10 +38,11 @@ class ACPVideoController extends Controller
 
             if(!is_null($episode)){
                 $episode_id = $episode->id;
+                $episode_name = $episode->episode;
                 $items = DBVideos::where('episode_id', $episode_id)->get();
 
                 Session::forget('video_id');
-                return View::make('admincp.templates.VideoList', array('items' => $items))->render();
+                return View::make('admincp.templates.VideoList', array('items' => $items, 'episode_id' => $episode_id, 'episode_name' => $episode_name))->render();
             }
 
         } catch (\Exception $e) {
@@ -179,13 +180,9 @@ class ACPVideoController extends Controller
         try {
             // Delete code
             if (Input::has('id')) {
-                $ids = Input::get('id');
-                foreach ($ids as $i) {
-                    DBVideos::destroy($i);
-                }
-
-                $items = DBVideos::all();
-                return View::make('admincp.ACPVideoListView', array('items' => $items))->render();
+                $id = Input::get('id');
+                DBVideos::destroy($id);
+                return '<div class="report">Xóa thành công!</div>';
             }
         } catch (\Exception $e) {
             return '<div class="report">Lỗi!' . $e->getMessage() . '</div>';

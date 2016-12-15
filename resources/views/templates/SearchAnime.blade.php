@@ -30,7 +30,7 @@ $MyFunc = new App\Library\MyFunction;
                 </div>
                 <img class="thumb" src="{{ $i->img }}" alt="{{ $i->name }}" title="{{ $i->name }}" onerror="this.onerror=null;this.src='http://localhost/images/noimg.jpg';" style="display: block;">
                 <p class="luotxem">{{ $i->view_count }}</p>
-                <span class="episode" title="Số tập anime ">{{ $i->episode_new }}/{{ $i->episode_total}}</span>
+                <span class="episode" title="Số tập anime ">{{ \App\Library\MyFunction::ShowType($i->type, $i->episode_new, $i->episode_total) }}</span>
             </a>
             <div class="item_name">
                 <a href="{{Request::root()}}xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a" title="a" rel="bookmark" class="grid-title">
@@ -41,7 +41,7 @@ $MyFunc = new App\Library\MyFunction;
         <div id="popover-s-toggle-{{ $i->id }}" style="display: none">
             <div class="popoverTitle">{{ $i->name }}</div>
             <div class="popoverContent">
-                <div>Số tập: {{ $i->episode_new }}/{{ $i->episode_total}}</div>
+                <div>Số tập: {{ $i->episode_new }}/@if($i->episode_total==0){{ '??' }}@else{{ $i->episode_total}}@endif</div>
                 <hr>
                 <div>{{ $i->description }}</div>
                 <hr>

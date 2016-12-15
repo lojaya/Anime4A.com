@@ -259,7 +259,7 @@ class UsersController extends Controller
      */
     public static function CheckUserLogin()
     {
-        $user = (object) array('signed' => false, 'loginHash' => '', 'username' => '', 'id' => '');
+        $user = (object) array('signed' => false, 'loginHash' => '', 'username' => '', 'id' => '', 'admin' => false);
         $loginHash = hash('sha256', 'Anime4A Login Successful');
         if(Session::has('loginHash')&&Session::has('username'))
         {
@@ -268,6 +268,11 @@ class UsersController extends Controller
                 $user->loginHash = $loginHash;
                 $user->username = Session::get('username');
                 $user->id = DBUsers::where('username', $user->username)->get()->first()->id;
+
+                if($user->username=='admin'||$user->username=='698569313626263@facebook.com'||$user->username=='117204784695550324075@google.com')
+                {
+                    $user->admin = true;
+                }
             }
         }
         return $user;

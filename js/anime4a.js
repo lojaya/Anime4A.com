@@ -247,7 +247,11 @@ $(document).ready(function () {
         }
         else
         {
-            $('#sidebar').css('margin-top', '-' + $('.video_player').height() + 'px');
+            if($('.video_player').width()>=980){
+                $('#sidebar').css('margin-top', '0px');
+            }
+            else
+                $('#sidebar').css('margin-top', '-420px');
             $('.video_player').fadeIn();
             $('.video_detail').css('display', 'none');
             $(this).text('Thông Tin');

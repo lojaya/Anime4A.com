@@ -9,9 +9,14 @@
 namespace App\Library;
 
 use App\DBCategory;
+use App\DBType;
 
 class MyFunction {
     // Format video name
+    /**
+     * @param $name
+     * @return mixed
+     */
     public static function GetFormatedName($name)
     {
         $string = strtolower($name);
@@ -89,7 +94,7 @@ class MyFunction {
         foreach($catArr as $i)
         {
             $name = DBCategory::GetName($i);
-            $result = str_replace($i, $name, $result);
+            $result = str_replace($i, ' '.$name, $result);
         }
         return $result;
     }
@@ -109,5 +114,50 @@ class MyFunction {
             $result[$i] = DBCategory::GetName($value);
         }
         return $result;
+    }
+
+    /**
+     * @param $type
+     * @param $ep_new
+     * @param $ep_total
+     * @return string
+     */
+    public static function ShowType($type, $ep_new, $ep_total)
+    {
+        try
+        {
+            if($type==3||$type==7){
+                if($ep_total==0)
+                    return $ep_new.'/??';
+                else
+                    return $ep_new.'/'.$ep_total;
+
+            }
+            return DBType::GetName($type);
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
+
+    public static function CreateEpisodeArray($e1, $e2)
+    {
+        try
+        {
+            if($e1>$e2)
+                return false;
+            $length = strlen((string) $e2);
+            $result = array();
+            for($i = $e1; $i<=$e2; $i++){
+                $value = sprintf('%0'.$length.'s', $i);
+                $result[] = $value;
+            }
+            return $result;
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
     }
 }

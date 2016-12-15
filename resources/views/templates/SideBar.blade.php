@@ -29,13 +29,13 @@
                 <img src="{{ $i->img }}" class="item_thumb" onerror="this.onerror=null;this.src='http://localhost/images/noimg.jpg';" >
                 <span class="name">{{ $i->name }}</span>
                 <span class="view">Lượt xem: {{ $i->view_count }}</span>
-                <span class="ep">Số Tập: {{ $i->episode_new }}/{{  $i->episode_total }}</span>
+                <span class="ep">Số Tập: {{ $i->episode_new }}/@if($i->episode_total==0){{ '??' }}@else{{ $i->episode_total}}@endif</span>
                 <span class="desc">{{ $i->description }}</span>
             </a>
             <div id="popover-sidebar-{{ $i->id }}" style="display: none">
                 <div class="popoverTitle">{{ $i->name }}</div>
                 <div class="popoverContent">
-                    <div>Số tập: {{ $i->episode_new }}/{{ $i->episode_total}}</div>
+                    <div>Số tập: {{ $i->episode_new }}/@if($i->episode_total==0){{ '??' }}@else{{ $i->episode_total}}@endif</div>
                     <hr>
                     <div>{{ $i->description }}</div>
                     <hr>

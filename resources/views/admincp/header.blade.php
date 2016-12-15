@@ -12,7 +12,7 @@
         <ul id="cssmenu" class="topmenu">
             <li class="switch"><label onclick="" for="css3menu-switcher"></label></li>
             <li class="topmenu"><a href="{{Request::root()}}/admincp" >Home</a></li>
-            <li class="topmenu"><a href="{{Request::root()}}" >Anime4A</a></li>
+            <li class="topmenu"><a href="{{Request::root()}}" target="_blank">Anime4A</a></li>
         </ul>
         <div id="utilitiesRegion">
         </div>

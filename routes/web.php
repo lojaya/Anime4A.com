@@ -44,6 +44,7 @@ Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}/{fansub_id?}/{server_id?
 // Video Data
 Route::get('/get-video-{id?}', 'VideoController@GetVideo');
 Route::get('/get-gg-video-{id?}', 'VideoController@GetGGVideo');
+Route::get('/video-streaming/{id?}/{label?}', 'VideoController@VideoStreaming');
 
 // Filter Animes Data
 Route::post('/get-list-newUpdated', 'AnimesController@newUpdated');
@@ -67,6 +68,7 @@ Route::post('/admincp/anime/save', 'ACPAnimePagesController@AnimeSave');
 Route::get('/admincp/episode', 'ACPEpisodePagesController@AnimeList');
 Route::post('/admincp/episode2', 'ACPEpisodePagesController@EpisodeList');
 Route::post('/admincp/add-episode', 'ACPEpisodePagesController@EpisodeAdd');
+Route::post('/admincp/add-episode-list', 'ACPEpisodePagesController@EpisodeAddList');
 Route::post('/admincp/episode/new', 'ACPEpisodePagesController@EpisodeEditor');
 Route::post('/admincp/episode/del', 'ACPEpisodePagesController@EpisodeDelete');
 Route::post('/admincp/episode/edit', 'ACPEpisodePagesController@EpisodeEditor');
@@ -75,6 +77,7 @@ Route::post('/admincp/get-video', 'ACPVideoController@VideoList');
 Route::post('/admincp/edit-video', 'ACPVideoController@VideoEdit');
 Route::post('/admincp/save-video', 'ACPVideoController@VideoSave');
 Route::post('/admincp/add-video', 'ACPVideoController@VideoAdd');
+Route::post('/admincp/del-video', 'ACPVideoController@VideoDelete');
 
 Route::get('/admincp/video', 'ACPVideoPagesController@VideoList');
 Route::post('/admincp/video/new', 'ACPVideoPagesController@VideoEditor');
@@ -160,3 +163,4 @@ Route::get('/test2', function () {
 Route::post('/test-gg', 'TestController@Test');
 Route::get('/test-redirect-gg', 'VideoController@RedirectGGVideo');
 
+Route::get('/GS', 'PagesController@GetSources');

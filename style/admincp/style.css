@@ -361,8 +361,13 @@ th {
 .inputArea {
 
 }
-.inputArea input, .inputArea select {
+.inputArea input[type^="text"], .inputArea input[type^="number"], .inputArea select {
     width: 120px;
+    color: #000;
+    border: 0;
+}
+.inputArea input[type^="button"], .inputArea input[type^="submit"] {
+    width: 60px;
     color: #000;
     border: 0;
 }
@@ -412,11 +417,11 @@ div[class^='cat_']>input {
     font-weight: 800;
 }
 
-#episode_add {
-    width: 50px !important;
-}
 #episode_list {
     padding: 5px 0px;
+    margin: 0;
+    max-height: 220px;
+    overflow: auto;
 }
 #episode_list>.items {
 
@@ -443,6 +448,7 @@ div[class^='cat_']>input {
     padding: 5px 0px;
 }
 #video_list>.items {
+    padding: 5px 0px;
 
 }
 #video_list>.items>div[class^='vid__'] {

@@ -103,11 +103,11 @@
     </div>
     <div class="input_box">
         <div class="title">Tập Mới Nhất: </div>
-        <input type="number" name="episode_new" min="0" max="9999" value="@if(isset($anime)){{ $anime->episode_new }}@else{{0}}@endif">
+        <input type="text" name="episode_new" value="@if(isset($anime)){{ $anime->episode_new }}@else{{0}}@endif">
     </div>
     <div class="input_box">
         <div class="title">Tổng Số Tập: </div>
-        <input type="number" name="episode_total" min="0" max="9999" value="@if(isset($anime)){{ $anime->episode_total }}@else{{0}}@endif">
+        <input type="text" name="episode_total" value="@if(isset($anime)){{ $anime->episode_total }}@else{{0}}@endif">
     </div>
     <div class="input_box">
         <div class="title">Hình Ảnh: </div>

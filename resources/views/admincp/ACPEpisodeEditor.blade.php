@@ -26,6 +26,19 @@ $myFunc = new MyFunction();
         $('#anime_id').attr('disabled', 'true');
     });
 
+    $('#episodeList_add').bind('click', function (e) {
+        e.preventDefault();
+
+        // add new episode array
+        var e1 = $('#episodeList_value1').val();
+        var e2 = $('#episodeList_value2').val();
+
+        var anime_id = $("select[name='anime_id'] :selected").val();
+
+        addNewEpisodeList(anime_id, e1, e2);
+        $('#anime_id').attr('disabled', 'true');
+    });
+
     $('#video_add').bind('click', function (e) {
         e.preventDefault();
 
@@ -57,6 +70,31 @@ $myFunc = new MyFunction();
         $('#listView').html(data);
     }
 
+    /**
+     *
+     * @param anime_id
+     * @param e1
+     * @param e2
+     */
+    function addNewEpisodeList(anime_id, e1, e2) {
+        var _url = $('#MainUrl').attr('href') + '/admincp/add-episode-list';
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+        $.ajax({
+            url: _url,
+            type: "post",
+            data: {'anime_id': anime_id, 'e1': e1, 'e2': e2, _token: CSRF_TOKEN},
+            async: false,
+            success: function(data){
+                // refesh episode list
+                getEpisodeList();
+            }
+        });
+        var path = $('.url>a').attr('href');
+        var data = getList(path);
+        $('#listView').html(data);
+    }
+
     function getEpisodeList() {
         var _url = $('#MainUrl').attr('href') + '/admincp/episode2';
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
@@ -68,6 +106,21 @@ $myFunc = new MyFunction();
             async: false,
             success: function(data){
                 $('#episode_list').html(data);
+            }
+        });
+    }
+
+    function getVideoList(_ep) {
+        var _url = $('#MainUrl').attr('href') + '/admincp/get-video';
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+        $.ajax({
+            url: _url,
+            type: "post",
+            data: {'ep': _ep, _token: CSRF_TOKEN},
+            async: false,
+            success: function(data){
+                $('#video_list').html(data);
             }
         });
     }
@@ -106,6 +159,10 @@ $myFunc = new MyFunction();
         <div class="title">Episode: </div>
         <input type="text" id="episode_value" value="">
         <input type="button" id="episode_add" value="ADD">
+        <div class="title">Episode List: </div>
+        <input type="text" id="episodeList_value1" value="">
+        <input type="text" id="episodeList_value2" value="">
+        <input type="button" id="episodeList_add" value="ADD">
         <div id="episode_list">
         </div>
     </div>
