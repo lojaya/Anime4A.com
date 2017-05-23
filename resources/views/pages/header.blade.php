@@ -32,7 +32,9 @@
                 <ul>
                     @if(isSet($years))
                         @foreach($years as $i)
-                            <li><a href='{{ Request::root() }}/nam-san-xuat/{{ $i->year }}.anime4a'>{{ $i->year }}</a></li>
+                            @if($i->year>1900)
+                                <li><a href='{{ Request::root() }}/nam-san-xuat/{{ $i->year }}.anime4a'>{{ $i->year }}</a></li>
+                            @endif
                         @endforeach
                     @endif
                 </ul>
@@ -100,10 +102,10 @@
 
                         </script>
                     @else
-                        <a id="btnLogin">Tài Khoản</a>
+                        <a id="btnLogin">Đăng Nhập</a>
                     @endif
                 @else
-                    <a id="btnLogin">Tài Khoản</a>
+                    <a id="btnLogin">Đăng Nhập</a>
                 @endif
 
             </div>

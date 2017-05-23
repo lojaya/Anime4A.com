@@ -33,7 +33,7 @@ $MyFunc = new App\Library\MyFunction;
                 <span class="episode" title="Số tập anime ">{{ \App\Library\MyFunction::ShowType($i->type, $i->episode_new, $i->episode_total) }}</span>
             </a>
             <div class="item_name">
-                <a href="{{Request::root()}}xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a" title="a" rel="bookmark" class="grid-title">
+                <a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a" title="a" rel="bookmark" class="grid-title">
                     <h2>{{ $i->name }}</h2>
                 </a>
             </div>
@@ -43,7 +43,7 @@ $MyFunc = new App\Library\MyFunction;
             <div class="popoverContent">
                 <div>Số tập: {{ $i->episode_new }}/@if($i->episode_total==0){{ '??' }}@else{{ $i->episode_total}}@endif</div>
                 <hr>
-                <div>{{ $i->description }}</div>
+                <div class="description"><?php echo $i->description;?></div>
                 <hr>
                 <div>Thể loại: {{ \App\Library\MyFunction::GetCategoryNameString($i->category) }}</div>
             </div>

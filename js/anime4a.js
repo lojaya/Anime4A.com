@@ -31,9 +31,6 @@ $(document).ready(function () {
     // Danh sách anime mới cập nhật
     $('#homepage>.titleBar>div>.buttonA').addClass('selected');
 
-    // Danh sách anime xem nhiều
-    films_data = getAnimesList($('#sidebar>.most_view>.titleBar>div>.buttonM'), 'MostViewList', 'M');
-    $('#sidebar>.most_view>.sidebar_items').html(films_data);
     // END LOAD ANIMES DATA
 
 });
@@ -67,52 +64,6 @@ $(document).ready(function () {
         var films_data = getAnimesList($(this), 'NewUpdated', 'A');
         $('#homepage>.list_movies>.items').html(films_data);
     });
-
-    // Danh sách anime mới nhất
-    //
-    $('#sidebar>.newest_film>.titleBar>div>.buttonD').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'NewestList', 'D');
-        $('#sidebar>.newest_film>.sidebar_items').html(films_data);
-    });
-    $('#sidebar>.newest_film>.titleBar>div>.buttonW').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'NewestList', 'W');
-        $('#sidebar>.newest_film>.sidebar_items').html(films_data);
-    });
-    $('#sidebar>.newest_film>.titleBar>div>.buttonM').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'NewestList', 'M');
-        $('#sidebar>.newest_film>.sidebar_items').html(films_data);
-    });
-    $('#sidebar>.newest_film>.titleBar>div>.buttonS').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'NewestList', 'S');
-        $('#sidebar>.newest_film>.sidebar_items').html(films_data);
-    });
-    $('#sidebar>.newest_film>.titleBar>div>.buttonY').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'NewestList', 'Y');
-        $('#sidebar>.newest_film>.sidebar_items').html(films_data);
-    });
-
-    // Danh sách anime xem nhiều
-    //
-    $('#sidebar>.most_view>.titleBar>div>.buttonD').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'MostViewList', 'D');
-        $('#sidebar>.most_view>.sidebar_items').html(films_data);
-    });
-    $('#sidebar>.most_view>.titleBar>div>.buttonW').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'MostViewList', 'W');
-        $('#sidebar>.most_view>.sidebar_items').html(films_data);
-    });
-    $('#sidebar>.most_view>.titleBar>div>.buttonM').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'MostViewList', 'M');
-        $('#sidebar>.most_view>.sidebar_items').html(films_data);
-    });
-    $('#sidebar>.most_view>.titleBar>div>.buttonS').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'MostViewList', 'S');
-        $('#sidebar>.most_view>.sidebar_items').html(films_data);
-    });
-    $('#sidebar>.most_view>.titleBar>div>.buttonY').on( "click", function(e) {
-        var films_data = getAnimesList($(this), 'MostViewList', 'Y');
-        $('#sidebar>.most_view>.sidebar_items').html(films_data);
-    });
 });
 
 function getAnimesList(selector, filterMode, filterType) {
@@ -123,14 +74,6 @@ function getAnimesList(selector, filterMode, filterType) {
         case 'NewUpdated':
             requestUrl += '/get-list-newUpdated';
             $('#homepage>.titleBar>div>.selected').removeClass('selected');
-            break;
-        case 'NewestList':
-            requestUrl += '/get-list-newestAnime';
-            $('#sidebar>.newest_film>.titleBar>div>.selected').removeClass('selected');
-            break;
-        case 'MostViewList':
-            requestUrl += '/get-list-mostView';
-            $('#sidebar>.most_view>.titleBar>div>.selected').removeClass('selected');
             break;
         default:
             ;
@@ -176,24 +119,28 @@ function lookup(inputString) {
 // Video View Page Animation
 $(document).ready(function () {
     // Cuộn tới vị trí đầu Player
+    var scrollTimeout = null;
     $(window).scroll(function () {
-        $(this).delay(1000).queue(function () {
-
-            var pos = $(window).scrollTop();
-            var offset = $("div#player").offset().top;
-            if (Math.abs(pos - offset) <= 50) {
-                $('html,body').animate({
-                        scrollTop: offset - 40
-                    },
-                    'fast');
-            }
-
-            $(this).dequeue();
-        });
+        if ( scrollTimeout !== null ) {
+            clearTimeout( scrollTimeout );
+        }
+        scrollTimeout = setTimeout( scrollendHandler, 500 );
     });
+
 });
 
-// Script Zoom, Light On/Off or View Video Info Player
+function scrollendHandler() {
+    // this code executes on "Scroll End"
+    var pos = $(window).scrollTop();
+    var offset = $("#player").offset().top;
+    var d = Math.abs(pos - offset);
+    if (d <= 50) {
+        scrollToPlayer();
+    }
+    scrollTimeout = null;
+}
+
+// Script Zoom, Light On/Off or View Video Info
 var playerZoom = false;
 $(document).ready(function () {
     $(".videozoom").on( "click", function() {
@@ -216,9 +163,8 @@ $(document).ready(function () {
                 $("#sidebar").css("margin-top", "-420px");
                 $(".shadow").css("height", $(document).height());
             }
-            $('html,body').animate({
-                    scrollTop: $("#player").offset().top - 40},
-                'slow');
+
+            scrollToPlayer();
         }
     });
 
@@ -234,14 +180,17 @@ $(document).ready(function () {
             $(this).attr('title', "Tắt Đèn");
             $("#top_menu").css("z-index", 201);
         }
+        scrollToPlayer();
     });
 
-    $('.video_control>.item>.video_info').on( "click", function(e) {
+    $('.video_control>.item>.videoInfo').on( "click", function(e) {
         if($('.video_detail').css('display')==='none')
         {
             $('.video_player').css('display', 'none');
             $('.video_detail').fadeIn();
-            $('#sidebar').css('margin-top', '-' + $('.video_detail>.video_info').height() + 'px');
+            $('#sidebar').css('margin-top', '0px');
+            /*$('#sidebar').css('margin-top', '-' + $('.video_detail>.videoInfo').height() + 'px');*/
+            $(this).addClass('videoPlay');
             $(this).text('Xem Phim');
             $(this).attr('title', "Xem Phim");
         }
@@ -254,12 +203,19 @@ $(document).ready(function () {
                 $('#sidebar').css('margin-top', '-420px');
             $('.video_player').fadeIn();
             $('.video_detail').css('display', 'none');
+            $(this).removeClass('videoPlay');
             $(this).text('Thông Tin');
             $(this).attr('title', "Thông Tin");
         }
+
+        scrollToPlayer();
     });
 });
-
+function scrollToPlayer() {
+    $('html,body').animate({
+            scrollTop: $("#player").offset().top - 40},
+        'fast');
+}
 /*** END VIEWPAGE scripts ***/
 
 /*** START USERCP scripts ***/

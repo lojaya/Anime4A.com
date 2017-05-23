@@ -19,12 +19,20 @@
         <a href="{{Request::root()}}/admincp/anime"></a>
     </div>
     <div class="item" style="color: red; font-size: 9pt">
-        <a style="padding: 0px;"><b>CB</b></a> <a><b>Name</b></a>
+        <div style="padding: 0px; display: inline-block; width: 15px;"><b>CB</b></div>
+        <div style="padding: 0px; display: inline-block; width: 250px; margin-left: 5px;"><b>Anime</b></div>
+        <div style="padding: 0px; display: inline-block; width: 36px; margin-left: 5px;"><b>ID</b></div>
     </div>
     @if(isSet($items))
         @foreach($items as $i)
             <div id="item-{{ $i->id }}" class="item">
-                <input id="item-checked" type="checkbox" name="checked" value="{{ $i->id }}"> <a>{{ $i->name }}</a>
+                <input id="item-checked" type="checkbox" name="checked" value="{{ $i->id }}" class="col0">
+                <div class="col1" style="width: 259px">
+                    <a>{{ $i->name }}</a>
+                </div>
+                <div class="col2" style="width: 39px">
+                    <a>{{ $i->id }}</a>
+                </div>
             </div>
         @endforeach
     @endif

@@ -5,39 +5,26 @@
 @stop
 
 @section('stylesheet')
-    <link rel="stylesheet" href="{{Request::root()}}/style/ani/style.css" type="text/css" />
-    <link rel="stylesheet" href="{{Request::root()}}/style/ani/menu.css" type="text/css" />
-    <link rel="stylesheet" href="{{Request::root()}}/style/ani/searchBox.css" type="text/css" />
-    <script type="text/javascript" src="{{Request::root()}}/js/jquery-3.1.0.min.js"></script>
-    <script type="text/javascript" src="{{Request::root()}}/js/jquery-color.js"></script>
-    <script type="text/javascript" src="{{Request::root()}}/js/jssor.slider-21.1.6.mini.js" charset="utf-8"></script>
-    <script type="text/javascript" src="{{Request::root()}}/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="{{Request::root()}}/js/anime4a.js" charset="utf-8"></script>
-    <script type="text/javascript" src="{{Request::root()}}/js/searchBox.js" charset="utf-8"></script>
 @stop
 
 @section('headerBar')
     <div id="header_bar">
         <div class="bg_overlay"></div>
-        <!-- SILDER -->
+        <!-- #region Jssor Slider Begin -->
+        <!-- This code works with jquery library. -->
         <script type="text/javascript">
-            $(document).ready(function ($) {
-                // Carousel Slider
+            jQuery(document).ready(function ($) {
+
                 var jssor_1_options = {
                     $AutoPlay: true,
-                    $AutoPlaySteps: 4,
-                    $SlideDuration: 160,
-                    $SlideWidth: 194,
-                    $SlideSpacing: 3,
-                    $Cols: 5,
+                    $SlideWidth: 800,
+                    $Cols: 2,
+                    $Align: 100,
                     $ArrowNavigatorOptions: {
-                        $Class: $JssorArrowNavigator$,
-                        $Steps: 4
+                        $Class: $JssorArrowNavigator$
                     },
                     $BulletNavigatorOptions: {
-                        $Class: $JssorBulletNavigator$,
-                        $SpacingX: 1,
-                        $SpacingY: 1
+                        $Class: $JssorBulletNavigator$
                     }
                 };
 
@@ -61,40 +48,28 @@
                 $(window).bind("orientationchange", ScaleSlider);
                 /*responsive code end*/
             });
-            $(document).ready(function(){
-                $('[data-toggle^="popover-header-toggle"]').popover({
-                    trigger: "hover",
-                    html: true,
-                    placement: 'bottom',
-                    content: function() {
-                        return $('#'+$(this).attr('data-toggle')).html();
-                    }
-                });
-            });
         </script>
-        <div id="jssor_1" style="position: relative; margin: 0 auto; top: 0px; left: 0px; width: 980px; height: 254px; overflow: hidden; visibility: hidden;">
+
+        <div id="jssor_1" style="position: relative; margin: 0 auto; top: 0px; left: 0px; width: 980px; height: 360px; overflow: hidden; visibility: hidden;">
             <!-- Loading Screen -->
             <div data-u="loading" style="position: absolute; top: 0px; left: 0px;">
                 <div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
-                <div style="position:absolute;display:block;background:url('{{Request::root()}}/images/loading.gif') no-repeat center center;top:0px;left:0px;width:100%;height:100%;"></div>
+                <div style="position:absolute;display:block;background:url('images/loading.gif') no-repeat center center;top:0px;left:0px;width:100%;height:100%;"></div>
             </div>
-            <div data-u="slides" style="cursor: default; position: relative; top: 0px; left: 0px; width: 980px; height: 254px; overflow: hidden;">
+            <div data-u="slides" style="cursor: default; position: relative; top: 0px; left: 0px; width: 980px; height: 360px; overflow: hidden;">
 
                 @include('templates.HeaderBarItem')
 
             </div>
-            <!-- Bullet Navigator
-            <div data-u="navigator" class="jssorb03" style="bottom:10px;right:10px;">
-                <div data-u="prototype" style="width:21px;height:21px;">
-                    <div data-u="numbertemplate"></div>
-                </div>
+            <!-- Bullet Navigator -->
+            <div data-u="navigator" class="jssorb01" style="bottom:16px;right:16px;" data-autocenter="1">
+                <div data-u="prototype" style="width:12px;height:12px;"></div>
             </div>
-            -->
             <!-- Arrow Navigator -->
-            <span data-u="arrowleft" class="jssora03l" style="top:0px;left:8px;width:55px;height:55px;" data-autocenter="2"></span>
-            <span data-u="arrowright" class="jssora03r" style="top:0px;right:8px;width:55px;height:55px;" data-autocenter="2"></span>
+            <span data-u="arrowleft" class="jssora13l" style="top:0px;left:30px;width:40px;height:50px;" data-autocenter="2"></span>
+            <span data-u="arrowright" class="jssora13r" style="top:0px;right:30px;width:40px;height:50px;" data-autocenter="2"></span>
         </div>
-        <!-- SILDER END -->
+        <!-- #endregion Jssor Slider End -->
     </div>
 @stop
 
@@ -136,7 +111,7 @@
             <div id="hot_movies">
                 <div class="titleBar">
                     <span>
-                        Anime Hot
+                        Anime Nổi Bật
                     </span>
                 </div>
                 <div class="list_movies search_movies">
@@ -247,20 +222,54 @@
     <div id="sidebar">
         <div class="most_view">
             <div class="titleBar">
-                <span>Anime Xem Nhiều</span>
+            <span>
+                Anime xem nhiều
+            </span>
                 <div class="findButtons">
-                    <a class="buttonD @if($mostViewSelected == 'D') selected @endif ">D</a>
-                    <span>-</span>
-                    <a class="buttonW @if($mostViewSelected == 'W') selected @endif ">W</a>
-                    <span>-</span>
-                    <a class="buttonM @if($mostViewSelected == 'M') selected @endif ">M</a>
-                    <span>-</span>
-                    <a class="buttonS @if($mostViewSelected == 'S') selected @endif ">S</a>
-                    <span>-</span>
-                    <a class="buttonY @if($mostViewSelected == 'Y') selected @endif ">Y</a>
                 </div>
             </div>
             <ul class="sidebar_items">
+
+                <script>
+                    $(document).ready(function(){
+                        $('[data-toggle^="popover-sidebar"]').popover({
+                            trigger: "hover",
+                            html: true,
+                            placement: 'auto left',
+                            content: function() {
+                                return $('#'+$(this).attr('data-toggle')).html();
+                            }
+                        });
+                    });
+                </script>
+                @if(isSet($sidebarFilms))
+                    @foreach ($sidebarFilms as $i)
+                        @if($i->enabled)
+                            <?php
+                            $tenphim = \App\Library\MyFunction::GetFormatedName($i->name);
+                            ?>
+                            <li class="item" data-toggle="popover-sidebar-{{ $i->id }}" data-container="body">
+                                <a class="item_link" href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a">
+                                    <img src="{{ $i->img }}" class="item_thumb" onerror="this.onerror=null;this.src='http://localhost/images/noimg.jpg';" >
+                                    <span class="name">{{ $i->name }}</span>
+                                    <span class="view">Lượt xem: {{ $i->view_count }}</span>
+                                    <span class="ep">Số Tập: {{ $i->episode_new }}/@if($i->episode_total==0){{ '??' }}@else{{ $i->episode_total}}@endif</span>
+                                    <span class="desc"><?php echo strip_tags($i->description);?></span>
+                                </a>
+                                <div id="popover-sidebar-{{ $i->id }}" style="display: none">
+                                    <div class="popoverTitle">{{ $i->name }}</div>
+                                    <div class="popoverContent">
+                                        <div>Số tập: {{ $i->episode_new }}/@if($i->episode_total==0){{ '??' }}@else{{ $i->episode_total}}@endif</div>
+                                        <hr>
+                                        <div class="description"><?php echo $i->description;?></div>
+                                        <hr>
+                                        <div>Thể loại: {{ \App\Library\MyFunction::GetCategoryNameString($i->category) }}</div>
+                                    </div>
+                                </div>
+                            </li>
+                        @endif
+                    @endforeach
+                @endif
 
             </ul>
         </div>

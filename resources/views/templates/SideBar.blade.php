@@ -21,27 +21,29 @@
 </script>
 @if(isSet($films))
     @foreach ($films as $i)
-        <?php
-        $tenphim = \App\Library\MyFunction::GetFormatedName($i->name);
-        ?>
-        <li class="item" data-toggle="popover-sidebar-{{ $i->id }}" data-container="body">
-            <a class="item_link" href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a">
-                <img src="{{ $i->img }}" class="item_thumb" onerror="this.onerror=null;this.src='http://localhost/images/noimg.jpg';" >
-                <span class="name">{{ $i->name }}</span>
-                <span class="view">Lượt xem: {{ $i->view_count }}</span>
-                <span class="ep">Số Tập: {{ $i->episode_new }}/@if($i->episode_total==0){{ '??' }}@else{{ $i->episode_total}}@endif</span>
-                <span class="desc">{{ $i->description }}</span>
-            </a>
-            <div id="popover-sidebar-{{ $i->id }}" style="display: none">
-                <div class="popoverTitle">{{ $i->name }}</div>
-                <div class="popoverContent">
-                    <div>Số tập: {{ $i->episode_new }}/@if($i->episode_total==0){{ '??' }}@else{{ $i->episode_total}}@endif</div>
-                    <hr>
-                    <div>{{ $i->description }}</div>
-                    <hr>
-                    <div>Thể loại: {{ \App\Library\MyFunction::GetCategoryNameString($i->category) }}</div>
+        @if($i->enabled)
+            <?php
+            $tenphim = \App\Library\MyFunction::GetFormatedName($i->name);
+            ?>
+            <li class="item" data-toggle="popover-sidebar-{{ $i->id }}" data-container="body">
+                <a class="item_link" href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a">
+                    <img src="{{ $i->img }}" class="item_thumb" onerror="this.onerror=null;this.src='http://localhost/images/noimg.jpg';" >
+                    <span class="name">{{ $i->name }}</span>
+                    <span class="view">Lượt xem: {{ $i->view_count }}</span>
+                    <span class="ep">Số Tập: {{ $i->episode_new }}/@if($i->episode_total==0){{ '??' }}@else{{ $i->episode_total}}@endif</span>
+                    <span class="desc"><?php echo strip_tags($i->description);?></span>
+                </a>
+                <div id="popover-sidebar-{{ $i->id }}" style="display: none">
+                    <div class="popoverTitle">{{ $i->name }}</div>
+                    <div class="popoverContent">
+                        <div>Số tập: {{ $i->episode_new }}/@if($i->episode_total==0){{ '??' }}@else{{ $i->episode_total}}@endif</div>
+                        <hr>
+                        <div class="description"><?php echo $i->description;?></div>
+                        <hr>
+                        <div>Thể loại: {{ \App\Library\MyFunction::GetCategoryNameString($i->category) }}</div>
+                    </div>
                 </div>
-            </div>
-        </li>
+            </li>
+        @endif
     @endforeach
 @endif

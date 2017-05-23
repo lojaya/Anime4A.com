@@ -5,15 +5,7 @@
 @stop
 
 @section('stylesheet')
-    <link rel="stylesheet" href="{{Request::root()}}/style/ani/style.css" type="text/css" />
-    <link rel="stylesheet" href="{{Request::root()}}/style/ani/menu.css" type="text/css" />
-    <link rel="stylesheet" href="{{Request::root()}}/style/ani/searchBox.css" type="text/css" />
-    <script type="text/javascript" src="{{Request::root()}}/js/jquery-3.1.0.min.js"></script>
-    <script type="text/javascript" src="{{Request::root()}}/js/jquery-color.js"></script>
-    <script type="text/javascript" src="{{Request::root()}}/js/jssor.slider-21.1.6.mini.js" charset="utf-8"></script>
-    <script type="text/javascript" src="{{Request::root()}}/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="{{Request::root()}}/js/anime4a.js" charset="utf-8"></script>
-    <script type="text/javascript" src="{{Request::root()}}/js/searchBox.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/jwplayer.js" charset="utf-8"></script>
 @stop
 
 @section('headerBar')
@@ -46,11 +38,11 @@
             @if(isSet($video)&&!is_null($video))
                 @if($video_type=='google')
                     <div id="player-container">
-                        <iframe id="player" src="/get-gg-video-{{ $video->id }}" width="100%" frameborder="0" allowfullscreen></iframe>
+                        <iframe id="player" src="/video-{{ $video->id }}" width="100%" frameborder="0" allowfullscreen></iframe>
                     </div>
                 @else
                     <div id="player-container">
-                        <iframe id="player" src="/get-video-{{ $video->id }}" width="100%" frameborder="0" allowfullscreen></iframe>
+                        <iframe id="player" src="{{ $video->url_source }}" width="100%" frameborder="0" allowfullscreen></iframe>
                     </div>
                 @endif
             @else
@@ -90,7 +82,7 @@
                     <span>Type: <a>{{ \App\DBType::GetName($anime->type) }}</a></span>
                 </div>
                 <div class="video_description" itemprop="review" itemscope itemtype="http://schema.org/Review">
-                    <span itemprop="reviewBody">{{ $anime->description }}</span>
+                    <span itemprop="reviewBody"><?php echo $anime->description;?></span>
                     <span itemprop="author" style="display: none;">{{ Request::root() }}</span>
                 </div>
             </div>
@@ -126,24 +118,6 @@
         </div>
         <div class="group">
             <div class="title">
-                Fansub:
-            </div>
-            @if(isSet($fansub_list))
-                @foreach ($fansub_list as $i)
-                    @if(isSet($fansub_id))
-                        @if($i->fansub_id==$fansub_id)
-                            <div class="item"><b><a class="active" >{{ \App\DBFansub::GetName($i->fansub_id) }}</a></b></div>
-                        @else
-                            <div class="item"><b><a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $anime_id }}/{{ $episode_id }}/{{ $i->fansub_id }}.a4a">{{ \App\DBFansub::GetName($i->fansub_id) }}</a></b></div>
-                        @endif
-                    @else
-                        <div class="item"><b><a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $anime_id }}/{{ $episode_id }}/{{ $i->fansub_id }}.a4a">{{ \App\DBFansub::GetName($i->fansub_id) }}</a></b></div>
-                    @endif
-                @endforeach
-            @endif
-        </div>
-        <div class="group">
-            <div class="title">
                 Server:
             </div>
             @if(isSet($server_list)&&isSet($server_id))
@@ -152,10 +126,10 @@
                         @if($i->server_id==$server_id)
                             <div class="item"><b><a class="active" >{{ \App\DBServer::GetName($i->server_id) }}</a></b></div>
                         @else
-                            <div class="item"><b><a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $anime_id }}/{{ $episode_id }}/{{ $fansub_id }}/{{ $i->server_id }}.a4a">{{ \App\DBServer::GetName($i->server_id) }}</a></b></div>
+                            <div class="item"><b><a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $anime_id }}/{{ $episode_id }}/{{ $i->server_id }}.a4a">{{ \App\DBServer::GetName($i->server_id) }}</a></b></div>
                         @endif
                     @else
-                        <div class="item"><b><a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $anime_id }}/{{ $episode_id }}/{{ $fansub_id }}/{{ $i->server_id }}.a4a">{{ \App\DBServer::GetName($i->server_id) }}</a></b></div>
+                        <div class="item"><b><a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $anime_id }}/{{ $episode_id }}/{{ $i->server_id }}.a4a">{{ \App\DBServer::GetName($i->server_id) }}</a></b></div>
                     @endif
                 @endforeach
             @endif
@@ -181,17 +155,25 @@
 @stop
 
 @section('controlBar')
+    <?php
+    $url_download = '';
+    if(isSet($episode_id)){
+        $e = \App\DBEpisodes::find($episode_id);
+        if(!is_null($e))
+            $url_download = $e->url_download;
+    }
+    ?>
     @if(isSet($userSigned))
         @if($userSigned->loginHash==hash('sha256', 'Anime4A Login Successful'))
             <div class="video_control_region">
                 <div class="video_control">
-                    <div class="item"><a class="video_info abutton" title="Thông Tin">Thông Tin</a></div>
+                    <div class="item"><a class="videoInfo abutton" title="Thông Tin">Thông Tin</a></div>
                     <div class="item"><a class="videozoom abutton" title="Phóng To">Phóng To</a></div>
                     <div class="item"><a class="lightoff abutton" title="Tắt Đèn">Tắt Đèn</a></div>
-                    <div class="item"><a class="download abutton" title="Download" href="@if(isSet($video)&&!is_null($video)){{ \App\Library\PhpAdfLy::ShortenUrl($video->url_download) }}@endif" target="_blank">Download</a></div>
+                    <div class="item"><a class="download abutton" title="Download" href="{{ \App\Library\PhpAdfLy::ShortenUrl($url_download) }}" target="_blank">Download</a></div>
                     <div class="item"><a class="nextEpBtn abutton" title="Tập Sau">Tập Sau</a></div>
                     <div class="item"><a class="bookmarkBtn abutton" title="Đánh Dấu">Đánh Dấu</a></div>
-                    <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh sách Anime đang theo dõi</a></div>
+                    <div class="item"><a class="userCpBtn abutton " title="Danh sách Anime đang theo dõi">Danh sách Anime đang theo dõi</a></div>
                 </div>
             </div>
 
@@ -201,13 +183,13 @@
         @else
             <div class="video_control_region">
                 <div class="video_control">
-                    <div class="item"><a class="video_info abutton" title="Thông Tin">Thông Tin</a></div>
+                    <div class="item"><a class="videoInfo abutton" title="Thông Tin">Thông Tin</a></div>
                     <div class="item"><a class="videozoom abutton" title="Phóng To">Phóng To</a></div>
                     <div class="item"><a class="lightoff abutton" title="Tắt Đèn">Tắt Đèn</a></div>
-                    <div class="item"><a class="download abutton" title="Download" href="@if(isSet($video)&&!is_null($video)){{ \App\Library\PhpAdfLy::ShortenUrl($video->url_download) }}@endif" target="_blank">Download</a></div>
+                    <div class="item"><a class="download abutton" title="Download" href="{{ \App\Library\PhpAdfLy::ShortenUrl($url_download) }}" target="_blank">Download</a></div>
                     <div class="item"><a class="nextEpBtn abutton" title="Tập Sau">Tập Sau</a></div>
                     <div class="item"><a class="bookmarkBtn abutton" title="Đánh Dấu">Đánh Dấu</a></div>
-                    <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh sách Anime đang theo dõi</a></div>
+                    <div class="item"><a class="userCpBtn abutton" title="Danh sách Anime đang theo dõi">Danh sách Anime đang theo dõi</a></div>
                 </div>
             </div>
             <script>
@@ -222,13 +204,13 @@
     @else
         <div class="video_control_region">
             <div class="video_control">
-                <div class="item"><a class="video_info abutton" title="Thông Tin">Thông Tin</a></div>
+                <div class="item"><a class="videoInfo abutton" title="Thông Tin">Thông Tin</a></div>
                 <div class="item"><a class="videozoom abutton" title="Phóng To">Phóng To</a></div>
                 <div class="item"><a class="lightoff abutton" title="Tắt Đèn">Tắt Đèn</a></div>
-                <div class="item"><a class="download abutton" title="Download" href="@if(isSet($video)&&!is_null($video)){{ \App\Library\PhpAdfLy::ShortenUrl($video->url_download) }}@endif" target="_blank">Download</a></div>
+                <div class="item"><a class="download abutton" title="Download" href="{{ \App\Library\PhpAdfLy::ShortenUrl($url_download) }}" target="_blank">Download</a></div>
                 <div class="item"><a class="nextEpBtn abutton" title="Tập Sau">Tập Sau</a></div>
                 <div class="item"><a class="bookmarkBtn abutton" title="Đánh Dấu">Đánh Dấu</a></div>
-                <div class="item"><a class="userCpBtn abutton" title="Danh Sách">Danh sách Anime đang theo dõi</a></div>
+                <div class="item"><a class="userCpBtn abutton" title="Danh sách Anime đang theo dõi">Danh sách Anime đang theo dõi</a></div>
             </div>
         </div>
         <script>
@@ -244,8 +226,8 @@
 
 @section('sidebar')
     <!-- SideBar Region -->
-    <div id="sidebar" style="margin-top: -420px;">
-<div style="width: 300px; height: 250px;">
+    <div id="sidebar" style="margin-top: -383px;">
+<div style="width: 300px; height: 250px;display: none;">
 <script type="text/javascript">
     google_ad_client = "ca-pub-7114750780411306";
     google_ad_slot = "5442257676";
@@ -261,18 +243,51 @@ src="//pagead2.googlesyndication.com/pagead/show_ads.js">
             <div class="titleBar">
                 <span>Anime Xem Nhiều</span>
                 <div class="findButtons">
-                    <a class="buttonD @if($mostViewSelected == 'D') selected @endif ">D</a>
-                    <span>-</span>
-                    <a class="buttonW @if($mostViewSelected == 'W') selected @endif ">W</a>
-                    <span>-</span>
-                    <a class="buttonM @if($mostViewSelected == 'M') selected @endif ">M</a>
-                    <span>-</span>
-                    <a class="buttonS @if($mostViewSelected == 'S') selected @endif ">S</a>
-                    <span>-</span>
-                    <a class="buttonY @if($mostViewSelected == 'Y') selected @endif ">Y</a>
                 </div>
             </div>
             <ul class="sidebar_items">
+
+                <script>
+                    $(document).ready(function(){
+                        $('[data-toggle^="popover-sidebar"]').popover({
+                            trigger: "hover",
+                            html: true,
+                            placement: 'auto left',
+                            content: function() {
+                                return $('#'+$(this).attr('data-toggle')).html();
+                            }
+                        });
+                    });
+                </script>
+                @if(isSet($sidebarFilms))
+                    @foreach ($sidebarFilms as $i)
+                        @if($i->enabled)
+                            <?php
+                            $tenphim = \App\Library\MyFunction::GetFormatedName($i->name);
+                            ?>
+                            <li class="item" data-toggle="popover-sidebar-{{ $i->id }}" data-container="body">
+                                <a class="item_link" href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a">
+                                    <img src="{{ $i->img }}" class="item_thumb" onerror="this.onerror=null;this.src='http://localhost/images/noimg.jpg';" >
+                                    <span class="name">{{ $i->name }}</span>
+                                    <span class="view">Lượt xem: {{ $i->view_count }}</span>
+                                    <span class="ep">Số Tập: {{ $i->episode_new }}/@if($i->episode_total==0){{ '??' }}@else{{ $i->episode_total}}@endif</span>
+                                    <span class="desc"><?php echo strip_tags($i->description);?></span>
+                                </a>
+                                <div id="popover-sidebar-{{ $i->id }}" style="display: none">
+                                    <div class="popoverTitle">{{ $i->name }}</div>
+                                    <div class="popoverContent">
+                                        <div>Số tập: {{ $i->episode_new }}/@if($i->episode_total==0){{ '??' }}@else{{ $i->episode_total}}@endif</div>
+                                        <hr>
+                                        <div class="description"><?php echo $i->description;?></div>
+                                        <hr>
+                                        <div>Thể loại: {{ \App\Library\MyFunction::GetCategoryNameString($i->category) }}</div>
+                                    </div>
+                                </div>
+                            </li>
+                        @endif
+                    @endforeach
+                @endif
+
             </ul>
         </div>
     </div>

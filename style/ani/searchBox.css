@@ -85,6 +85,7 @@ input#searchSubmit {
     text-overflow: ellipsis;
     text-overflow: ellipsis;
     display: -webkit-box;
+	max-height: 7.7em;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
 }

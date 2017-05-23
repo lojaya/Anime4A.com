@@ -983,12 +983,20 @@ class J2T_Plugin_Google_Photos extends J2T_Plugin_Abstract {
                 $default = ($quality == 'hd720') ? true : false;
                 $url = $value['url'];
 				$type = $value['type'];
-				
+
+                $res = '360';
+                $res = ($quality == 'hd720') ? '720' : $res;
+                $res = ($quality == 'hd1080') ? '1080' : $res;
+                
+                $quality = ($quality == 'medium') ? '360p' : $quality;
+                $quality = ($quality == 'hd720') ? '720p' : $quality;
+                $quality = ($quality == 'hd1080') ? '1080p' : $quality;
+
                 $data[] = array(
-                    'type'      => 'mp4',
-                    'label'     => $quality,
-                    'file'      => $url,
-                    'default'   => $default
+                    'type' => $type,
+                    'label' => $quality,
+                    'src' => $url,
+                    'res' => $res
                 );
                 unset($media_content[$key]);
             }

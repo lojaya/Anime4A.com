@@ -8,13 +8,15 @@
 ?>
 
 @foreach ($headerItems as $i)
-    <?php
-    $tenphim = \App\Library\MyFunction::GetFormatedName($i->name);
-    ?>
-    <div>
-        <a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a" data-toggle="popover-header-toggle-{{ $i->id }}" data-container="body">
-            <img data-u="image" src="{{ $i->img }}" />
-        </a>
-        <div id="popover-header-toggle-{{ $i->id }}" style="display: none">{{ $i->name }}</div>
-    </div>
+    @if($i->enabled)
+        <?php
+        $tenphim = \App\Library\MyFunction::GetFormatedName($i->name);
+        ?>
+        <div data-p="112.50">
+            <a href="{{Request::root()}}/xem-phim/{{ $tenphim }}/{{ $i->id }}.a4a">
+                <img data-u="image" src="{{ $i->banner }}" />
+                <div id="header-bar-item-name">{{ $i->name }}</div>
+            </a>
+        </div>
+    @endif
 @endforeach

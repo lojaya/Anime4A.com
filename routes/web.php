@@ -31,6 +31,7 @@ Route::post('/adv-search', 'SearchController@Find');
 
 Route::get('/{type?}/{id?}.anime4a', 'PagesController@showHomePage');
 Route::post('/search/category/{id?}', 'SearchController@SearchFilmByCategory');
+Route::post('/search/country/{id?}', 'SearchController@SearchFilmByCountry');
 
 // Xem thông tin bộ phim
 Route::get('/xem-thong-tin/{name?}/{id?}.a4a', 'PagesController@showFilmInfoPage');
@@ -38,11 +39,11 @@ Route::get('/xem-thong-tin/{name?}/{id?}.a4a', 'PagesController@showFilmInfoPage
 // Xem phim
 Route::get('/xem-phim/{name?}/{anime_id?}.a4a', 'PagesController@showVideoViewPage');
 Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}.a4a', 'PagesController@showVideoViewPage');
-Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}/{fansub_id?}.a4a', 'PagesController@showVideoViewPage');
-Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}/{fansub_id?}/{server_id?}.a4a', 'PagesController@showVideoViewPage');
+Route::get('/xem-phim/{name?}/{anime_id?}/{episode_id?}/{server_id?}.a4a', 'PagesController@showVideoViewPage');
 
 // Video Data
-Route::get('/get-video-{id?}', 'VideoController@GetVideo');
+Route::get('/video-{id?}', 'VideoController@GetVideo');
+Route::post('/ani', 'VideoController@GetVideoData');
 Route::get('/get-gg-video-{id?}', 'VideoController@GetGGVideo');
 Route::get('/video-streaming/{id?}/{label?}', 'VideoController@VideoStreaming');
 
@@ -152,15 +153,49 @@ Route::post('/admincp/tag/del', 'ACPTagPagesController@_Delete');
 Route::post('/admincp/tag/edit', 'ACPTagPagesController@_Edit');
 Route::post('/admincp/tag/save', 'ACPTagPagesController@_Save');
 
+Route::get('/admincp/user', 'ACPUserPagesController@_List');
+Route::post('/admincp/user/new', 'ACPUserPagesController@_Edit');
+Route::post('/admincp/user/del', 'ACPUserPagesController@_Delete');
+Route::post('/admincp/user/edit', 'ACPUserPagesController@_Edit');
+Route::post('/admincp/user/save', 'ACPUserPagesController@_Save');
+
+Route::get('/admincp/openload-data', 'ACPOpenloadDataPagesController@_List');
+Route::post('/admincp/openload-data/new', 'ACPOpenloadDataPagesController@_Edit');
+Route::post('/admincp/openload-data/edit', 'ACPOpenloadDataPagesController@_Edit');
+Route::post('/admincp/openload-data/save', 'ACPOpenloadDataPagesController@_Save');
+
+Route::get('/admincp/google-photos-data', 'ACPGGPhotosDataPagesController@_List');
+Route::post('/admincp/google-photos-data/new', 'ACPGGPhotosDataPagesController@_Edit');
+Route::post('/admincp/google-photos-data/edit', 'ACPGGPhotosDataPagesController@_Edit');
+Route::post('/admincp/google-photos-data/save', 'ACPGGPhotosDataPagesController@_Save');
+
+
+Route::get('/admincp/log', 'ACPLogPagesController@_List');
+Route::post('/admincp/log/edit', 'ACPLogPagesController@_Edit');
+
+Route::post('/test-gg', 'TestController@Test');
+Route::get('/test-redirect-gg', 'VideoController@RedirectGGVideo');
+
+Route::get('/GS', 'PagesController@GetSources');
+Route::get('/GS2', 'TestController@GetLink');
+Route::get('/r/{anime_id?}/{ep?}.mp4', 'TestController@GetRedirectLink');
+
+// Remux Video
+Route::get('/remuxVideo', function () {
+    return view('remuxVideo');
+});
+Route::post('/remuxVideo', 'TestController@remuxVideo');
+// Get link google photos
+Route::get('/ggphotos', function () {
+    return view('ggphotos');
+});
+Route::post('/ggphotos', 'TestController@ggphotos');
+
+//Route::post('/fix', 'TestController@fix');
+//Route::get('/combine/{id1}/{id2}', 'TestController@combine');
 
 // test
 Route::get('/test', function () {
     return view('test');
 });
-Route::get('/test2', function () {
-    return view('test2');
-});
-Route::post('/test-gg', 'TestController@Test');
-Route::get('/test-redirect-gg', 'VideoController@RedirectGGVideo');
-
-Route::get('/GS', 'PagesController@GetSources');
+Route::post('/test', 'TestController@Test');

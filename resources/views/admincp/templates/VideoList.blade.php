@@ -6,21 +6,29 @@
  * Time: 6:02 PM
  */
 ?>
+
 <div>
     <input type="hidden" id="editing_episode_id" value="{{ $episode_id }}">
-    Name:
-    <input type="text" id="editing_episode_name" value="{{ $episode_name }}" title="Name">
-    <input type="button" id="editing_episode_saveBtn" value="Save">
-    <input type="button" id="editing_episode_delBtn" value="Delete">
+    <div class="input_box">
+        <div class="title">Url download: </div>
+        <input type="text" id="editing_episode_url_download" name="url_download" style="width: 500px;" value="@if(isSet($url_download)){{ $url_download }}@endif">
+    </div>
+    <div class="input_box">
+        <div class="title">Name: </div>
+        <input type="text" id="editing_episode_name" value="{{ $episode_name }}" title="Name">
+        <input type="button" id="editing_episode_saveBtn" value="Save">
+        <input type="button" id="editing_episode_delBtn" value="Delete">
+    </div>
     <script>
         $('#editing_episode_saveBtn').bind('click', function (e) {
             e.preventDefault();
 
             // add new episode
             var _id = $('#editing_episode_id').val();
-            var _value = $('#editing_episode_name').val();
+            var url_download = $('#editing_episode_url_download').val();
+            var value = $('#editing_episode_name').val();
 
-            SaveEditingEpisode(_id, _value);
+            SaveEditingEpisode(_id, url_download, value);
         });
 
         $('#editing_episode_delBtn').bind('click', function (e) {
@@ -40,14 +48,14 @@
          * @param value
          *
         */
-        function SaveEditingEpisode(_id, value) {
+        function SaveEditingEpisode(_id, url_download, value) {
             var _url = $('#MainUrl').attr('href') + '/admincp/episode/save';
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
             $.ajax({
                 url: _url,
                 type: "post",
-                data: {'episode_id': _id, 'episode': value, _token: CSRF_TOKEN},
+                data: {'episode_id': _id, 'url_download': url_download, 'episode': value, _token: CSRF_TOKEN},
                 async: false,
                 success: function(data){
                     // refesh episode list

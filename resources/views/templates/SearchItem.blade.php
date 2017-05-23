@@ -11,6 +11,6 @@
     <a href="{{Request::root()}}/xem-phim/{{ \App\Library\MyFunction::GetFormatedName($i->name) }}/{{ $i->id }}.a4a">
         <img alt="" src="{{ $i->img }}"/>
         <span class="searchheading">{{ $i->name }}</span>
-        <span>{{ $i->description }}</span>
+        <span><?php echo strip_tags($i->description);?></span>
     </a>
 @endforeach

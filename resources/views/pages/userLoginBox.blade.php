@@ -190,14 +190,19 @@
                     </div>
 
                     <div class="row">
-                        <div class="col1">
-                            <span>&nbsp</span>
-                        </div>
-                        <div class="col2">
-                            <img src="/images/facebook-Icon.png" id="FbLoginBtn" style="width: 30px;" onclick="fb_login()">
-                            <img src="/images/Google-plus-icon.png" id="GGLoginBtn" style="width: 30px;">
+							<div id="fb_login">
+								<a onclick="fb_login()">
+									<img src="/images/facebook-white.png" id="FbLoginBtn" style="width: 30px;">
+									<span>Login with Facebook</span>
+								</a>
+							</div>
+							<div id="gg_login">
+								<a id="GGLoginBtn">
+									<img src="/images/g+-white.png" style="width: 30px;">
+									<span>Login with Google+</span>
+								</a>
+							</div>
                             <script>startApp();</script>
-                        </div>
                     </div>
 
                 </form>

@@ -15,12 +15,11 @@ use App\Library\MyFunction;
 
 class PagesController extends Controller
 {
-    // Hiện trang chủ
     /**
      * @param Request $request
      * @return string
      */
-    public function showHomePage(Request $request, $type = null, $id = null)
+    public function showHomePage(Request $request, $type = null, $id = null) // Hiện trang chủ
     {
         try
         {
@@ -65,10 +64,11 @@ class PagesController extends Controller
             // Data for header
             $category_list = App\DBCategory::select('id', 'name')->get();
             $country_list = App\DBCountry::select('id', 'name')->get();
-            $years = App\DBAnimes::distinct()->select(DB::raw('YEAR(release_date) year'))->get();
+            $years = App\DBAnimes::distinct()->select(DB::raw('YEAR(release_date) year'))
+                ->orderBy('year', 'desc')->get();
 
             // Films new updated
-            $films = App\DBAnimes::orderBy('updated_at', 'desc')
+            $films = App\DBAnimes::where('enabled', 1)->orderBy('updated_at', 'desc')
                 ->paginate(env('PAGE_SPLIT_BIG'), ['*'], 'page', 0);
 
             Session::put('type', 'A');
@@ -80,7 +80,7 @@ class PagesController extends Controller
                 'value' => '...',
             );
 
-            $hotFilms = App\DBAnimes::orderBy('updated_at', 'desc')
+            $hotFilms = App\DBAnimes::where('enabled', 1)->orderBy('hot', 'desc')
                 ->take(env('PAGE_SPLIT_SMALL'))->get();
 
             $seaching = false;
@@ -95,7 +95,7 @@ class PagesController extends Controller
                     $breadcrumb->value = $category->name;
 
                     // search codes
-                    $seachFilms = App\DBAnimes::where('category', 'LIKE', '%'.$id.'%')
+                    $seachFilms = App\DBAnimes::where('enabled', 1)->where('category', 'LIKE', '%'.$id.'%')
                         ->orderBy('updated_at', 'desc')
                         ->paginate(env('PAGE_SPLIT_SMALL'), ['*'], 'page', 1);
                     $seachFilms->setPath('search/category/'.$id);
@@ -108,7 +108,7 @@ class PagesController extends Controller
                     $breadcrumb->value = $country->name;
 
                     // search codes
-                    $seachFilms = App\DBAnimes::where('country', '=', $id)
+                    $seachFilms = App\DBAnimes::where('enabled', 1)->where('country', '=', $id)
                         ->orderBy('updated_at', 'desc')
                         ->paginate(env('PAGE_SPLIT_SMALL'), ['*'], 'page', 1);
                     $seachFilms->setPath('search/country/'.$id);
@@ -123,7 +123,7 @@ class PagesController extends Controller
                     $page = Input::get('page');
 
                     // search codes
-                    $seachFilms = App\DBAnimes::whereYear('release_date', $id)
+                    $seachFilms = App\DBAnimes::where('enabled', 1)->whereYear('release_date', $id)
                         ->orderBy('updated_at', 'desc')
                         ->paginate(env('PAGE_SPLIT_SMALL'), ['*'], 'page', 1);
                     $seachFilms->setPath('search/year/'.$id);
@@ -156,7 +156,11 @@ class PagesController extends Controller
             else
             {
                 // Random films for slider
-                $filmsRandom = App\DBAnimes::inRandomOrder()->take(25)->get();
+                //$filmsRandom = App\DBAnimes::where('enabled', 1)->orderBy('hot', 'desc')->take(env('PAGE_SPLIT_SMALL'))->get();
+
+                $sidebarFilms = App\DBAnimes::where('enabled', 1)
+                    ->orderBy('view_count', 'desc')
+                    ->take(10)->get();
 
                 return View::make('index')->with([
                     'userSigned' => $userSigned,
@@ -166,10 +170,11 @@ class PagesController extends Controller
                     'films' => $films,
                     'hotFilms' => $hotFilms,
                     'seachFilms' => $seachFilms,
+                    'sidebarFilms' => $sidebarFilms,
                     'category_list' => $category_list,
                     'country_list' => $country_list,
                     'years' => $years,
-                    'headerItems' => $filmsRandom,
+                    'headerItems' => $hotFilms,
                     'homepageSelected' => 'M',
                     'newestFilmSelected' => 'S',
                     'mostViewSelected' => 'W'
@@ -182,7 +187,6 @@ class PagesController extends Controller
         }
     }
 
-    // Hiện trang xem phim
     /**
      * @param Request $request
      * @param $name
@@ -192,7 +196,7 @@ class PagesController extends Controller
      * @param bool $server_id
      * @return string
      */
-    public function showVideoViewPage(Request $request, $name, $anime_id, $episode_id = false, $fansub_id = false, $server_id = false)
+    public function showVideoViewPage(Request $request, $name, $anime_id, $episode_id = false, $server_id = false) // Hiện trang xem phim
     {
         try
         {
@@ -205,13 +209,13 @@ class PagesController extends Controller
             // Data for header
             $category_list = App\DBCategory::select('id', 'name')->get();
             $country_list = App\DBCountry::select('id', 'name')->get();
-            $years = App\DBAnimes::distinct()->select(DB::raw('YEAR(release_date) year'))->get();
+            $years = App\DBAnimes::distinct()->select(DB::raw('YEAR(release_date) year'))
+                ->orderBy('year', 'desc')->get();
 
             // Khởi tạo dữ liệu của trang
             $episode_list = array();
-            $fansub_list = array();
             $server_list = array();
-
+            $n = '';
             if(strlen($anime_id))
             {
                 // GET EPISODE LIST
@@ -229,46 +233,18 @@ class PagesController extends Controller
                     {
                         $f = $episode_list->first();
                         if(!is_null($f))
+                        {
                             $episode_id = $f->id;
+                        }
                     }
                 }
 
                 if($episode_id){
-                    // GET FANSUB LIST
-                    $fansub_list = App\DBVideos::select('fansub_id')
-                        ->distinct('fansub_id')
-                        ->where('episode_id',$episode_id)->get();
-
-                }
-
-                // Có chọn fansub  để xem
-                if($fansub_id&&strlen($fansub_id))
-                {
                     // GET SERVER LIST
                     $server_list = App\DBVideos::select('server_id')
                         ->distinct('server_id')
-                        ->where([
-                            ['episode_id', '=', $episode_id],
-                            ['fansub_id', '=', $fansub_id],
-                        ])->get();
-                }
-                // Chưa chọn fansub để xem -> mặc định xem fansub đầu
-                else{
-                    if(count($fansub_list))
-                    {
-                        $f = $fansub_list->first();
-                        if(!is_null($f))
-                        {
-                            $fansub_id = $f->fansub_id;
-                            // GET SERVER LIST
-                            $server_list = App\DBVideos::select('server_id')
-                                ->distinct('server_id')
-                                ->where([
-                                    ['episode_id', '=', $episode_id],
-                                    ['fansub_id', '=', $fansub_id],
-                                ])->get();
-                        }
-                    }
+                        ->where('episode_id', $episode_id)->get();
+                    $n=$episode_id;
                 }
 
                 // Có chọn server  để xem
@@ -291,7 +267,6 @@ class PagesController extends Controller
 
 
             $video = App\DBVideos::where('episode_id', '=', $episode_id)
-                ->where('fansub_id', '=', $fansub_id)
                 ->where('server_id', '=', $server_id)
                 ->get()->first();
 
@@ -301,13 +276,12 @@ class PagesController extends Controller
                 $video_id = $video->id;
                 Session::put('video_id', $video_id);
 
-                if(strrpos($video->url_source, 'google')){
+                if(strrpos($video->url_source, 'drive.google.com')){
                     $video_type = 'google';
                 }else{
-                    $video_type = 'onecloud';
+                    $video_type = 'photos';
                 }
-            }else
-                $video = null;
+            }
 
             // update view count
             $anime = App\DBAnimes::find($anime_id);
@@ -317,9 +291,6 @@ class PagesController extends Controller
 
             $bookmarks = $this::GetBookmarks($userSigned->username);
 
-            $years = App\DBAnimes::distinct()->select(DB::raw('YEAR(release_date) year'))->get();
-
-
             // Check user device
             $mDetector = new App\Mobile_Detect();
             if($mDetector->isMobile()||$mDetector->isTablet())
@@ -327,7 +298,6 @@ class PagesController extends Controller
                 return view('mobile.VideoViewPage')->with([
                     'userSigned' => $userSigned,
                     'episode_list' => $episode_list,
-                    'fansub_list' => $fansub_list,
                     'server_list' => $server_list,
                     'bookmarks' => $bookmarks,
                     'anime' => $anime,
@@ -335,7 +305,6 @@ class PagesController extends Controller
                     'video_type' => $video_type,
                     'anime_id' => $anime_id,
                     'episode_id' => $episode_id,
-                    'fansub_id' => $fansub_id,
                     'server_id' => $server_id,
                     'category_list' => $category_list,
                     'country_list' => $country_list,
@@ -347,22 +316,27 @@ class PagesController extends Controller
             }
             else
             {
+
+                // Sidebar Films List
+                $sidebarFilms = App\DBAnimes::where('enabled', 1)
+                    ->orderBy('view_count', 'desc')
+                    ->take(10)->get();
+
                 return view('VideoViewPage')->with([
                     'userSigned' => $userSigned,
                     'episode_list' => $episode_list,
-                    'fansub_list' => $fansub_list,
                     'server_list' => $server_list,
                     'bookmarks' => $bookmarks,
                     'anime' => $anime,
                     'video' => $video,
                     'video_type' => $video_type,
                     'anime_id' => $anime_id,
-                    'episode_id' => $episode_id,
-                    'fansub_id' => $fansub_id,
+                    'episode_id' => $n,
                     'server_id' => $server_id,
                     'category_list' => $category_list,
                     'country_list' => $country_list,
                     'years' => $years,
+                    'sidebarFilms' => $sidebarFilms,
                     'homepageSelected' => 'M',
                     'newestFilmSelected' => 'S',
                     'mostViewSelected' => 'W'

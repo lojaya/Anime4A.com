@@ -24,7 +24,7 @@
         <div class="title">Release Date: </div>
         <input type="date" name="release_date" class="datetime" value="@if(isset($anime)){{ $anime->release_date->format('Y-m-d') }}@endif">
     </div>
-    <div class="input_box">
+    <div class="input_box" style="float: left">
         <div class="title">Nhóm Phim: </div>
         <select class="category_value" name="type">
             @if(isSet($typeList))
@@ -33,33 +33,6 @@
                 @endforeach
             @endif
         </select>
-    </div>
-    <div class="input_box" id="category">
-        <div class="title">Thể Loại: </div>
-        <select class="category_value">
-            <?php $cat = array(); if(isSet($anime)) $cat = explode(',', $anime->category);?>
-            @if(isSet($categoryList))
-                @foreach($categoryList as $i)
-                    @if(\App\Library\MyFunction::CheckCategory($i->id,$cat))
-                        <option value="{{ $i->id }}">{{ $i->name }}</option>
-                    @endif
-                @endforeach
-            @endif
-        </select>
-        <input type="button" class="button_add" value="ADD">
-        <div class="category_input">
-            @foreach($cat as $i)
-                @if(strlen(\App\DBCategory::find($i)['name'])>0)
-                <div class="cat_{{ $i }}">
-                    <input type="hidden" class="cat_value" name="category[]" value="{{ $i }}">
-                    <h2 class="cat_text">
-                            {{ \App\DBCategory::find($i)['name'] }}
-                    </h2>
-                    <input type="button" class="del_{{ $i }}" value="Xóa">
-                </div>
-                @endif
-            @endforeach
-        </div>
     </div>
     <div class="input_box" style="float: left">
         <div class="title">Quốc Gia: </div>
@@ -101,28 +74,6 @@
             @endif
         </select>
     </div>
-    <div class="input_box">
-        <div class="title">Tập Mới Nhất: </div>
-        <input type="text" name="episode_new" value="@if(isset($anime)){{ $anime->episode_new }}@else{{0}}@endif">
-    </div>
-    <div class="input_box">
-        <div class="title">Tổng Số Tập: </div>
-        <input type="text" name="episode_total" value="@if(isset($anime)){{ $anime->episode_total }}@else{{0}}@endif">
-    </div>
-    <div class="input_box">
-        <div class="title">Hình Ảnh: </div>
-        <div class="img_preview">
-            <img src="@if(isset($anime)){{ $anime->img }}@endif" style="position: absolute;width: 150px;height: 200px;left: 600px;top: 0px;">
-        </div>
-        <input type="file" name="img" id="img">
-    </div>
-    <div class="input_box">
-        <div class="title">Banner: </div>
-        <div class="banner_preview">
-            <img src="@if(isset($anime)){{ $anime->banner }}@endif" style="position: absolute;width: 340px;height: 190px;left: 415px;top: 205px;">
-        </div>
-        <input type="file" name="banner" id="banner">
-    </div>
     <div class="input_box" style="float: left">
         <div class="title">Status: </div>
         <select name="status">
@@ -137,19 +88,81 @@
         <div class="title">Trailer: </div>
         <input type="text" name="trailer" value="@if(isset($anime)){{ $anime->trailer }}@endif">
     </div>
-    <div class="input_box">
+    <div class="input_box" style="float: left">
         <div class="title">Tag: </div>
         <input type="text" name="tag" value="@if(isset($anime)){{ $anime->tag }}@endif">
     </div>
+    <div class="input_box" style="float: left">
+        <div class="title">Url: </div>
+        <input type="text" name="url" value="@if(isset($anime)){{ $anime->url }}@endif">
+    </div>
+    <div class="input_box">
+        <div class="title">Hot: </div>
+        <input type="text" name="hot" value="@if(isset($anime)){{ $anime->hot }}@endif">
+    </div>
+    <div class="input_box" id="category">
+        <div class="title">Thể Loại: </div>
+        <select class="category_value">
+            <?php $cat = array(); if(isSet($anime)) $cat = explode(',', $anime->category);?>
+            @if(isSet($categoryList))
+                @foreach($categoryList as $i)
+                    @if(\App\Library\MyFunction::CheckCategory($i->id,$cat))
+                        <option value="{{ $i->id }}">{{ $i->name }}</option>
+                    @endif
+                @endforeach
+            @endif
+        </select>
+        <input type="button" class="button_add" value="ADD">
+        <div class="category_input">
+            @foreach($cat as $i)
+                @if(strlen(\App\DBCategory::find($i)['name'])>0)
+                <div class="cat_{{ $i }}">
+                    <input type="hidden" class="cat_value" name="category[]" value="{{ $i }}">
+                    <h2 class="cat_text">
+                            {{ \App\DBCategory::find($i)['name'] }}
+                    </h2>
+                    <input type="button" class="del_{{ $i }}" value="Xóa">
+                </div>
+                @endif
+            @endforeach
+        </div>
+    </div>
+    <div class="input_box" style="float: left">
+        <div class="title">Tập Mới Nhất: </div>
+        <input type="text" name="episode_new" value="@if(isset($anime)){{ $anime->episode_new }}@else{{0}}@endif">
+    </div>
+    <div class="input_box">
+        <div class="title">Tổng Số Tập: </div>
+        <input type="text" name="episode_total" value="@if(isset($anime)){{ $anime->episode_total }}@else{{0}}@endif">
+    </div>
+    <div class="input_box" style="float: left">
+        <div class="title">Hình Ảnh: </div>
+        <div class="img_preview">
+            <img src="@if(isset($anime)){{ $anime->img }}@endif" style="width: 150px;height: 200px;">
+        </div>
+        <input type="file" name="img" id="img">
+    </div>
+    <div class="input_box">
+        <div class="title">Banner: </div>
+        <div class="banner_preview">
+            <img src="@if(isset($anime)){{ $anime->banner }}@endif" style="width: 340px;height: 190px;">
+        </div>
+        <input type="file" name="banner" id="banner">
+    </div>
+    <div class="input_box">
+        <div class="title" style="float: left; margin: 0px 5px; color: #ff0;">Enable: </div>
+        <input type="checkbox" name="enabled" @if(isset($anime))@if($anime->enabled==1){{ "checked" }}@endif @endif>
+    </div>
     <div class="input_box">
         <div class="title">Mô Tả: </div>
-        <textarea name="description">@if(isset($anime)){{ $anime->description }} @endif</textarea>
+        <textarea name="description" id="editor" rows="10" cols="120">@if(isset($anime)){{ $anime->description }} @endif</textarea>
     </div>
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    <input type="submit" class="submit">
+    <input type="submit" class="submit" value="Lưu">
 </form>
 
 <script>
+    initSample();
     $(document).ready(function () {
         $('#InputForm').submit(function(e) {
             e.preventDefault();

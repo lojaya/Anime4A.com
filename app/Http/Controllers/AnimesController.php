@@ -37,37 +37,43 @@ class AnimesController extends Controller
                 switch ($type) {
                     case 'D':
                         Session::put('type', 'D');
-                        $films = App\DBAnimes::whereDate('updated_at', '=', date('Y-m-d'))
+                        $films = App\DBAnimes::where('enabled', 1)
+                            ->whereDate('updated_at', '=', date('Y-m-d'))
                             ->orderBy('updated_at', 'desc')
                             ->paginate($pageSplit, ['*'], 'page', $page);
                         break;
                     case 'W':
                         Session::put('type', 'W');
-                        $films = App\DBAnimes::where('updated_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 7 DAY)'))
+                        $films = App\DBAnimes::where('enabled', 1)
+                            ->where('updated_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 7 DAY)'))
                             ->orderBy('updated_at', 'desc')
                             ->paginate($pageSplit, ['*'], 'page', $page);
                         break;
                     case 'M':
                         Session::put('type', 'M');
-                        $films = App\DBAnimes::where('updated_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 30 DAY)'))
+                        $films = App\DBAnimes::where('enabled', 1)
+                            ->where('updated_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 30 DAY)'))
                             ->orderBy('updated_at', 'desc')
                             ->paginate($pageSplit, ['*'], 'page', $page);
                         break;
                     case 'S':
                         Session::put('type', 'S');
-                        $films = App\DBAnimes::where('updated_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 120 DAY)'))
+                        $films = App\DBAnimes::where('enabled', 1)
+                            ->where('updated_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 120 DAY)'))
                             ->orderBy('updated_at', 'desc')
                             ->paginate($pageSplit, ['*'], 'page', $page);
                         break;
                     case 'Y':
                         Session::put('type', 'Y');
-                        $films = App\DBAnimes::whereYear('updated_at', '=', date('Y'))
+                        $films = App\DBAnimes::where('enabled', 1)
+                            ->whereYear('updated_at', '=', date('Y'))
                             ->orderBy('updated_at', 'desc')
                             ->paginate($pageSplit, ['*'], 'page', $page);
                         break;
                     case 'A':
                         Session::put('type', 'A');
-                        $films = App\DBAnimes::orderBy('updated_at', 'desc')
+                        $films = App\DBAnimes::where('enabled', 1)
+                            ->orderBy('updated_at', 'desc')
                             ->paginate($pageSplit, ['*'], 'page', $page);
                         break;
                     default:
@@ -159,27 +165,31 @@ class AnimesController extends Controller
 
                 switch ($type) {
                     case 'D':
-                        $films = App\DBAnimes::whereDate('updated_at', '=', date('Y-m-d'))
+                        $films = App\DBAnimes::where('enabled', 1)
+                            ->whereDate('updated_at', '=', date('Y-m-d'))
                             ->orderBy('view_count', 'desc')
                             ->take($nItem)->get();
                         break;
                     case 'W':
-                        $films = App\DBAnimes::where('updated_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 7 DAY)'))
+                        $films = App\DBAnimes::where('enabled', 1)
+                            ->where('updated_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 7 DAY)'))
                             ->orderBy('view_count', 'desc')
                             ->take($nItem)->get();
                         break;
                     case 'M':
-                        $films = App\DBAnimes::where('updated_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 30 DAY)'))
+                        $films = App\DBAnimes::where('enabled', 1)
+                            ->where('updated_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 30 DAY)'))
                             ->orderBy('view_count', 'desc')
                             ->take($nItem)->get();
                         break;
                     case 'S':
-                        $films = App\DBAnimes::where('updated_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 120 DAY)'))
+                        $films = App\DBAnimes::where('enabled', 1)
+                            ->where('updated_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 120 DAY)'))
                             ->orderBy('view_count', 'desc')
                             ->take($nItem)->get();
                         break;
                     case 'Y':
-                        $films = App\DBAnimes::whereYear('updated_at', '=', date('Y'))
+                        $films = App\DBAnimes::where('enabled', 1)
                             ->orderBy('view_count', 'desc')
                             ->take($nItem)->get();
                         break;

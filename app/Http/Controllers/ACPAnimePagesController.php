@@ -125,8 +125,9 @@ class ACPAnimePagesController extends Controller
                     }
                     $destinationPath = 'img'; // upload path
                     $name = $imgFile->getClientOriginalName(); // getting image name
+                    $filename = pathinfo($name, PATHINFO_FILENAME);
                     $extension = $imgFile->getClientOriginalExtension(); // getting image extension
-                    $imgFileName = $name . '-' . rand(11111,99999).'.'.$extension; // renameing image
+                    $imgFileName = $filename . '-' . rand(11111,99999).'.'.$extension; // renameing image
                     $imgFile->move($destinationPath, $imgFileName); // uploading file to given path
                 }
             }
@@ -147,8 +148,9 @@ class ACPAnimePagesController extends Controller
                     }
                     $destinationPath = 'banner';
                     $name = $bannerFile->getClientOriginalName();
+                    $filename = pathinfo($name, PATHINFO_FILENAME);
                     $extension = $bannerFile->getClientOriginalExtension();
-                    $bannerFileName = $name . '-' . rand(11111,99999).'.'.$extension;
+                    $bannerFileName = $filename . '-' . rand(11111,99999).'.'.$extension;
                     $bannerFile->move($destinationPath, $bannerFileName);
                 }
             }
@@ -158,6 +160,15 @@ class ACPAnimePagesController extends Controller
             $anime->status = Input::get('status');
             $anime->trailer = Input::get('trailer');
             $anime->tag = Input::get('tag');
+            $anime->url = Input::get('url');
+			$hot = Input::get('hot');
+			if(strlen($hot))
+				$anime->hot = $hot;
+
+            if(filter_var(Input::get('enabled'), FILTER_VALIDATE_BOOLEAN))
+                $anime->enabled = 1;
+            else
+                $anime->enabled = 0;
             $anime->description = Input::get('description');
 
             $anime->save();
@@ -171,7 +182,7 @@ class ACPAnimePagesController extends Controller
             if($error_code == 1062){
                 return '<div class="report">Lỗi trùng dữ liệu!</div>';
             }
-            return '<div class="report">Lỗi!</div>';
+            return $e->getMessage();
         } finally {
         }
     }

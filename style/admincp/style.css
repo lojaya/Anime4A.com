@@ -379,6 +379,9 @@ th {
 .inputArea .submit {
     padding: 5px;
     margin: 5px;
+    height: 40px;
+    top: 0;
+    right: 60px;
 }
 .inputArea .input_box {
     padding: 5px;

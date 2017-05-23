@@ -52,6 +52,7 @@ button:hover {
 }
 .breadcrumb a {
     color: #98FF00;
+    display: none;
 }
 .bg_overlay {
     z-index: -1;
@@ -70,7 +71,7 @@ button:hover {
 #header_bar {
     margin: 0 auto;
     width: 980px;
-    max-height: 260px;
+    max-height: 360px;
 }
 #header_banner {
     margin: 0 auto;
@@ -449,7 +450,7 @@ button:hover {
 }
 .sidebar_items .name, .sidebar_items .view, .sidebar_items .ep{
     display: block;
-    max-height: 32px;
+    max-height: 1.2em;
     margin: 1px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -547,6 +548,7 @@ button:hover {
     position: absolute;
     left: 20px;
     bottom: 20px;
+    border: 1px solid #ddd;
     -webkit-box-shadow: 10px 10px 50px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 10px 10px 50px 0px rgba(0,0,0,0.75);
     box-shadow: 10px 10px 50px 0px rgba(0,0,0,0.75);
@@ -600,16 +602,16 @@ button:hover {
 }
 .video_selection a{
     text-decoration: none;
-    color: #0FF;
+    color: #FFF;
 }
 .video_selection a.active{
     text-decoration: none;
-    color: #FFF;
+    color: #FF8;
 }
 .video_selection>.group {
-    margin: 10px;
+    margin: 5px 10px;
     font-size: 10pt;
-    width: 100%;
+    width: 675px;
     display: inline-block;
 }
 .video_selection>.group>.title {
@@ -626,8 +628,8 @@ button:hover {
 }
 .video_selection>.group>.item:hover {
     color: #FFF;
-    border-color: rgba(50,250,150,0.9);
-    background-color: rgba(50,250,50,0.9);
+    border-color: rgba(250,250,150,0.9);
+    background-color: rgba(50,50,50,0.9);
     cursor: url("/cursors/Link.cur"), progress
 }
 .video_selection .video_page_advertise {
@@ -648,7 +650,7 @@ button:hover {
 .video_control {
     margin: 0 auto;
     padding: 0px 0px;
-    width: 600px;
+    width: 980px;
     height: 38px;
     position: relative;
 }
@@ -656,17 +658,43 @@ button:hover {
     color: #FFCC00;
     padding: 8px 0px;
     float: left;
-    width: 80px;
+    width: 120px;
     text-align: center;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 .video_control .item a {
     color: #FFFFFF;
 }
 .video_control .item a:hover {
     color: #4488FF;
+}
+.video_control>.item>.abutton:before {
+    font-family: FontAwesome;
+    padding-right: 2px;
+}
+.video_control>.item>.videoInfo:before {
+    content: "\f129";
+}
+.video_control>.item>.videoPlay:before {
+    content: "\f04b" !important;
+}
+.video_control>.item>.videozoom:before {
+    content: "\f065";
+}
+.video_control>.item>.lightoff:before {
+    content: "\f0eb";
+}
+.video_control>.item>.download:before {
+    content: "\f019";
+}
+.video_control>.item>.nextEpBtn:before {
+    content: "\f04e";
+}
+.video_control>.item>.bookmarkBtn:before {
+    content: "\f00c";
+}
+.video_control>.item>.userCpBtn:before {
+    content: "\f03a";
 }
 .shadow {
     background-color: #000;
@@ -785,8 +813,18 @@ button:hover {
 #userBox>.displayArea  .row>.col2>.submitBtn {
     width: 100px;
     border: 0;
+	background: #fff;
+	color: #073;
 }
-
+#userBox>.displayArea  .row>#fb_login  , #userBox>.displayArea  .row>#gg_login{
+    width: 150px;
+    position: relative;
+}
+#userBox>.displayArea  .row>#fb_login>a>span , #userBox>.displayArea  .row>#gg_login>a>span {
+    position: absolute;
+    top: 7px;
+    left: 35px;
+}
 #AdvancedSearch {
     width: 680px;
     float: left;
@@ -822,45 +860,37 @@ button:hover {
 }
 
 #btnLogin {
-    background: #ff3b73;
-    background-image: -webkit-linear-gradient(top, #4f8797, #4c8797, #4f8797);
-    background-image: -moz-linear-gradient(top, #4f8797, #4c8797, #4f8797);
-    background-image: -ms-linear-gradient(top, #4f8797, #4c8797, #4f8797);
-    background-image: -o-linear-gradient(top, #4f8797, #4c8797, #4f8797);
-    background-image: linear-gradient(to bottom, #4f8797, #4c8797, #4f8797);
+    background: #0044ff;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0px;
-    color: #ffffff;
+    color: #fff;
     font-size: 10pt;
-    padding: 5px;
+    padding: 5px 10px;
     text-decoration: none;
     line-height: 40px;
+    border: 1px #0ff dashed;
 }
 #btnLogin:hover {
-    background: #c40e0e;
-    background-image: -webkit-linear-gradient(top, #6fa7e7, #6ca7b7, #8fa7b7);
-    background-image: -moz-linear-gradient(top, #6fa7e7, #6ca7b7, #8fa7b7);
-    background-image: -ms-linear-gradient(top, #6fa7e7, #6ca7b7, #8fa7b7);
-    background-image: -o-linear-gradient(top, #6fa7e7, #6ca7b7, #8fa7b7);
-    background-image: linear-gradient(to bottom, #6fa7e7, #6ca7b7, #8fa7b7);
-    text-decoration: none;
+    background: #0088ff;
+    border: 1px #fff dashed;
 }
 
 #btnLogout {
-    background: #ff2727;
+    background: #af0707;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0px;
     color: #ffffff;
     font-size: 10pt;
-    padding: 5px;
+    padding: 5px 10px;
     text-decoration: none;
     line-height: 40px;
+    border: 1px #fa0 dashed;
 }
 #btnLogout:hover {
-    background: #af0707;
-    text-decoration: none;
+    background: #ff2727;
+    border: 1px #ff0 dashed;
 }
 
 .loginForm {
@@ -877,64 +907,75 @@ button:hover {
 }
 
 /* CAROUSEL SLIDER */
-/* jssor slider bullet navigator skin 03 css */
+/* jssor slider bullet navigator skin 01 css */
 /*
-.jssorb03 div           (normal)
-.jssorb03 div:hover     (normal mouseover)
-.jssorb03 .av           (active)
-.jssorb03 .av:hover     (active mouseover)
-.jssorb03 .dn           (mousedown)
+.jssorb01 div           (normal)
+.jssorb01 div:hover     (normal mouseover)
+.jssorb01 .av           (active)
+.jssorb01 .av:hover     (active mouseover)
+.jssorb01 .dn           (mousedown)
 */
-.jssorb03 {
+.jssorb01 {
     position: absolute;
 }
-.jssorb03 div, .jssorb03 div:hover, .jssorb03 .av {
+.jssorb01 div, .jssorb01 div:hover, .jssorb01 .av {
     position: absolute;
     /* size of bullet elment */
-    width: 21px;
-    height: 21px;
-    text-align: center;
-    line-height: 21px;
-    color: white;
-    font-size: 12px;
-    background: url('../../images/silder_b03.png') no-repeat;
+    width: 12px;
+    height: 12px;
+    filter: alpha(opacity=70);
+    opacity: .7;
     overflow: hidden;
     cursor: pointer;
+    border: #000 1px solid;
 }
-.jssorb03 div { background-position: -5px -4px; }
-.jssorb03 div:hover, .jssorb03 .av:hover { background-position: -35px -4px; }
-.jssorb03 .av { background-position: -65px -4px; }
-.jssorb03 .dn, .jssorb03 .dn:hover { background-position: -95px -4px; }
+.jssorb01 div { background-color: gray; }
+.jssorb01 div:hover, .jssorb01 .av:hover { background-color: #d3d3d3; }
+.jssorb01 .av { background-color: #fff; }
+.jssorb01 .dn, .jssorb01 .dn:hover { background-color: #555555; }
 
-/* jssor slider arrow navigator skin 03 css */
+/* jssor slider arrow navigator skin 13 css */
 /*
-.jssora03l                  (normal)
-.jssora03r                  (normal)
-.jssora03l:hover            (normal mouseover)
-.jssora03r:hover            (normal mouseover)
-.jssora03l.jssora03ldn      (mousedown)
-.jssora03r.jssora03rdn      (mousedown)
-.jssora03l.jssora03ldn      (disabled)
-.jssora03r.jssora03rdn      (disabled)
+.jssora13l                  (normal)
+.jssora13r                  (normal)
+.jssora13l:hover            (normal mouseover)
+.jssora13r:hover            (normal mouseover)
+.jssora13l.jssora13ldn      (mousedown)
+.jssora13r.jssora13rdn      (mousedown)
+.jssora13l.jssora13lds      (disabled)
+.jssora13r.jssora13rds      (disabled)
 */
-.jssora03l, .jssora03r {
+.jssora13l, .jssora13r {
     display: block;
     position: absolute;
     /* size of arrow element */
-    width: 55px;
-    height: 55px;
+    width: 40px;
+    height: 50px;
     cursor: pointer;
-    background: url('../../images/silder_a03.png') no-repeat;
+    background: url('../../images/a13.png') no-repeat;
     overflow: hidden;
 }
-.jssora03l { background-position: -3px -33px; }
-.jssora03r { background-position: -63px -33px; }
-.jssora03l:hover { background-position: -123px -33px; }
-.jssora03r:hover { background-position: -183px -33px; }
-.jssora03l.jssora03ldn { background-position: -243px -33px; }
-.jssora03r.jssora03rdn { background-position: -303px -33px; }
-.jssora03l.jssora03lds { background-position: -3px -33px; opacity: .3; pointer-events: none; }
-.jssora03r.jssora03rds { background-position: -63px -33px; opacity: .3; pointer-events: none; }
+.jssora13l { background-position: -10px -35px; }
+.jssora13r { background-position: -70px -35px; }
+.jssora13l:hover { background-position: -130px -35px; }
+.jssora13r:hover { background-position: -190px -35px; }
+.jssora13l.jssora13ldn { background-position: -250px -35px; }
+.jssora13r.jssora13rdn { background-position: -310px -35px; }
+.jssora13l.jssora13lds { background-position: -10px -35px; opacity: .3; pointer-events: none; }
+.jssora13r.jssora13rds { background-position: -70px -35px; opacity: .3; pointer-events: none; }
+#jssor_1 #header-bar-item-name {
+    position: absolute;
+    z-index: 1;
+    bottom: 30px;
+    left: 40px;
+    padding: 5px;
+    font-size: 20px;
+    color: #fff;
+    border: 1px solid #000;
+    background: rgba(0,0,0,0.7);
+    text-shadow: 0px 0px 6px rgba(255,255,255,0.7);
+}
+
 
 /* POPOVER */
 
@@ -1077,6 +1118,20 @@ button:hover {
 .popoverTitle {
     color: #5ff;
 }
+.popoverContent>.description {
+    text-align: justify;
+    height: auto;
+    max-height: 200px;
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 10;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -moz-box-sizing: content-box;
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+}
 
 /* USER CONTROL PANEL */
 
@@ -1123,7 +1178,7 @@ button:hover {
 /* FOOTER */
 #footer {
     width: 100%;
-    height: 220px;
+    height: 120px;
     margin: 0 auto;
     padding: 0px 0px;
     font-size: 10pt;
@@ -1132,5 +1187,5 @@ button:hover {
     /*background: #000000 url(/images/subtle_carbon.png) repeat;*/
 }
 #footer>div {
-    padding-top: 140px !important;
+    padding-top: 40px !important;
 }

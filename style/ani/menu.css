@@ -26,7 +26,7 @@ ul#cssmenu ul li{
 ul#cssmenu ul a{
 	text-align:left;padding:4px;background-color:rgba(0,0,0,0.10);border-width:0 0 1px 0;border-style:solid;border-color:#3B444C;border-radius:0px;-moz-border-radius:0px;-webkit-border-radius:0px;color:#CBCFDB;text-decoration:none;}
 ul#cssmenu li:hover>a,ul#cssmenu li a.pressed{
-	background-color:#47515B;border-style:none;color:#FFFFFF;cursor: url("http://localhost/cursors/Link.cur"), progress}
+	background-color:#47515B;border-style:none;color:#FFFFFF;cursor: url("/cursors/Link.cur"), progress}
 ul#cssmenu img{
 	border:none;vertical-align:middle;margin-right:3px;left: 13px;top: 3px;padding-right: 20px;height: 30px;position: relative;float: left;}
 ul#cssmenu span{

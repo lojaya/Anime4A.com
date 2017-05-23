@@ -183,9 +183,11 @@ class ACPEpisodePagesController extends Controller
             if (Input::has('episode_id')&&Input::has('episode')) {
                 $episode_id = Input::get('episode_id');
                 $episode = Input::get('episode');
+                $url_download = Input::get('url_download');
 
                 $ep = DBEpisodes::find($episode_id);
                 $ep->episode = $episode;
+                $ep->url_download = $url_download;
                 $ep->save();
 
                 return 'Thành Công';

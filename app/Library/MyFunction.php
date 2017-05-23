@@ -8,6 +8,8 @@
 
 namespace App\Library;
 
+use App\DBLog;
+use Illuminate\Support\Facades\Cookie;
 use App\DBCategory;
 use App\DBType;
 
@@ -160,4 +162,44 @@ class MyFunction {
             return $e->getMessage();
         }
     }
+
+    public static function log()
+    {
+        try
+        {
+            if(!Cookie::has('connectingLog'))
+            {
+                Cookie::queue(Cookie::make('connectingLog', 'connectingLog', 30));
+
+                // Function to get the client IP address
+                $ipaddress = '';
+                if (isset($_SERVER['HTTP_CLIENT_IP']))
+                    $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+                else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+                    $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+                else if(isset($_SERVER['HTTP_X_FORWARDED']))
+                    $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+                else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+                    $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+                else if(isset($_SERVER['HTTP_FORWARDED']))
+                    $ipaddress = $_SERVER['HTTP_FORWARDED'];
+                else if(isset($_SERVER['REMOTE_ADDR']))
+                    $ipaddress = $_SERVER['REMOTE_ADDR'];
+                else
+                    $ipaddress = 'UNKNOWN';
+
+                $log = new DBLog();
+                $log->ip = $ipaddress;
+                $log->referer = $_SERVER['HTTP_REFERER'];
+                $log->user_agent = $_SERVER['HTTP_USER_AGENT'];
+                $log->request_uri = $_SERVER['REQUEST_URI'];
+                $log->save();
+            }
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
+
 }

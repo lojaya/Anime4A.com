@@ -42,7 +42,11 @@ class ACPVideoController extends Controller
                 $items = DBVideos::where('episode_id', $episode_id)->get();
 
                 Session::forget('video_id');
-                return View::make('admincp.templates.VideoList', array('items' => $items, 'episode_id' => $episode_id, 'episode_name' => $episode_name))->render();
+                return View::make('admincp.templates.VideoList', array('items' => $items,
+                    'episode_id' => $episode_id,
+                    'episode_name' => $episode_name,
+                    'url_download' => $episode->url_download
+                ))->render();
             }
 
         } catch (\Exception $e) {
@@ -115,8 +119,6 @@ class ACPVideoController extends Controller
 
                 $url_source = Input::get('url_source');
                 $video->url_source = $url_source;
-                $url_download = Input::get('url_download');
-                $video->url_download = $url_download;
 
                 $video->save();
 

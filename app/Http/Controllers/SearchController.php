@@ -92,4 +92,29 @@ class SearchController extends Controller
             return $e->getMessage();
         }
     }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function SearchFilmByCountry(Request $request)
+    {
+        try
+        {
+            // search codes
+            $id = Input::get('id');
+            $page = Input::get('page');
+
+            $seachFilms = App\DBAnimes::where('country', '=', $id)
+                ->orderBy('updated_at', 'desc')
+                ->paginate(env('PAGE_SPLIT_SMALL'), ['*'], 'page', $page);
+            $seachFilms->setPath('search/country/'.$id);
+
+            return View::make('templates.SearchAnime', array('seachFilms' => $seachFilms))->render();
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
 }

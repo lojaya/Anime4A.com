@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 require_once "kGoogle.class.php";
+include_once('simple_html_dom.php');
 
 use App;
-use App\Providers\AppServiceProvider;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\DB;
-
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Input;
+
 use JonnyW\PhantomJs\Client;
 use JonnyW\PhantomJs\DependencyInjection\ServiceContainer;
 
@@ -28,7 +28,11 @@ class VideoController extends Controller
             $video = App\DBVideos::find($id);
             if(!is_null($video)&&strlen($video->url_source))
             {
-                return redirect($video->url_source);
+                $source = $video->url_source;
+                return view('EmbedVideo')->with([
+                    'video' => $video,
+                    'data' => encrypt($source)
+                ]);
             }
             else
                 return '<span style="color: white; font-size: 18pt">Video không tồn tại hoặc xảy ra sự cố ngoài ý muốn!!!</span>';
@@ -89,6 +93,242 @@ class VideoController extends Controller
             return $e->getMessage();
         }
     }
+
+    private $itags = array(
+        '37',
+        '22',
+        '59',
+        '18'
+    );
+
+    public function GetVideoData(Request $request)
+    {
+        try
+        {
+            $url = decrypt(Input::get('url'));
+            $ip = Input::get('ip');
+            $id = $this->getDriveId($url);
+            if(!is_null($id)&&strlen($id))
+            {
+                if(filter_var($ip, FILTER_VALIDATE_IP,FILTER_FLAG_IPV4))
+                    return $this->getVideoIPv6_2($id);
+
+                if(filter_var($ip, FILTER_VALIDATE_IP,FILTER_FLAG_IPV6))
+                    return $this->getVideoIPv4($id);
+            }
+            else
+                return '<span style="color: white; font-size: 18pt">Video không tồn tại hoặc xảy ra sự cố ngoài ý muốn!!!</span>';
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
+
+    private function getDriveId($url)
+    {
+        preg_match('/(?:https?:\/\/)?(?:[\w\-]+\.)*(?:drive|docs)\.google\.com\/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)\/d\/|spreadsheet\/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})/i', $url , $match);
+
+        if(isset($match[1])){
+            $id = $match[1];
+            return $id;
+        }
+
+        return false;
+    }
+
+    private function getSourceIPv6($url){
+        if (strpos($url,'drive.google') == true) {
+            if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $url, $match)) {
+                $id = $match[1];
+                $u = 'https://drive.google.com/file/d/'.$id.'/view?pli=1';
+            }
+        }else{
+            $u = $url;
+        }
+
+        $curl = new GGDrive;
+        $curl->get('https://www.proxfree.com/','',2);
+        $curl->httpheader = array(
+            'Referer:https://de.proxfree.com/permalink.php?url=eKcKvRAsZMJp3EkmD1K78%2Bqx%2FrqnRtIHySNzmMxUbxvJ%2FxfYKDbfQTtfxlzFz63ZA2PxrVLbAzRji7PR98co4KUo8OToTy25nhXHdedVcXsUt3WZdBKH09owwj58mvXq&bit=1',
+            'Upgrade-Insecure-Requests:1',
+            'Content-Type:application/x-www-form-urlencoded',
+            'Cache-Control:max-age=0',
+            'Connection:keep-alive',
+            'Accept-Language:en-US,en;q=0.8,vi;q=0.6,und;q=0.4',
+        );
+
+        $y=( $curl->post('https://de.proxfree.com/request.php?do=go&bit=1',"pfipDropdown=default&get=$u",4) );
+
+        return ($curl->get($y[0]["Location"],'',2));
+    }
+
+    private function getSourceIPv4($url)
+    {
+        return file_get_html($url);
+    }
+
+    private function getVideoIPv6($id)
+    {
+        try {
+            $id = urldecode($id);
+            $url = 'https://drive.google.com/file/d/' . $id . '/view?pli=1';
+            $body = $this->getSourceIPv6($url);
+            if(strpos($body,'status=fail') !== false ) return false;
+
+            $body = $this->decodeText($body);
+
+            $data = explode(',["fmt_stream_map","', $body);
+            $data = explode('"]', $data[1]);
+            $data = str_replace(array('\u003d', '\u0026'), array('=', '&'), $data[0]);
+            $data = explode(',', $data);
+            asort($data);
+            $source = array();
+            foreach ($data as $url) {
+                list($itag,$link) = explode('|', $url);
+                if(in_array($itag, $this->itags)){
+                    if($itag == 37) {
+                        $source[] = array(
+                            'type'      => 'mp4',
+                            'label'     => 'HD/1080p',
+                            'file'      => preg_replace("/\/[^\/]+\.google\.com/","/redirector.googlevideo.com",$link),
+                            'default'   => false
+                        );
+                    }
+                    if($itag == 22) {
+                        $source[] = array(
+                            'type'      => 'mp4',
+                            'label'     => 'HD/720p',
+                            'file'      => preg_replace("/\/[^\/]+\.google\.com/","/redirector.googlevideo.com",$link),
+                            'default'   => true
+                        );
+                    }
+                    if($itag == 59) {
+                        $source[] = array(
+                            'type'      => 'mp4',
+                            'label'     => 'SD/480p',
+                            'file'      => preg_replace("/\/[^\/]+\.google\.com/","/redirector.googlevideo.com",$link),
+                            'default'   => false
+                        );
+                    }
+                    if($itag == 18){
+                        $source[] = array(
+                            'type'      => 'mp4',
+                            'label'     => 'SD/360p',
+                            'file'      => preg_replace("/\/[^\/]+\.google\.com/","/redirector.googlevideo.com",$link),
+                            'default'   => false
+                        );
+                    }
+
+                }
+            }
+            $source = json_encode($source);
+            return $source;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    private function getVideoIPv6_2($id) // Xai ke host nguoi ta
+    {
+        $url = 'https://api.anivn.com/?url=https://drive.google.com/file/d/' . $id . '/view';
+        $url = 'https://api.blogit.vn/getlink.php?link='.$url.'&json=jwplayer';
+
+        $ch = @curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $head[] = "Connection: keep-alive";
+        $head[] = "Keep-Alive: 300";
+        $head[] = "Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7";
+        $head[] = "Accept-Language: en-us,en;q=0.5";
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.124 Safari/537.36');
+        curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        $page = curl_exec($ch);
+        curl_close($ch);
+        return $page;
+    }
+
+    private function getVideoIPv4($id)
+    {
+        try {
+            $id = urldecode($id);
+            $url = 'https://mail.google.com/e/get_video_info?docid=' . $id;
+            $body = $this->getSourceIPv4($url);
+            $body = $this->decodeText($body);
+
+            if(strpos($body,'status=fail') !== false ) return false;
+
+            $fmt = $this->fetchValueIPv4(urldecode($body), 'fmt_stream_map=', '&fmt_list=');
+
+            $urls = explode(',', $fmt);
+            $source = array();
+            foreach ($urls as $url) {
+                list($itag,$link) = explode('|', $url);
+                if(in_array($itag, $this->itags)){
+                    if($itag == 37) {
+                        $source[] = array(
+                            'type'      => 'mp4',
+                            'label'     => 'HD/1080p',
+                            'file'      => preg_replace("/\/[^\/]+\.google\.com/","/redirector.googlevideo.com",$link),
+                            'default'   => false
+                        );
+                    } elseif ($itag == 22) {
+                        $source[] = array(
+                            'type'      => 'mp4',
+                            'label'     => 'HD/720p',
+                            'file'      => preg_replace("/\/[^\/]+\.google\.com/","/redirector.googlevideo.com",$link),
+                            'default'   => true
+                        );
+                    } elseif ($itag == 59) {
+                        $source[] = array(
+                            'type'      => 'mp4',
+                            'label'     => 'SD/480p',
+                            'file'      => preg_replace("/\/[^\/]+\.google\.com/","/redirector.googlevideo.com",$link),
+                            'default'   => false
+                        );
+                    } elseif ($itag == 18){
+                        $source[] = array(
+                            'type'      => 'mp4',
+                            'label'     => 'SD/360p',
+                            'file'      => preg_replace("/\/[^\/]+\.google\.com/","/redirector.googlevideo.com",$link),
+                            'default'   => false
+                        );
+                    }
+
+                }
+            }
+            $source = json_encode($source);
+            return $source;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    private function fetchValueIPv4($str, $find_start, $find_end)
+    {
+        $start = stripos($str, $find_start);
+
+        if($start==false) return '';
+
+        $length = strlen($find_start);
+        $temp = substr($str, $start+$length);
+        $end = stripos($temp, $find_end);
+        return substr($temp, 0, $end);
+    }
+
+    private function decodeText($str)
+    {
+        return preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/', function ($match) {
+            return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
+        }, $str);
+    }
+
 
 
     public function VideoStreaming(Request $request, $id, $label)
@@ -268,5 +508,157 @@ class VideoController extends Controller
         {
             return $e->getMessage();
         }
+    }
+}
+
+
+class GGDrive
+{
+    var $contents;
+    var $_header;
+    var $headers = array();
+    var $body;
+    var $url = "";
+    var $realm;
+    var $ua = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0";
+    var $proxy;
+    var $prtype;
+    var $tout = 10;
+    var $opts = false;
+    var $cookiefile = "lib/cookie.txt";
+    var $httpheader = array();
+    var $follow = false;
+    var $referer = "";
+    var $ch;
+
+    function __construct(){
+        $this->cookiefile = dirname(__FILE__)."/cookie.txt";
+    }
+    function exec($method, $url, $vars = "", $h = 1)
+    {
+        $this->ch = curl_init();
+        curl_setopt($this->ch, CURLOPT_URL, $url);
+        curl_setopt($this->ch, CURLOPT_HEADER, ($h == 2) ? 0 : 1);
+
+        if (is_array($this->realm)) {
+            curl_setopt($this->ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+            curl_setopt($this->ch, CURLOPT_USERPWD, $this->realm[0] . ':' . $this->realm[1]);
+        }
+
+        if ($this->proxy != "") {
+            if (strstr($this->proxy, "@")) {
+                $t = explode("@", $this->proxy);
+                $up = $t[0];
+                $ip = $t[1];
+            }
+            curl_setopt($this->ch, CURLOPT_HTTPPROXYTUNNEL, 1) ;
+            curl_setopt($this->ch, CURLOPT_PROXY, isset($ip) && $ip ? $ip : $this->proxy);
+            curl_setopt($this->ch, CURLOPT_PROXYTYPE, $this->prtype);
+            if (isset($up) && $up) {
+                curl_setopt($this->ch, CURLOPT_PROXYAUTH, CURLAUTH_NTLM);
+                curl_setopt($this->ch, CURLOPT_PROXYUSERPWD, $up);
+            }
+        }
+
+        if ($this->ua)
+            curl_setopt($this->ch, CURLOPT_USERAGENT, $this->ua);
+        if ($this->referer || $this->url)
+            curl_setopt($this->ch, CURLOPT_REFERER, $this->referer ? $this->referer : $this->
+            url);
+
+        if ($this->follow)
+            curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
+
+        if (strncmp($url, "https", 6)) {
+            curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($this->ch, CURLOPT_SSL_VERIFYHOST, 0);
+        }
+        curl_setopt($this->ch, CURLOPT_COOKIEJAR, $this->cookiefile);
+        curl_setopt($this->ch, CURLOPT_COOKIEFILE, $this->cookiefile);
+        curl_setopt($this->ch, CURLOPT_TIMEOUT, $this->tout);
+
+        if (count($this->httpheader)) {
+            curl_setopt($this->ch, CURLOPT_HTTPHEADER, $this->httpheader);
+        }
+
+        curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, $this->tout);
+        if ($method == 'POST') {
+            curl_setopt($this->ch, CURLOPT_POST, 1);
+            curl_setopt($this->ch, CURLOPT_POSTFIELDS, $vars);
+        }
+
+        if (is_array($this->opts) && $this->opts != false) {
+            foreach ($this->opts as $k => $v) {
+                curl_setopt($this->ch, $k, $v);
+            }
+        }
+
+        $data = curl_exec($this->ch);
+        $this->url = $url;
+
+        if ($data) {
+            if (preg_match("/^HTTP\/1\.1 302/", $data) && $h != 2 && strstr($data, "\r\n\r\nHTTP/1.1 200")) {
+                $pos = strpos($data, "\r\n\r\n");
+                $data = substr($data, $pos + 4);
+            }
+
+            if ($h == 1 || $h == 2)
+                return $data;
+            else {
+                $pos = strpos($data, "\r\n\r\n");
+                $this->body = substr($data, $pos + 4);
+                $this->_header = substr($data, 0, $pos);
+                $this->_header = explode("\r\n", trim($this->_header));
+                foreach ($this->_header as $v) {
+                    $v = explode(":", $v, 2);
+                    $this->headers[$v[0]] = isset($v[1]) ? trim($v[1]) : '';
+                }
+                return $h == 3 ? $this->headers : array($this->headers, $this->body);
+            }
+
+        } else {
+            return curl_error($this->ch);
+        }
+    }
+
+    function proxy($proxy, $prtype = CURLPROXY_HTTP)
+    { //CURLPROXY_SOCKS5
+        $this->proxy = $proxy;
+        $this->prtype = $prtype;
+    }
+
+    function settimeout($timeout)
+    {
+        $this->tout = $timeout;
+    }
+
+    function get($url,$vars, $h = 1)
+    {
+        $ret = $this->exec('GET', $url, $vars, $h);
+        //$this->close();
+        return $ret;
+    }
+
+    function post($url, $vars, $h = 1)
+    {
+        $ret = $this->exec('POST', $url, $vars, $h);
+        //$this->close();
+        return $ret;
+    }
+
+    function setopt($opt, $value = true)
+    {
+        $this->opts[$opt] = $value;
+    }
+
+    function seturl($url)
+    {
+        $this->url = $url;
+    }
+
+    function close()
+    {
+        curl_close($this->ch);
     }
 }

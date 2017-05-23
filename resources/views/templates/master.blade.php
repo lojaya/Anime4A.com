@@ -5,6 +5,10 @@
  * Date: 10/8/2016
  * Time: 1:57 AM
  */
+
+// Create logs
+\App\Library\MyFunction::log();
+
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -27,6 +31,17 @@
     <link rel="author" href="{{ Request::root() }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
+    <link rel="stylesheet" href="{{ asset('style/ani/style.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('style/ani/menu.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('style/ani/searchBox.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('style/ani/awesome-4.7.0/css/font-awesome.min.css') }}" type="text/css" />
+    <script type="text/javascript" src="{{ asset('js/jquery-3.1.0.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery-color.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jssor.slider-22.0.15.mini.js') }}" charset="utf-8" data-library="jssor.slider.mini" data-version="22.0.15"></script>
+    <script type="text/javascript" src="{{ asset('js/anime4a.js') }}" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ asset('js/searchBox.js') }}" charset="utf-8"></script>
+
     <script src="https://apis.google.com/js/api:client.js"></script>
     <script>
         var googleUser = {};
@@ -47,6 +62,7 @@
             auth2.attachClickHandler(element, {},
                     function(googleUser) {
                         // login success
+                        //alert(googleUser.getAuthResponse().access_token);
                         gg_login(googleUser);
                     }, function(error) {
                         alert(JSON.stringify(error, undefined, 2));
